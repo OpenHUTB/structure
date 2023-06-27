@@ -1,5 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% demo_eigenmode_analysis.m
+%%% 显示5个分析图
 %%%
 %%% MATLAB script to demonstrate how to use surface eigenmodes to analyze 
 %%% fMRI data. In particular, the script demonstrates how to

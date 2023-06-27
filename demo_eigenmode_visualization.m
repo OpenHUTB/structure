@@ -1,5 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% demo_eigenmode_visualization.m
+%%% 显示6个分析图
 %%%
 %%% MATLAB script to demonstrate how to visualize surface and volume 
 %%% eigenmodes

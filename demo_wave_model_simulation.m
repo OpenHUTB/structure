@@ -1,5 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% demo_wave_model_simulation.m
+%%% 显示动图
 %%%
 %%% MATLAB script to demonstrate how to simulate the wave model on a
 %%% cortical surface. In particular, the script demonstrates how to

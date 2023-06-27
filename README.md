@@ -1,17 +1,15 @@
-# BrainEigenmodes
+# 大脑本征模式
 
 ![cover](cover_image.jpg)
 
-Code and data for the manuscript "[Geometric constraints on human brain function](https://www.nature.com/articles/s41586-023-06098-1)"
+使用基于本征模式分析来研究大脑几何结构如何约束功能磁共振成像所捕获的功能。
 
-Uses an eigenmode-based analysis to study how the geometric structure of the brain constrains function captured by fMRI
+该代码还可以作为一个工具箱，让人们使用自己的数据计算表面和/或体积的几何本征模式（参见 `demo_eigenmode_calculation.sh`）
 
-The code also serves as a toolbox for people to calculate surface and/or volume geometric eigenmodes using their own data (See `demo_eigenmode_calculation.sh`)
+## 文件描述
 
-## File descriptions
-
-1. `data/`: folder containing example data, parcellations, empirical data, results from the paper, figure source data, template eigenmodes, and template surfaces and volumes
-2. `functions_matlab/`: folder containing various utility analysis and visualization MATLAB functions
+1. `data/`: 包含示例数据、分区、经验数据、论文结果、图形源数据、模板本征模式以及模板表面和体积的文件夹；
+2. `functions_matlab/`: 包含各种功能分析和可视化的 MATLAB 函数文件夹；
 3. `surface_eigenmodes.py`: Python script to calculate geometric eigenmodes of a cortical surface
 4. `volume_eigenmodes.py`: Python script to calculate geometric eigenmodes of a 3D volume
 5. `demo_eigenmode_calculation.sh`: Bash shell script to demonstrate how to calculate geometric eigenmodes
@@ -25,12 +23,12 @@ The code also serves as a toolbox for people to calculate surface and/or volume 
 13. `generate_paper_figures_supp_Nature.m`: MATLAB script to generate the Supplementary figures of the Nature paper
 14. `generate_paper_figures_extended_Nature.m`: MATLAB script to generate the Extended Data figures of the Nature paper
 
-## Installation
+## 安装
 
 Download the repository and you're good to go.
 Read the comments and documentation within each code for usage guidance.
 
-## Downloading data
+## 下载数据
 
 Due to their file sizes exceeding the limit allowed by GitHub, you will need to fill the `data/empirical/`, `data/results/`, and `data/template_eigenmodes/` directories with data that you can download from this [OSF repository](https://osf.io/xczmp/). The total file size is 11.3GB. 
 
@@ -58,17 +56,28 @@ Some of the MATLAB-based scripts depend on packages developed by others. Copies 
 4. Stuart Oldham's [repository](https://github.com/StuartJO/plotSurfaceROIBoundary) for drawing ROI boundaries on a surface
 5. Frantisek Vasa's [repository](https://github.com/frantisekvasa/rotate_parcellation) for creating rotations of a parcellated map
 
+## 运行
+```shell
+demo_connectome_eigenmode_calculation.m
+demo_eigenmode_analysis.m
+demo_eigenmode_visualization.m
+demo_wave_model_simulation.m
+```
+
 ## Compatibility
 
 The codes have been tested on versions of Python from 3.7 to 3.8 and versions of MATLAB from R2019b to R2020b.
 
-## Citation
+## 引用
 
 If you use our code in your research, please cite us as follows:
+
+论文 "[Geometric constraints on human brain function](https://www.nature.com/articles/s41586-023-06098-1)" 的[代码和数据](https://github.com/NSBLab/BrainEigenmodes) 。
 
 [PREPRINT] J.C. Pang, K.M. Aquino, M. Oldehinkel, P.A. Robinson, B.D. Fulcher, M. Breakspear, A. Fornito, Geometric constraints on human brain function, bioRxiv (2022) (DOI: [10.1101/2022.10.04.510897](https://www.biorxiv.org/content/10.1101/2022.10.04.510897v2))
 
 [ARTICLE] J.C. Pang, K.M. Aquino, M. Oldehinkel, P.A. Robinson, B.D. Fulcher, M. Breakspear, A. Fornito, Geometric constraints on human brain function, Nature (2023) (VOLUME NUMBER TO BE UPDATED) (DOI: [10.1038/s41586-023-06098-1](https://www.nature.com/articles/s41586-023-06098-1))
+
 
 ## Further details
 

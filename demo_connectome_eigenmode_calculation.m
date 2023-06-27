@@ -1,5 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% demo_connectome_eigenmode_calculation.m
+%%% 显示github首页类似的图
 %%%
 %%% MATLAB script to demonstrate how to calculate various high-resolution 
 %%% connectome-based eigenmodes. In particular, the script demonstrates 
