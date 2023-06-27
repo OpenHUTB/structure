@@ -10,67 +10,62 @@
 
 1. `data/`: 包含示例数据、分区、经验数据、论文结果、图形源数据、模板本征模式以及模板表面和体积的文件夹；
 2. `functions_matlab/`: 包含各种功能分析和可视化的 MATLAB 函数文件夹；
-3. `surface_eigenmodes.py`: Python script to calculate geometric eigenmodes of a cortical surface
-4. `volume_eigenmodes.py`: Python script to calculate geometric eigenmodes of a 3D volume
-5. `demo_eigenmode_calculation.sh`: Bash shell script to demonstrate how to calculate geometric eigenmodes
-6. `demo_eigenmode_analysis.m`: MATLAB script to demonstrate how to use eigenmodes to analyze fMRI data
-7. `demo_eigenmode_visualization.m`: MATLAB script to demonstrate how to visualize surface and volume eigenmodes
-8. `demo_connectome_eigenmode_calculation.m`: MATLAB script to demonstrate how to calculate connectome and EDR connectome eigenmodes
-9. `demo_wave_model_simulation.m`: MATLAB script to demonstrate how to simulate waves on a cortical surface using eigenmodes
-10. `generate_paper_figures_main_bioRxiv.m`: MATLAB script to generate the Main figures of the bioRxiv preprint
-11. `generate_paper_figures_supp_bioRxiv.m`: MATLAB script to generate the Supplementary figures of the bioRxiv preprint
-12. `generate_paper_figures_main_Nature.m`: MATLAB script to generate the Main figures of the Nature paper
-13. `generate_paper_figures_supp_Nature.m`: MATLAB script to generate the Supplementary figures of the Nature paper
-14. `generate_paper_figures_extended_Nature.m`: MATLAB script to generate the Extended Data figures of the Nature paper
+3. `surface_eigenmodes.py`: 用于计算皮层表面几何本征模式的 Python 脚本
+4. `volume_eigenmodes.py`: 用于计算三维体积的几何本征模式的 Python 脚本
+5. `demo_eigenmode_calculation.sh`: Bash shell 脚本演示如何计算几何本征模式
+6. `demo_eigenmode_analysis.m`: MATLAB 脚本演示如何使用本征模式分析 fMRI 数据
+7. `demo_eigenmode_visualization.m`: 演示如何可视化表面和体积本征模的 MATLAB 脚本
+8. `demo_connectome_eigenmode_calculation.m`: MATLAB 脚本演示如何计算连接体和EDR连接体本征模
+9. `demo_wave_model_simulation.m`: MATLAB脚本演示如何使用本征模式模拟皮层表面上的波
+10. `generate_paper_figures_main_bioRxiv.m`: MATLAB 脚本生成bioRxiv预印本的主要图形
+11. `generate_paper_figures_supp_bioRxiv.m`: 生成bioRxiv预印本补充图的 MATLAB 脚本
+12. `generate_paper_figures_main_Nature.m`: MATLAB 脚本生成论文的主要图形
+13. `generate_paper_figures_supp_Nature.m`: MATLAB 脚本生成论文的补充图
+14. `generate_paper_figures_extended_Nature.m`: MATLAB 脚本生成论文的扩展数据图形
 
 ## 安装
 
-Download the repository and you're good to go.
-Read the comments and documentation within each code for usage guidance.
+下载代码仓库，就可以开始了。
+阅读每个代码中的注释和文档以获取使用指南。
+
 
 ## 下载数据
 
-Due to their file sizes exceeding the limit allowed by GitHub, you will need to fill the `data/empirical/`, `data/results/`, and `data/template_eigenmodes/` directories with data that you can download from this [OSF repository](https://osf.io/xczmp/). The total file size is 11.3GB. 
+由于它们的文件大小超过了 GitHub 允许的限制，您将需要用可以从 [OSF存储库](https://osf.io/xczmp/) 下载的数据填充`data/experitory/`、`data/results/`和`data/template_eignmodes/`目录。总文件大小为 11.3GB。
 
-***VERY IMPORTANT NOTE:*** **Some portions of `generate_paper_figures.m` and `generate_paper_suppfigures.m` require the abovementioned data hosted in [OSF](https://osf.io/xczmp/). Hence, you need them to be saved in the appropriate folders to be able to run these two scripts smoothly.**
+***非常重要的注意事项：***`generate_paper_figures.m`和`generate_paper_supfigures.m` 的某些部分需要托管在[OSF](https://osf.io/xczmp/) 中的上述数据。因此，您需要将它们保存在适当的文件夹中，以便能够顺利运行这两个脚本**
 
-## Original data
 
-Original empirical data are from the [Human Connectome Project](https://db.humanconnectome.org/). Please consult the link for detailed information about access, licensing, and terms and conditions of usage.
+## 原始数据
 
-## Dependencies
+原始经验数据来自[人类连接体项目](https://db.humanconnectome.org/) 。有关访问、许可以及使用条款和条件的详细信息，请参阅链接。
 
-Some important aspects you need to do before running `demo_eigenmode_calculation.sh`, `surface_eigenmodes.py`, or `volume_eigenmodes.py`
 
-1. Install [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall) and load module if using an HPC system.
-2. Install [Connectome Workbench](https://www.humanconnectome.org/software/get-connectome-workbench) and load module if using an HPC system.
-3. Install [Gmsh](https://gmsh.info/) and load module if using an HPC system.
-4. Install the following Python libraries (e.g., via pip): [lapy](https://github.com/Deep-MI/LaPy), [nibabel](https://nipy.org/nibabel/), and [brainspace](https://brainspace.readthedocs.io/en/latest/pages/install.html)
-5. Make sure you also have the following common Python libraries: numpy, scipy, os, argparse, subprocess
+## 依赖项
 
-Some of the MATLAB-based scripts depend on packages developed by others. Copies of these packages have been stored in the `functions_matlab/` folder to ensure version compatibility. However, please visit their respective links below to get more details and don't forget to give them some love.
+在运行`demo_eigenmode_calculation.sh`、`surface_eigenmodels.py`或`volume_eigermodes.py`之前，需要做一些重要的工作`
+
+
+1. 如果使用高性能计算，安装 [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall) 并加载模块。
+2. 如果使用高性能计算，安装 [Connectome Workbench](https://www.humanconnectome.org/software/get-connectome-workbench) 并加载模块。
+3. 如果使用高性能计算，安装 [Gmsh](https://gmsh.info/) 并加载模块。
+4. 安装下列 Python 库 (比如通过 pip): [lapy](https://github.com/Deep-MI/LaPy), [nibabel](https://nipy.org/nibabel/) 和 [brainspace](https://brainspace.readthedocs.io/en/latest/pages/install.html)
+5. 请确保还拥有以下通用 Python 库: numpy, scipy, os, argparse, subprocess
+
+一些基于 MATLAB 的脚本依赖于其他人开发的包。这些包的副本已存储在`functions_matlab/`文件夹中，以确保版本兼容性。然而，了解更多细节请访问下面他们各自的链接。
 
 1. [gifti](https://github.com/gllmflndn/gifti)
 2. [cifti](https://github.com/Washington-University/cifti-matlab)
-3. [cbrewer](https://au.mathworks.com/matlabcentral/fileexchange/58350-cbrewer2?s_tid=srchtitle) (NOTE: The link is for the new version cbrewer2, but the repo uses the older version.) 
-4. Stuart Oldham's [repository](https://github.com/StuartJO/plotSurfaceROIBoundary) for drawing ROI boundaries on a surface
-5. Frantisek Vasa's [repository](https://github.com/frantisekvasa/rotate_parcellation) for creating rotations of a parcellated map
+3. [cbrewer](https://au.mathworks.com/matlabcentral/fileexchange/58350-cbrewer2?s_tid=srchtitle) (注意：该链接适用于新版本cbrewer2，但该代码库使用旧版本。) 
+4. Stuart Oldham's [repository](https://github.com/StuartJO/plotSurfaceROIBoundary) 在曲面上绘制ROI边界
+5. Frantisek Vasa's [repository](https://github.com/frantisekvasa/rotate_parcellation) 用于创建分割地图的旋转
 
-## 运行
-```shell
-demo_connectome_eigenmode_calculation.m
-demo_eigenmode_analysis.m
-demo_eigenmode_visualization.m
-demo_wave_model_simulation.m
-```
 
-## Compatibility
+## 兼容性
 
-The codes have been tested on versions of Python from 3.7 to 3.8 and versions of MATLAB from R2019b to R2020b.
+这些代码已经在3.7到3.8版本的Python和R2019b到R2020b和R2022b版本的MATLAB上进行了测试。
 
 ## 引用
-
-If you use our code in your research, please cite us as follows:
 
 论文 "[Geometric constraints on human brain function](https://www.nature.com/articles/s41586-023-06098-1)" 的[代码和数据](https://github.com/NSBLab/BrainEigenmodes) 。
 
@@ -79,6 +74,6 @@ If you use our code in your research, please cite us as follows:
 [ARTICLE] J.C. Pang, K.M. Aquino, M. Oldehinkel, P.A. Robinson, B.D. Fulcher, M. Breakspear, A. Fornito, Geometric constraints on human brain function, Nature (2023) (VOLUME NUMBER TO BE UPDATED) (DOI: [10.1038/s41586-023-06098-1](https://www.nature.com/articles/s41586-023-06098-1))
 
 
-## Further details
+## 进一步的详细信息
 
-Please contact james.pang1@monash.edu if you need any further details.
+如果需要任何进一步的细节请联系james.pang1@monash.edu。

@@ -1,23 +1,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% generate_paper_figures_main_Nature.m
 %%%
-%%% MATLAB script to generate the final Main figures of the paper
+%%% 生成最后论文的主要图片的 MATLAB 脚本
 %%%
-%%% NOTE : The configuration of your computer (e.g., screen resolution)
-%%%        affects how the figures created will look. Hence, they will not 
-%%%        100% visually match the figures in the paper, but the scientific 
-%%%        contents are replicated.
+%%% 注意 : 电脑的配置(比如屏幕分辨率)会影响所创建图的外观。
+%%%        因此，它们在视觉上不会与论文中的数字100%匹配，但科学内容是可复现的。
 %%%
 %%% Original: James Pang, Monash University, 2023
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Load relevant repository MATLAB functions
 
+%% 加载相关的存储库的MATLAB函数
 addpath(genpath('functions_matlab'));
 
-%% MISCELLANEOUS VARIABLES
 
-% NOTE: data provided is only for the below parameters, so please don't change them
+%% 额外变量
+% 注意：所提供的数据仅适用于以下参数，因此请勿更改它们
 hemisphere = 'lh'; 
 num_modes = 200;
 parc_name = 'Glasser360';
@@ -28,8 +26,8 @@ data_figures_folder = 'data/figures_Nature';
 data_template_surfaces_folder = 'data/template_surfaces_volumes';
 data_template_eigenmodes_folder = 'data/template_eigenmodes';
 
-%% LOAD SURFACES
 
+%% LOAD SURFACES
 mesh_interest = 'inflated';
 [vertices, faces] = read_vtk(sprintf('data/template_surfaces_volumes/fsLR_32k_%s-%s.vtk', mesh_interest, hemisphere));
 surface_inflated.vertices = vertices';
