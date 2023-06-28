@@ -1,6 +1,8 @@
 function [vertex,face] = read_vtk(filename, verbose)
 
-% read_vtk - read data from VTK file.
+% read_vtk - 从 VTK(Visualization Toolkit) 文件中读取数据
+%   Vtk 模型是一种以文本方式表示的3D模型文件，
+%   其能够表示点面信息，而且能够以人类易读易懂的方式以文本的形式存储下来。
 %
 %   [vertex,face] = read_vtk(filename, verbose);
 %

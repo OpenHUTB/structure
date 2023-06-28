@@ -2,21 +2,21 @@
 
 ![cover](cover_image.jpg)
 
-使用基于本征模式分析来研究大脑几何结构如何约束功能磁共振成像所捕获的功能。
+使用基于特征模式分析来研究大脑几何结构如何约束功能磁共振成像所捕获的功能。
 
-该代码还可以作为一个工具箱，让人们使用自己的数据计算表面和/或体积的几何本征模式（参见 `demo_eigenmode_calculation.sh`）
+该代码还可以作为一个工具箱，让人们使用自己的数据计算表面和/或体积的几何特征模式（参见 `demo_eigenmode_calculation.sh`）
 
 ## 文件描述
 
-1. `data/`: 包含示例数据、分区、经验数据、论文结果、图形源数据、模板本征模式以及模板表面和体积的文件夹；
+1. `data/`: 包含示例数据、分区、经验数据、论文结果、图形源数据、模板特征模式以及模板表面和体积的文件夹；
 2. `functions_matlab/`: 包含各种功能分析和可视化的 MATLAB 函数文件夹；
-3. `surface_eigenmodes.py`: 用于计算皮层表面几何本征模式的 Python 脚本
-4. `volume_eigenmodes.py`: 用于计算三维体积的几何本征模式的 Python 脚本
-5. `demo_eigenmode_calculation.sh`: Bash shell 脚本演示如何计算几何本征模式
-6. `demo_eigenmode_analysis.m`: MATLAB 脚本演示如何使用本征模式分析 fMRI 数据
-7. `demo_eigenmode_visualization.m`: 演示如何可视化表面和体积本征模的 MATLAB 脚本
-8. `demo_connectome_eigenmode_calculation.m`: MATLAB 脚本演示如何计算连接体和EDR连接体本征模
-9. `demo_wave_model_simulation.m`: MATLAB脚本演示如何使用本征模式模拟皮层表面上的波
+3. `surface_eigenmodes.py`: 用于计算皮层表面几何特征模式的 Python 脚本
+4. `volume_eigenmodes.py`: 用于计算三维体积的几何特征模式的 Python 脚本
+5. `demo_eigenmode_calculation.sh`: Bash shell 脚本演示如何计算几何特征模式
+6. `demo_eigenmode_analysis.m`: 演示如何使用特征模式分析 fMRI 数据的 MATLAB 脚本
+7. `demo_eigenmode_visualization.m`: 演示如何可视化表面和体积特征模式的 MATLAB 脚本
+8. `demo_connectome_eigenmode_calculation.m`: MATLAB 脚本演示如何计算连接体和EDR连接体特征模式
+9. `demo_wave_model_simulation.m`: MATLAB脚本演示如何使用特征模式模拟皮层表面上的波
 10. `generate_paper_figures_main_bioRxiv.m`: MATLAB 脚本生成bioRxiv预印本的主要图形
 11. `generate_paper_figures_supp_bioRxiv.m`: 生成bioRxiv预印本补充图的 MATLAB 脚本
 12. `generate_paper_figures_main_Nature.m`: MATLAB 脚本生成论文的主要图形
@@ -65,8 +65,11 @@
 
 这些代码已经在3.7到3.8版本的Python和R2019b到R2020b和R2022b版本的MATLAB上进行了测试。
 
+
 ## 猜想
 用重建的方法来预测大脑激活的精度。
+
+几何形状（主要因素）和连接（次要因素）共同决定了大脑的功能。
 
 
 ## 引用

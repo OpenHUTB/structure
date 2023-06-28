@@ -1,81 +1,73 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% demo_eigenmode_analysis.m
-%%% 显示5个分析图
 %%%
-%%% MATLAB script to demonstrate how to use surface eigenmodes to analyze 
-%%% fMRI data. In particular, the script demonstrates how to
-%%% (1) reconstruct a task fMRI spatial map,
-%%% (2) reconstruct a resting-state fMRI spatiotemporal map and functional
-%%%     connectivity (FC) matrix, and
-%%% (3) calculate the eigenmode-based power spectral content of a spatial map
+%%% 演示如何使用表面特征模式来分析fMRI数据的 MATLAB 脚本
+%%% 特别是该脚本演示了如何：
+%%% (1) 重建任务fMRI空间图，
+%%% (2) 重建静息状态fMRI时空图和功能连接（functional connectivity, FC）矩阵，以及
+%%% (3) 计算基于特征模式空间图的功率谱内容
 %%%
-%%% NOTE 1: The script can also be used to analyze fMRI data using other
-%%%         types of surface eigenmodes (e.g., connectome eigenmodes). 
-%%%         Just change the eigenmodes variable below. However, make sure
-%%%         that the variable is an array of size
-%%%         [number of vertices x number of modes]. 
-%%% NOTE 2: Current demo uses 50 modes. For a proper analysis, we advise 
-%%%         using between 100 to 200 modes. 200 template geometric 
-%%%         eigenmodes are provided in data/template_eigenmodes.
-%%%
-%%% Original: James Pang, Monash University, 2022
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 注意 1：该脚本还可用于使用其他类型的表面特征模式（例如连接组特征模式）
+%%% 来分析 fMRI 数据。 只需更改下面的 eigenmodes 变量即可。 
+%%% 但是，请确保变量是大小为 [顶点数 x 模式数] 的数组。
+%%% 注意 2：当前演示使用 50 种模式。 为了进行正确的分析，
+%%% 建议使用 100 到 200 种模式。
+%%% data/template_eigenmodes 中提供了 200 个模板几何特征模式。
 
-%% Load relevant repository MATLAB functions
 
+%% 加载 Matlab 函数相关的代码库
 addpath(genpath('functions_matlab'));
 
-%% Load surface files for visualization
 
-surface_interest = 'fsLR_32k';
-hemisphere = 'lh';
-mesh_interest = 'midthickness';
+%% 加载用于可视化的表面文件
+surface_interest = 'fsLR_32k';  % 感兴趣表面
+hemisphere = 'lh';              % 大脑半球
+mesh_interest = 'midthickness'; % 感兴趣表面的网格划分稠密度
 
-[vertices, faces] = read_vtk(sprintf('data/template_surfaces_volumes/%s_%s-%s.vtk', surface_interest, mesh_interest, hemisphere));
+[vertices, faces] = read_vtk( ...
+    sprintf('data/template_surfaces_volumes/%s_%s-%s.vtk', ...
+    surface_interest, mesh_interest, hemisphere));
 surface_midthickness.vertices = vertices';
 surface_midthickness.faces = faces';
 
-% Load cortex mask
-cortex = dlmread(sprintf('data/template_surfaces_volumes/%s_cortex-%s_mask.txt', surface_interest, hemisphere));
+% 加载皮层掩膜
+cortex = dlmread( ...
+    sprintf('data/template_surfaces_volumes/%s_cortex-%s_mask.txt', ...
+    surface_interest, hemisphere));
 cortex_ind = find(cortex);
 
-%% Reconstruct a single-subject task fMRI spatial map
 
+%% 重建单受试者任务 fMRI 空间图
 hemisphere = 'lh';
 num_modes = 50;
 
-% =========================================================================
-%                    Load eigenmodes and empirical data                    
-% =========================================================================
 
-% Load 50 fsLR_32k template midthickness surface eigenmodes
+%% 加载特征模式数据和empirical数据
+% 加载 Load 50 fsLR_32k 模板中等密度表面特征模式
 eigenmodes = dlmread(sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
 
-% Replace above line with the one below and make num_modes = 200 if using the 200 modes provided at data/template_eigenmodes
+% 如果使用data/template_enginemodes中提供的200个模式，
+% 则将上面的行替换为下面的行，并使num_modes=200
 % eigenmodes = dlmread(sprintf('data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
 
-% Load example single-subject tfMRI z-stat data
+% 加载样本 单受试者 tfMRI z-stat 数据
 data = load(sprintf('data/examples/subject_tfMRI_zstat-%s.mat', hemisphere));
 data_to_reconstruct = data.zstat;
 
-% =========================================================================
-% Calculate reconstruction beta coefficients using 1 to num_modes eigenmodes
-% =========================================================================
 
+%% 使用1到num_modes个特征模式计算重建β系数
 recon_beta = zeros(num_modes, num_modes);
 for mode = 1:num_modes
     basis = eigenmodes(cortex_ind, 1:mode);
     
-    recon_beta(1:mode,mode) = calc_eigendecomposition(data_to_reconstruct(cortex_ind), basis, 'matrix');
+    recon_beta(1:mode,mode) = calc_eigendecomposition( ...
+        data_to_reconstruct(cortex_ind), basis, 'matrix');
 end
 
-% =========================================================================
-%     Calculate reconstruction accuracy using 1 to num_modes eigenmodes    
-% =========================================================================
 
-% reconstruction accuracy = correlation of empirical and reconstructed data
+%% 使用1到num_mode个特征模式计算重建精度
+% 重建精度 = 经验数据和重建数据的相关性
 
-% At vertex level
+% 在顶点层次
 recon_corr_vertex = zeros(1, num_modes);               
 for mode = 1:num_modes
     recon_temp = eigenmodes(cortex_ind, 1:mode)*recon_beta(1:mode,mode);
@@ -83,9 +75,10 @@ for mode = 1:num_modes
     recon_corr_vertex(mode) = corr(data_to_reconstruct(cortex_ind), recon_temp);
 end
 
-% At parcellated level
+% 在分割层次
 parc_name = 'Glasser360';
-parc = dlmread(sprintf('data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere));
+parc = dlmread( ...
+    sprintf('data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere));
 
 recon_corr_parc = zeros(1, num_modes);               
 for mode = 1:num_modes
@@ -94,77 +87,83 @@ for mode = 1:num_modes
     recon_corr_parc(mode) = corr(calc_parcellate(parc, data_to_reconstruct), calc_parcellate(parc, recon_temp));
 end
 
-% =========================================================================
-%                      Some visualizations of results                      
-% =========================================================================
 
-% Reconstruction accuracy vs number of modes at vertex and parcellated levels
+%% 一些结果的可视化
+
+% 重建精度 vs 定点和分割层次的模式数
 figure('Name', 'tfMRI reconstruction - accuracy');
 hold on;
-plot(1:num_modes, recon_corr_vertex, 'k-', 'linewidth', 2, 'displayname', 'vertex')
-plot(1:num_modes, recon_corr_parc, 'b-', 'linewidth', 2, 'displayname', 'parcellated')
+plot(1:num_modes, recon_corr_vertex, ...
+    'k-', 'linewidth', 2, 'displayname', 'vertex')
+plot(1:num_modes, recon_corr_parc, ...
+    'b-', 'linewidth', 2, 'displayname', 'parcellated')
 hold off;
 leg = legend('fontsize', 12, 'location', 'southeast', 'box', 'off');
-set(gca, 'fontsize', 10, 'ticklength', [0.02 0.02], 'xlim', [1 num_modes], 'ylim', [0 1])
+set(gca, 'fontsize', 10, 'ticklength', [0.02 0.02], ...
+    'xlim', [1 num_modes], 'ylim', [0 1])
 xlabel('number of modes', 'fontsize', 12)
 ylabel('reconstruction accuracy', 'fontsize', 12)
 
-% Reconstructed spatial map using N = num_modes modes
+% 使用N=num_modes个模式重建的空间图
 N = num_modes;
 surface_to_plot = surface_midthickness;
 data_to_plot = eigenmodes(:, 1:N)*recon_beta(1:N,N);
 medial_wall = find(cortex==0);
 with_medial = 1;
 
-fig = draw_surface_bluewhitered_dull(surface_to_plot, data_to_plot, hemisphere, medial_wall, with_medial);
+fig = draw_surface_bluewhitered_dull( ...
+    surface_to_plot, data_to_plot, hemisphere, medial_wall, with_medial);
 fig.Name = sprintf('tfMRI reconstruction - surface map using %i modes', N);
 
-%% Reconstruct a single-subject resting-state fMRI spatiotemporal map and FC matrix
 
+%% 重建单个受试者静息态fMRI时空图和功能连接矩阵
 hemisphere = 'lh';
 num_modes = 50;
 
-% =========================================================================
-%                    Load eigenmodes and empirical data                    
-% =========================================================================
 
-% Load 50 fsLR_32k template midthickness surface eigenmodes
-eigenmodes = dlmread(sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
+%% 加载特征模式和经验数据
 
-% Replace above line with the one below and make num_modes = 200 if using the 200 modes provided at data/template_eigenmodes
-% eigenmodes = dlmread(sprintf('data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
+% 加载50个 fsLR_32k 模板的中等密度表面特征模式
+eigenmodes = dlmread( ...
+    sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', ...
+    hemisphere, num_modes));
 
-% Load example single-subject rfMRI time series data
-data = load(sprintf('data/examples/subject_rfMRI_timeseries-%s.mat', hemisphere));
+% 如果使用data/template_enginemodes中提供的200个模式，
+% 则将上面的代码行替换为下面的代码行，并使num_modes=200
+% eigenmodes = dlmread( ...
+%     sprintf('data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', ...
+%     hemisphere, num_modes));
+
+% 加载示例单个受试者rfMRI时间序列数据
+data = load( ...
+    sprintf('data/examples/subject_rfMRI_timeseries-%s.mat', hemisphere));
 data_to_reconstruct = data.timeseries;
 T = size(data_to_reconstruct, 2);
 
-% =========================================================================
-% Calculate reconstruction beta coefficients using 1 to num_modes eigenmodes
-% =========================================================================
 
+%% 使用1到 num_modes 个特征模式计算重建β系数
 recon_beta = zeros(num_modes, T, num_modes);
 for mode = 1:num_modes
     basis = eigenmodes(cortex_ind, 1:mode);
     
-    recon_beta(1:mode,:,mode) = calc_eigendecomposition(data_to_reconstruct(cortex_ind,:), basis, 'matrix');
+    recon_beta(1:mode,:,mode) = calc_eigendecomposition( ...
+        data_to_reconstruct(cortex_ind,:), basis, 'matrix');
 end
 
-% =========================================================================
-%     Calculate reconstruction accuracy using 1 to num_modes eigenmodes    
-% =========================================================================
 
-% reconstruction accuracy = correlation of empirical and reconstructed data
+%% 使用1到num_mode个特征模式本征模计算重建精度
+% 重建精度 = 经验数据和重建数据的相关性
 
-% At parcellated level
+% 在分割层次
 parc_name = 'Glasser360';
-parc = dlmread(sprintf('data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere));
+parc = dlmread( ...
+    sprintf('data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere));
 num_parcels = length(unique(parc(parc>0)));
 
-% Extract upper triangle indices
+% 提取上三角索引
 triu_ind = calc_triu_ind(zeros(num_parcels, num_parcels));
 
-% Calculate empirical FC
+% 计算实证的（实验记录的）功能连接
 data_parc_emp = calc_parcellate(parc, data_to_reconstruct);
 data_parc_emp = calc_normalize_timeseries(data_parc_emp');
 data_parc_emp(isnan(data_parc_emp)) = 0;
@@ -173,7 +172,7 @@ FC_emp = data_parc_emp'*data_parc_emp;
 FC_emp = FC_emp/T;
 FCvec_emp = FC_emp(triu_ind);
 
-% Calculate reconstructed FC and accuracy (slow to run with more modes)
+% 计算重建的功能连接和精度（模式较多时运行速度较慢）
 FCvec_recon = zeros(length(triu_ind), num_modes);
 recon_corr_parc = zeros(1, num_modes);               
 for mode = 1:num_modes
@@ -191,11 +190,10 @@ for mode = 1:num_modes
     recon_corr_parc(mode) = corr(FCvec_emp, FCvec_recon(:,mode));
 end
 
-% =========================================================================
-%                      Some visualizations of results                      
-% =========================================================================
 
-% Reconstruction accuracy vs number of modes at parcellated level
+%% 一些结果的可视化
+
+% 重建精度 vs 在分割层次的模式数
 figure('Name', 'rfMRI reconstruction - accuracy');
 hold on;
 plot(1:num_modes, recon_corr_parc, 'b-', 'linewidth', 2)
@@ -204,7 +202,7 @@ set(gca, 'fontsize', 10, 'ticklength', [0.02 0.02], 'xlim', [1 num_modes], 'ylim
 xlabel('number of modes', 'fontsize', 12)
 ylabel('reconstruction accuracy', 'fontsize', 12)
 
-% Reconstructed FC using N = num_modes modes
+% 使用N = num_modes 个模式的重建功能连接
 N = num_modes;
 FC_recon = zeros(num_parcels, num_parcels);
 FC_recon(triu_ind) = FCvec_recon(:,N);
@@ -222,22 +220,26 @@ ylabel('region', 'fontsize', 12)
 ylabel(cbar, 'FC', 'fontsize', 12)
 axis image
 
-%% Calculate modal power spectral content of spatial maps
 
+%% 计算空间图的模态功率谱内容
 hemisphere = 'lh';
 num_modes = 50;
 
-% =========================================================================
-%                   Load eigenmodes and empirical data
-% =========================================================================
 
-% Load 50 fsLR_32k template midthickness surface eigenmodes
-eigenmodes = dlmread(sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
+%% 加载特征模式数据和实证数据
 
-% Replace above line with the one below and make num_modes = 200 if using the 200 modes provided at data/template_eigenmodes
-% eigenmodes = dlmread(sprintf('data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
+% 加载50个 fsLR_32k 模板的中等密度表面特征模式
+eigenmodes = dlmread( ...
+    sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', ...
+    hemisphere, num_modes));
 
-% Load example neurovault spatial map
+% 如果使用data/template_enginemodes中提供的200个模式，
+% 则将上面的行替换为下面的行，并使num_modes=200
+% eigenmodes = dlmread( ...
+%     sprintf('data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', ...
+%     hemisphere, num_modes));
+
+% 加载示例 neurovault 空间图
 if strcmpi(hemisphere, 'lh')
     data = gifti('data/examples/neurovault_map_100259.L.func.gii');
 elseif strcmpi(hemisphere, 'rh')
@@ -245,26 +247,25 @@ elseif strcmpi(hemisphere, 'rh')
 end
 data_to_reconstruct = data.cdata;
 
-% =========================================================================
-%                Calculate reconstruction beta coefficients                
-% =========================================================================
+
+%% 计算重建贝塔系数
 
 basis = eigenmodes(cortex_ind, 1:num_modes);    
-recon_beta = calc_eigendecomposition(data_to_reconstruct(cortex_ind), basis, 'matrix');
+recon_beta = calc_eigendecomposition( ...
+    data_to_reconstruct(cortex_ind), basis, 'matrix');
 
-% =========================================================================
-%                      Calculate modal power spectrum                      
-% =========================================================================
+
+%% 计算模式功率谱
 
 [~, spectrum_norm] = calc_power_spectrum(recon_beta);
 
-% =========================================================================
-%                      Some visualizations of results                      
-% =========================================================================
 
-% Normalized power spectrum
+%% 一些结果的可视化
+
+% 归一化的功率谱
 figure('Name', 'rfMRI reconstruction - accuracy');
 bar(1:num_modes, spectrum_norm)
-set(gca, 'fontsize', 10, 'ticklength', [0.02 0.02], 'xlim', [2 num_modes], 'yscale', 'log')
+set(gca, 'fontsize', 10, 'ticklength', [0.02 0.02], ...
+    'xlim', [2 num_modes], 'yscale', 'log')
 xlabel('mode', 'fontsize', 12)
 ylabel('normalized power (log scale)', 'fontsize', 12);
