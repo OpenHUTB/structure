@@ -1,67 +1,56 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% demo_connectome_eigenmode_calculation.m
-%%% 显示github首页类似的图
+%%% 
+%%% MATLAB脚本演示如何计算各种基于连接体的高分辨率特征模式。
+%%% 特别是该脚本演示了如何
+%%% (1) 计算连接体的特征模式，并且
+%%% (2) 计算指数距离规则(exponential distance rule, EDR)的连接体特征模式
 %%%
-%%% MATLAB script to demonstrate how to calculate various high-resolution 
-%%% connectome-based eigenmodes. In particular, the script demonstrates 
-%%% how to
-%%% (1) calculate connectome eigenmodes and
-%%% (2) calculate exponential distance rule (EDR) connectome eigenmodes
-%%%
-%%% NOTE 1: The script calculates connectome-based eigenmodes of a
-%%%         synthetic connectome and EDR connectome on the fsaverage5
-%%%         surface template with 10k vertices. This is for the demo to 
-%%%         perform fast calculations. However, other surface resolutions 
-%%%         are provided in the data folder for you to use. Just change the
-%%%         surface_interest variable below.
-%%% NOTE 2: An empirical high-resolution connectome can also be used. Just
-%%%         change the connectome variable below. However make sure that
-%%%         the variable is an array of size
-%%%         [number of vertices x number of vertices].
-%%% NOTE 3: Current demo uses 50 modes. For a proper analysis, we advise 
-%%%         using between 100 to 200 modes.
-%%%
-%%% Original: James Pang, Monash University, 2022
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 注意 1: 该脚本在具有10k个顶点的fsaverage5表面模板上
+%%%         计算合成连接体和EDR连接体的基于连接体的特征模式。这是为了演示执行快速计算。
+%%%         但是，数据文件夹中提供了其他曲面分辨率供使用。
+%%%         只需更改下面的surface_interest变量即可。
+%%% 注意 2: 也可以使用实证上的高分辨率连接体。只需更改下面的连接体变量。
+%%% 但是，请确保变量是一个大小为[顶点数量x顶点数量]的数组。
+%%% 注意 3: 目前的演示使用了50种模式。为了进行正确的分析，建议使用100到200种模式。
 
-%% Load relevant repository MATLAB functions
 
+%% 加载相关的matlab函数库
 addpath(genpath('functions_matlab'));
 
-%% Load surface files for fsaverage5
-
+%% 加载fsaverage5的曲面文件
 surface_interest = 'fsaverage5_10k';
 hemisphere = 'lh';
 mesh_interest = 'midthickness';
 
-[vertices, faces] = read_vtk(sprintf('data/template_surfaces_volumes/%s_%s-%s.vtk', surface_interest, mesh_interest, hemisphere));
+[vertices, faces] = read_vtk( ...
+    sprintf('data/template_surfaces_volumes/%s_%s-%s.vtk', ...
+    surface_interest, mesh_interest, hemisphere));
 surface_midthickness.vertices = vertices';
 surface_midthickness.faces = faces';
 
-% Load cortex mask
-cortex = dlmread(sprintf('data/template_surfaces_volumes/%s_cortex-%s_mask.txt', surface_interest, hemisphere));
+% 加载大脑皮层掩膜
+cortex = dlmread( ...
+    sprintf('data/template_surfaces_volumes/%s_cortex-%s_mask.txt', ...
+    surface_interest, hemisphere));
 cortex_ind = find(cortex);
 
-% Calculate number of vertices
+% 计算顶点数
 num_vertices = length(cortex);
 
-%% Calculate synthetic connectome eigenmodes
 
+%% 计算合成的连接体特征模式
 hemisphere = 'lh';
 surface_to_analyze = surface_midthickness;
 
-% =========================================================================
-%                   Generate surface local connectivity                    
-% =========================================================================
 
+%% 生成曲面局部连接
 surface_connectivity = calc_surface_connectivity(surface_to_analyze);
 
-% Remove vertices corresponding to the medial wall
+% 删除与内侧壁相对应的顶点
 surface_connectivity = surface_connectivity(cortex_ind, cortex_ind);
 
-% =========================================================================
-%                      Generate synthetic connectome                       
-% =========================================================================
+
+%% 生成合成的连接体
 
 % Replace the connectome variable below with your empirical data
 % However, make sure that you remove the vertices corresponding to the
