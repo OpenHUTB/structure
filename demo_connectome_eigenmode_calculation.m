@@ -1,6 +1,6 @@
 %%% demo_connectome_eigenmode_calculation.m
 %%% 
-%%% MATLAB脚本演示如何计算各种基于连接体的高分辨率特征模式。
+%%% MATLAB脚本演示如何计算各种基于连接体的高分辨率特征模式
 %%% 特别是该脚本演示了如何
 %%% (1) 计算连接体的特征模式，并且
 %%% (2) 计算指数距离规则(exponential distance rule, EDR)的连接体特征模式
@@ -52,14 +52,11 @@ surface_connectivity = surface_connectivity(cortex_ind, cortex_ind);
 
 %% 生成合成的连接体
 
-% Replace the connectome variable below with your empirical data
-% However, make sure that you remove the vertices corresponding to the
-% medial wall first
+% 用你的经验数据替换下面的连接体变量。但是，请确保先移除与内侧壁相对应的顶点。
 connectome = zeros(size(surface_connectivity));
 
-% Generate pseudorandom integers from imin to imax for the upper
-% triangle elements of the connectome
-% random number is set for now for reproducibility
+% 为连接组的上三角形元素生成从 imin 到 imax 的伪随机整数，
+% 现在设置随机数以实现可重复性。
 rng(1)
 imin = 0;
 imax = 1e4;
@@ -68,113 +65,104 @@ triu_val = randi([imin, imax], size(triu_ind,1), size(triu_ind,2));
 
 connectome(triu_ind) = triu_val;
 
-% Symmetrize connectome 
+% 对称连接体
 connectome = connectome + connectome';
 
-% Threshold connectome
-threshold = 0.01; % preserve 1% of connections; change accordingly
+% 阈值连接体
+threshold = 0.01; % 保留 1% 的连接； 相应地改变
 connectome_threshold = threshold_edges_proportional(connectome, threshold);
 
-% =========================================================================
-%            Combine surface local connectivity and connectome             
-% =========================================================================
 
+%% 结合表面局部连接和连接组
 surface_with_connectome = surface_connectivity + (connectome_threshold>0);
 surface_with_connectome(surface_with_connectome>0) = 1;
 
-% =========================================================================
-%                           Calculate the modes                            
-% =========================================================================
 
-% The speed of this part depends on the resolution of surface_with_connectome. 
+%% 计算模式
+% 这部分的速度取决于surface_with_connectome的分辨率。
 % Higher resolution matrices = Slower
 % eig_vec = eigenvectors (eigenmodes)
 % eig_val = eigenvalues
 
-% Because of high computational requirements, precalculated data are stored 
-% in data/examples if you only want to visualize the modes.
-% For full calculation, set is_demo_calculate = 1
+% 由于计算要求较高，如果您只想可视化模式，则预先计算的数据将存储在 data/examples 中。 
+% 对于完整计算，设置 is_demo_calculate = 1
 is_demo_calculate = 0;
 if is_demo_calculate
     num_modes = 50;
-    [eig_vec_temp, eig_val] = calc_network_eigenmode(surface_with_connectome, num_modes);
+    [eig_vec_temp, eig_val] = calc_network_eigenmode( ...
+        surface_with_connectome, num_modes);
     
-    % Bring back medial wall vertices with zero values
+    % 返回具有零值的内侧壁顶点
     eig_vec = zeros(num_vertices, num_modes);
     eig_vec(cortex_ind,:) = eig_vec_temp(:,1:num_modes);
-    save(sprintf('data/examples/synthetic_connectome_eigenmodes-%s_%i.mat', hemisphere, num_modes), 'eig_val', 'eig_vec', '-v7.3')
+    save( ...
+        sprintf('data/examples/synthetic_connectome_eigenmodes-%s_%i.mat', ...
+        hemisphere, num_modes), 'eig_val', 'eig_vec', '-v7.3')
 else
     num_modes = 50;
-    load(sprintf('data/examples/synthetic_connectome_eigenmodes-%s_%i.mat', hemisphere, num_modes), 'eig_vec')
+    load( ...
+        sprintf('data/examples/synthetic_connectome_eigenmodes-%s_%i.mat', ...
+        hemisphere, num_modes), 'eig_vec')
 end
 
-% =========================================================================
-%                      Some visualizations of results                      
-% =========================================================================
 
-% 1st to 5th modes with medial wall view
+%% 结果的一些可视化
+% 具有内侧壁视图的第一至第五模式
 mode_interest = [1:5];
 surface_to_plot = surface_midthickness;
 data_to_plot = eig_vec(:, mode_interest);
 medial_wall = find(cortex==0);
 with_medial = 1;
 
-% NOTE: The resulting connectome eigenmodes from the above demo calculation
-%       will not necessarily resemble those in the paper. This is because
-%       the connectome used above was synthetically generated 
-%       (i.e., not empirical).
-fig = draw_surface_bluewhitered_gallery_dull(surface_to_plot, data_to_plot, hemisphere, medial_wall, with_medial);
+% 注意: 上述演示计算得出的连接组特征模式不一定与论文中的相似。
+% 这是因为上面使用的连接组是人工生成的（即，不是实证的）。
+fig = draw_surface_bluewhitered_gallery_dull( ...
+    surface_to_plot, data_to_plot, hemisphere, medial_wall, with_medial);
 fig.Name = 'Multiple connectome eigenmodes with medial wall view';
 
-%% Calculate synthetic EDR connectome eigenmodes
 
+%% 计算人工合成 EDR 连接组特征模式
 hemisphere = 'lh';
 surface_to_analyze = surface_midthickness;
 
-% =========================================================================
-% Calculate Euclidean distance of surface vertices without the medial wall                    
-% =========================================================================
 
+%% 计算没有内壁的表面顶点的欧式距离
 surface_dist = squareform(pdist(surface_to_analyze.vertices(cortex_ind,:)));
 
-% =========================================================================
-%                    Generate synthetic EDR connectome                     
-% =========================================================================
 
-% Probability function
+%% 生成人工合成 EDR 连接组
+
+% 概率函数
 Pspace_func = @(scale, distance) exp(-scale*distance);
 
-% Generate pseudorandom numbers to compare with probability function
-% random number is set for now for reproducibility
+% 生成伪随机数以与概率函数进行比较
+% 现在设置随机数是为了可复现
 rng(1)
 rand_prob = rand(size(surface_dist));
 rand_prob = triu(rand_prob,1) + triu(rand_prob,1)';
 rand_prob(1:1+size(rand_prob,1):end) = 1;
 
-% Calculate probability
-% Scale = 0.120 matches empirical structural connectivity data. But you can 
-% change its value accordingly.
+% 计算概率
+% Scale=0.120与经验结构连通性数据相匹配。
+% 但可以相应地更改其值。
 scale = 0.120;
 Pspace = Pspace_func(scale, surface_dist);
 Pspace(1:1+size(Pspace,1):end) = 0;
 Pspace = Pspace/max(Pspace(:));
     
-% Generate EDR connectome
+% 生成EDR连接体
 connectome = double(rand_prob < Pspace);
 connectome(1:1+size(connectome,1):end) = 0;
-    
-% =========================================================================
-%                           Calculate the modes                            
-% =========================================================================
+ 
 
-% The speed of this part depends on the resolution of connectome. 
+%% 计算模式
+% 这个部分的速度取决于连接体的分辨率。
 % Higher resolution matrices = Slower
-% eig_vec = eigenvectors (eigenmodes)
+% eig_vec = eigenvectors (特征模式)
 % eig_val = eigenvalues
 
-% Because of high computational requirements, precalculated data are stored 
-% in data/examples if you only want to visualize the modes.
-% For full calculation, set is_demo_calculate = 1
+% 由于计算要求很高，如果只想可视化模式，则预先计算的数据会存储在数据/示例中。
+% 为了进行完整的计算，设置is_demo_calculate=1
 is_demo_calculate = 0;
 if is_demo_calculate
     num_modes = 50;
@@ -183,17 +171,19 @@ if is_demo_calculate
     % Bring back medial wall vertices with zero values
     eig_vec = zeros(num_vertices, num_modes);
     eig_vec(cortex_ind,:) = eig_vec_temp(:,1:num_modes);
-    save(sprintf('data/examples/synthetic_EDRconnectome_eigenmodes-%s_%i.mat', hemisphere, num_modes), 'eig_val', 'eig_vec', '-v7.3')
+    save( ...
+        sprintf('data/examples/synthetic_EDRconnectome_eigenmodes-%s_%i.mat', ...
+        hemisphere, num_modes), 'eig_val', 'eig_vec', '-v7.3')
 else
     num_modes = 50;
-    load(sprintf('data/examples/synthetic_EDRconnectome_eigenmodes-%s_%i.mat', hemisphere, num_modes), 'eig_vec')
+    load( ...
+        sprintf('data/examples/synthetic_EDRconnectome_eigenmodes-%s_%i.mat', ...
+        hemisphere, num_modes), 'eig_vec')
 end
 
-% =========================================================================
-%                      Some visualizations of results                      
-% =========================================================================
 
-% 1st to 5th modes with medial wall view
+%% 一些结果的可视化
+% 带内侧壁视图的第1至第5模式
 mode_interest = [1:5];
 surface_to_plot = surface_midthickness;
 data_to_plot = eig_vec(:, mode_interest);
