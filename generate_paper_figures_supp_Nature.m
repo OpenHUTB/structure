@@ -1,4 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% generate_paper_figures_supp_Nature.m
 %%%
 %%% MATLAB script to generate the final Supplementary figures of the paper
@@ -7,9 +6,11 @@
 %%%        affects how the figures created will look. Hence, they will not 
 %%%        100% visually match the figures in the paper, but the scientific 
 %%%        contents are replicated.
-%%%
-%%% Original: James Pang, Monash University, 2023
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% 初始化环境
+run(fullfile(fileparts(mfilename("fullpath")), 'init.m'));
+
 
 %% Load relevant repository MATLAB functions
 
@@ -214,6 +215,10 @@ set(gca, 'fontsize', fontsize_axis, 'ticklength', [0.02 0.02], 'xlim', [1 num_mo
 xlabel('number of modes', 'fontsize', fontsize_label)
 ylabel('reconstruction accuracy', 'fontsize', fontsize_label)
 
+exportgraphics(gcf, fullfile(figs_dir, 'supp_1.pdf'));
+close(gcf);
+
+
 %% SUPPLEMENTARY FIGURE 2
 % bioRxiv Supplementary Figure 3
 
@@ -306,7 +311,11 @@ title('rest', 'fontsize', fontsize_axis, 'fontweight', 'normal')
 annotation('textarrow', ax1.Position(1)+ax1.Position(3).*[0.7, 0.05], ...
                                 ax1.Position(2)+ax1.Position(4).*[0.735, 0.9], 'String', {''}, ...
                                 'fontsize', fontsize_axis, 'horizontalalignment', 'center');
-                            
+
+exportgraphics(gcf, fullfile(figs_dir, 'supp_2.pdf'));
+close(gcf);
+
+
 %% SUPPLEMENTARY FIGURE 3
 % bioRxiv Supplementary Figure 4
 
@@ -369,6 +378,10 @@ for ii=1:(length(representative_contrasts)+1)
     xlabel('number of modes', 'fontsize', fontsize_label-2)
     ylabel('difference', 'fontsize', fontsize_label-2)
 end
+
+exportgraphics(gcf, fullfile(figs_dir, 'supp_3.pdf'));
+close(gcf);
+
 
 %% SUPPLEMENTARY FIGURE 4
 % bioRxiv Supplementary Figure 5
@@ -433,6 +446,10 @@ for ii=1:(length(representative_contrasts)+1)
     box on
 end
 
+exportgraphics(gcf, fullfile(figs_dir, 'supp_4.pdf'));
+close(gcf);
+
+
 %% SUPPLEMENTARY FIGURE 5
 % bioRxiv Supplementary Figure 6
 
@@ -496,6 +513,10 @@ for ii=1:(length(representative_contrasts)+1)
     xlabel('number of modes', 'fontsize', fontsize_label-2)
     ylabel('difference', 'fontsize', fontsize_label-2)
 end
+
+exportgraphics(gcf, fullfile(figs_dir, 'supp_5.pdf'));
+close(gcf);
+
 
 %% SUPPLEMENTARY FIGURE 6
 % bioRxiv Supplementary Figure 9
@@ -586,6 +607,10 @@ if ii==1 || ii==5
 end
 title('rest', 'fontsize', fontsize_axis, 'fontweight', 'normal')
 
+exportgraphics(gcf, fullfile(figs_dir, 'supp_6.pdf'));
+close(gcf);
+
+
 %% SUPPLEMENTARY FIGURE 7
 % bioRxiv Supplementary Figure 10
 
@@ -658,6 +683,10 @@ if ii==1 || ii==5
     ylabel('reconstruction accuracy', 'fontsize', fontsize_label)
 end
 title('rest', 'fontsize', fontsize_axis, 'fontweight', 'normal')
+
+exportgraphics(gcf, fullfile(figs_dir, 'supp_7.pdf'));
+close(gcf);
+
 
 %% SUPPLEMENTARY FIGURE 8
 % bioRxiv Supplementary Figure 11
@@ -788,6 +817,10 @@ plot(data_to_plot_x, data_to_plot, '--', 'color', 'k', 'linewidth', 2, 'displayn
 set(gca, 'fontsize', fontsize_axis-2, 'ticklength', [0.02 0.02], 'xtick', [0.2, 0.4, 0.6], 'ylim', [0 1], 'xscale', 'linear')
 xlabel('%', 'fontsize', fontsize_label-2)
 box on
+
+exportgraphics(gcf, fullfile(figs_dir, 'supp_8.pdf'));
+close(gcf);
+
 
 %% SUPPLEMENTARY FIGURE 9
 % bioRxiv Supplementary Figure 12
@@ -935,6 +968,10 @@ for basis_ind=5:8
     end
 end
 
+exportgraphics(gcf, fullfile(figs_dir, 'supp_9.pdf'));
+close(gcf);
+
+
 %% SUPPLEMENTARY FIGURE 10
 % bioRxiv Supplementary Figure 18
 
@@ -999,6 +1036,10 @@ text(min(get(gca,'xlim'))+1*[max(get(gca,'xlim'))-min(get(gca,'xlim'))], min(get
 text(min(get(gca,'xlim'))+1*[max(get(gca,'xlim'))-min(get(gca,'xlim'))], min(get(gca,'ylim'))+0.87*[max(get(gca,'ylim'))-min(get(gca,'ylim'))], extract_pvalue_text(pval,1,'spin'), 'color', 'r', ...
     'fontsize', fontsize_label, 'fontweight', 'bold', 'verticalalignment', 'middle', 'horizontalalignment', 'right');
 box off
+
+exportgraphics(gcf, fullfile(figs_dir, 'supp_10.pdf'));
+close(gcf);
+
 
 %% SUPPLEMENTARY VIDEO 1
 

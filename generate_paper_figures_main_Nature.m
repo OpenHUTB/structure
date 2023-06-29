@@ -9,6 +9,9 @@
 %%% Original: James Pang, Monash University, 2023
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% 环境变量
+run(fullfile(fileparts(mfilename("fullpath")), 'init.m'));
+
 
 %% 加载相关的存储库的MATLAB函数
 addpath(genpath('functions_matlab'));
@@ -181,9 +184,10 @@ representative_contrasts = {'social_tom_random'; ...
 fontsize_axis = 10;
 fontsize_label = 12;
 
-%% FIGURE 1
 
-% load all data relevant to Figure 1
+%% 图 1
+
+% 加载和图1相关的所有数据
 data_Figure1 = load(sprintf('%s/Figure1.mat', data_figures_folder));
 
 surface_to_plot = surface_midthickness;
@@ -615,7 +619,10 @@ annotation(fig, 'textbox', [0.47, 0.5, 0.01, 0.01], 'string', 'e', 'edgecolor', 
 annotation(fig, 'textbox', [0.84, 0.5, 0.01, 0.01], 'string', 'f', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 
-%% FIGURE 2
+exportgraphics(gcf, fullfile(figs_dir, 'fig_1.pdf'));
+close(gcf);
+
+%% 图 2
 
 % load all data relevant to Figure 2
 data_Figure2 = load(sprintf('%s/Figure2.mat', data_figures_folder));
@@ -915,8 +922,12 @@ annotation(fig, 'textbox', [0.01, 0.57, 0.01, 0.01], 'string', 'c', 'edgecolor',
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 annotation(fig, 'textbox', [0.45, 0.57, 0.01, 0.01], 'string', 'd', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
-    
-%% FIGURE 3
+
+exportgraphics(gcf, fullfile(figs_dir, 'fig_2.pdf'));
+close(gcf);
+
+
+%% 图 3
 
 % load all data relevant to Figure 3
 data_Figure3 = load(sprintf('%s/Figure3.mat', data_figures_folder));
@@ -1158,7 +1169,10 @@ annotation(fig, 'textbox', [0.015, 0.99, 0.01, 0.01], 'string', 'a', 'edgecolor'
 annotation(fig, 'textbox', [0.015, 0.6, 0.01, 0.01], 'string', 'b', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 
-%% FIGURE 4
+exportgraphics(gcf, fullfile(figs_dir, 'fig_3.pdf'));
+close(gcf);
+
+%% 图 4
 
 surface_to_plot = surface_midthickness;
 
@@ -1666,7 +1680,11 @@ a4 = annotation(fig, 'textbox', [a3.Position(1), a2.Position(2), a1.Position(3),
 a5 = annotation(fig, 'textbox', [a3.Position(1), a4.Position(2)-0.32, a1.Position(3), a1.Position(4)], 'string', 'e', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center');
 
-%% FIGURE 5
+exportgraphics(gcf, fullfile(figs_dir, 'fig_4.pdf'));
+close(gcf);
+
+
+%% 图 5
 
 % load all data relevant to Figure 5
 data_Figure5 = load(sprintf('%s/Figure5.mat', data_figures_folder));
@@ -1862,3 +1880,7 @@ a4 = annotation(fig, 'textbox', [a1.Position(1)+0.66, a1.Position(2), a1.Positio
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center');
 annotation(fig, 'textbox', [a4.Position(1), a2.Position(2), a1.Position(3), a1.Position(4)], 'string', 'f', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
+
+
+exportgraphics(gcf, fullfile(figs_dir, 'fig_5.pdf'));
+close(gcf);

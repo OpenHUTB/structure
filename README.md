@@ -35,6 +35,13 @@
 
 ***非常重要的注意事项：***`generate_paper_figures.m`和`generate_paper_supfigures.m` 的某些部分需要托管在[OSF](https://osf.io/xczmp/) 中的上述数据。因此，您需要将它们保存在适当的文件夹中，以便能够顺利运行这两个脚本**
 
+## 运行
+在运行`latex/elegantpaper-cn.tex`脚本生成论文之前运行以下脚本生成所需的图形。
+```shell
+generate_paper_figures_main_Nature.m
+generate_paper_figures_extended_Nature.m
+generate_paper_figures_supp_Nature.m
+```
 
 ## 原始数据
 

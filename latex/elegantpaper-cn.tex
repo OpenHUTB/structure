@@ -1,7 +1,9 @@
 %!TEX program = xelatex
+% !BIB program = biber
 % 完整编译: xelatex -> biber/bibtex -> xelatex -> xelatex
 \documentclass[lang=cn,a4paper,newtx]{elegantpaper}
 
+% 参考：https://weibo.com/ttarticle/p/show?id=2309404908550236537030
 \title{大脑功能的几何约束}
 %\author{作者1 \\ 某某大学/机构 \and 作者2 \\ 某某大学/机构}
 %\institute{\href{https://elegantlatex.org/}{Elegant\LaTeX{} 项目组}}
@@ -40,178 +42,70 @@
 在这里，我们测试了这些关于大脑的竞争观点，目的是确定人脑动态的主要结构约束。与来自NFT（神经场理论）的理论预测一致，我们展示了从人类新皮层的自发和任务诱发记录中获取的多样化的实验性fMRI数据，可以更简洁地由从皮层几何形状（几何特征模式）得出的特征模式解释，而不是由大脑连接性（连接组特征模式）的测量得出的那些。我们进一步确认，刺激诱发的活动主要由具有长空间波长的几何特征模式的激发主导，这挑战了传统观点，即这种活动局限于局部、空间隔离的簇。为了直接将这些结构约束与驱动大脑动态的物理过程联系起来，我们使用了一个生成模型，展示了如何在皮层的几何形状上展开的波动动态可以解释功能性大脑组织的多样性特征。最后，我们展示了通过特征模式捕获的几何与功能之间的紧密关系扩展到非新皮层结构，表明这种链接是大脑组织的普遍属性。
 
 \section{几何模型约束皮层激活}
-我们首先检查几何特征模式能在多大程度上解释人类新皮层活动的多样性。为了推导出这些特征模式，我们使用一个人口平均模板的新皮层表面的网格表示（图1a和方法中的皮层几何特征模式的推导）。然后，我们从这个表面网格构建拉普拉斯-贝尔特拉米算子（LBO），该算子捕捉了局部顶点到顶点的空间关系和曲率，并解决特征值问题，（编者注：在微分几何中，拉普拉斯算子可以推广为定义在曲面，或更一般地黎曼流形与伪黎曼流形上，函数的算子。这个更一般的算子叫做拉普拉斯－贝尔特拉米算子（Laplace–Beltrami operator））。
+我们首先检查几何特征模式能在多大程度上解释人类新皮层活动的多样性。
+为了推导出这些特征模式，我们使用一个群体平均模板的新皮层表面网格表示（图\ref{fig:1}a和方法\ref{sec:derivation}中的皮层几何特征模式的推导）。
+然后，我们从这个表面网格构建拉普拉斯-贝尔特拉米算子（Laplace–
+Beltrami operator, LBO），该算子捕捉了局部顶点到顶点的空间关系和曲率，并解决特征值问题\footnote{在微分几何中，拉普拉斯算子可以推广为定义在曲面，或更一般地黎曼流形与伪黎曼流形上，函数的算子。这个更一般的算子叫做拉普拉斯－贝尔特拉米算子}，
+
+% 有*号就没公式标号
+\begin{equation} \label{eq:1}
+	\nabla^2 \psi = \Delta\psi = -\lambda \psi,
+\end{equation}
 
 
+其中 $ \nabla $ 是梯度算子，$ \Delta $ 是LBO，$ \psi = \{\psi_1(r), \psi_2(r),...\} $ 是一组几何特征模式，对应的特征值为 $ \lambda = \{ \lambda_1, \lambda_2, ... \} $。
+特征值按照每个模式的空间频率或波长的顺序进行排序（图\ref{fig:1}a和扩展数据图\ref{fig:extended_fig_1}），因此$ \psi_1 $是波长最长的模式。
+得到的特征模式是正交的，形成一个完整的基础集，可以将在皮层上展开的时空动态分解为具有不同波长的模式的加权和（图\ref{fig:1}b和方法\ref{sec:modal_decomposition}中的大脑活动的模式分解）。
+除非另有说明，我们在本研究中使用$ N = 200 $个模式\footnote{"模式" (modes) 是一个技术术语，它是指振动系统的特殊状态，这些状态可以独立地进行简谐振动。在这里，它们是指从大脑结构特性（如几何形状）中推导出的特定空间模式，这些模式可能对大脑活动产生影响。}。）
 
-
-\subsection{注意事项}
-\textbf{文献部分}：我们将 bibtex 的默认文献编译方式改为 biblatex，不过我们也提供了两个后端，\lstinline{bibend=biber} 和 \lstinline{bibend=bibtex}。特别需要注意的是从 0.10 开始，文献文件改为 \lstinline{reference.bib}，与 ElegantBook 保持一致，而参考文献的引文样式等更多格式，请参考后文参考文献部分，更多样式可以参考 biblatex 文档。 
-
-\textbf{字体部分}，我们将 newtxtext 宏包的支持方式改为了字体名称设定方式，设定英文字体为 TeX Gyre Terms/Heros，英文字体部分，根据编译方式选择不同字体。对于一般用户而言，不太需要关心这部分内容。
-
-另外，中文请务必使用 \hologo{XeLaTeX} 编译。
-
-\subsection{模板介绍}
-
-此模板基于 \LaTeX{} 的标准文类 article 设计，所以 article 文类的选项也能传递给本模板，比如 \lstinline{a4paper, 11pt} 等等。
-
-\begin{lstlisting}
-\documentclass[a4paper,11pt]{elegantpaper}
-\end{lstlisting}
-
-\textbf{注意}：Elegant\LaTeX{} 系列模板已经全部上传至 \href{https://www.overleaf.com/latex/templates/elegantpaper-template/yzghrqjhmmmr}{Overleaf} 上，用户可以在线使用。另外，为了方便国内用户，模板也已经传至\href{https://gitee.com/ElegantLaTeX/ElegantPaper}{码云}。
-
-
-\subsection{全局选项}
-此模板定义了一个语言选项 \lstinline{lang}，可以选择英文模式 \lstinline{lang=en}（默认）或者中文模式 \lstinline{lang=cn}。当选择中文模式时，图表的标题引导词以及参考文献，定理引导词等信息会变成中文。你可以通过下面两种方式来选择语言模式：
-\begin{lstlisting}
-\documentclass[lang=cn]{elegantpaper} % or
-\documentclass[cn]{elegantpaper} 
-\end{lstlisting}
-
-\textbf{注意：} 英文模式下，由于没有添加中文宏包，无法输入中文。如果需要输入中文，可以通过在导言区引入中文宏包 \lstinline{ctex} 或者加入 \lstinline{xeCJK} 宏包后自行设置字体。 
-\begin{lstlisting}
-\usepackage[UTF8,scheme=plain]{ctex}
-\end{lstlisting}
-
-\subsection{数学字体选项}
-
-本模板定义了一个数学字体选项（\lstinline{math}），可选项有三个：
-\begin{enumerate}
-  \item \lstinline{math=cm}（默认），使用 \LaTeX{} 默认数学字体（推荐，无需声明）；
-  \item \lstinline{math=newtx}，使用 \lstinline{newtxmath} 设置数学字体（潜在问题比较多）。
-  \item \lstinline{math=mtpro2}，使用 \lstinline{mtpro2} 宏包设置数学字体，要求用户已经成功安装此宏包。
-\end{enumerate}
-
-\subsection{中文字体选项}
-
-模板提供中文字体选项 \lstinline{chinesefont}，可选项有
-\begin{enumerate}
-  \item \lstinline{ctexfont}：默认选项，使用 \lstinline{ctex} 宏包根据系统自行选择字体，可能存在字体缺失的问题，更多内容参考 \lstinline{ctex} 宏包\href{https://ctan.org/pkg/ctex}{官方文档}\footnote{可以使用命令提示符，输入 \lstinline{texdoc ctex} 调出本地 \lstinline{ctex} 宏包文档}。
-  \item \lstinline{founder}：方正字体选项（\textbf{需要安装方正字体}），后台调用 \lstinline{ctex} 宏包并且使用 \lstinline{fontset=none} 选项，然后设置字体为方正四款免费字体，方正字体下载注意事项见后文，用户只需要安装方正字体即可使用该选项。
-  \item \lstinline{nofont}：后台会调用 \lstinline{ctex} 宏包并且使用 \lstinline{fontset=none} 选项，不设定中文字体，用户可以自行设置中文字体，具体见后文。
-\end{enumerate}
-
-\subsubsection{方正字体选项}
-由于使用 \lstinline{ctex} 宏包默认调用系统已有的字体，部分系统字体缺失严重，因此，用户希望能够使用其它字体，我们推荐使用方正字体。方正的{\songti 方正书宋}、{\heiti 方正黑体}、{\kaishu 方正楷体}、{\fangsong 方正仿宋}四款字体均可免费试用，且可用于商业用途。用户可以自行从\href{http://www.foundertype.com/}{方正字体官网}下载此四款字体，在下载的时候请\textbf{务必}注意选择 GBK 字符集，也可以使用 \href{https://www.latexstudio.net/}{\LaTeX{} 工作室}提供的\href{https://pan.baidu.com/s/1BgbQM7LoinY7m8yeP25Y7Q}{方正字体，提取码为：njy9} 进行安装。安装时，{\kaishu Win 10 用户请右键选择为全部用户安装，否则会找不到字体。}
 
 \begin{figure}[!htb]
-\centering
-\includegraphics[width=0.9\textwidth]{founder.png}
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig/fig_1.pdf}
+	\caption{\textbf{使用几何特征模式重建新皮层活动}。
+	\textbf{a}, 通过解决特征值问题，$ \Delta \psi = -\lambda \psi $（公式（\ref{eq:1}）），从皮层表面网格得到几何特征模式。
+	模式$ \psi_1, \psi_2, \psi_3, ... \psi_N $ 按空间频率从低到高（空间波长从长到短）排序。
+	负值、零和正值分别用蓝色、白色和红色标记。
+	\textbf{b}, 大脑活动数据的模态分解。
+	示例展示了如何将给定时间$ t $的空间图 $ y(r,t) $ 分解为加权的模式 $ \psi_j $ 之和。
+	\textbf{c}, 左图，我们使用一系列刺激对比的激活空间图重建任务诱发的数据。
+	右图，我们通过在每个时间帧分解空间图并生成区域到区域的功能耦合(FC,functional coupling)矩阵来重建自发活动。
+	\textbf{d}, 重建七个关键HCP任务对比图（补充信息2.1）和静息状态功能耦合作为模式数量函数的准确性。
+	插图显示皮层表面重建，展示了前10个、100个和200个模式所对应的空间尺度，分别对应大约120毫米、40毫米和30毫米的空间波长。
+	} \label{fig:1}
 \end{figure}
 
-\subsubsection{其他中文字体}
-如果你想完全自定义字体\footnote{这里仍然以方正字体为例。}，你可以选择 \lstinline{chinesefont=nofont}，然后在导言区设置即可，可以参考下方代码：
-\begin{lstlisting}
-\setCJKmainfont[BoldFont={FZHei-B01},ItalicFont={FZKai-Z03}]{FZShuSong-Z01}
-\setCJKsansfont[BoldFont={FZHei-B01}]{FZKai-Z03}
-\setCJKmonofont[BoldFont={FZHei-B01}]{FZFangSong-Z02}
-\setCJKfamilyfont{zhsong}{FZShuSong-Z01}
-\setCJKfamilyfont{zhhei}{FZHei-B01}
-\setCJKfamilyfont{zhkai}[BoldFont={FZHei-B01}]{FZKai-Z03}
-\setCJKfamilyfont{zhfs}[BoldFont={FZHei-B01}]{FZFangSong-Z02}
-\newcommand*{\songti}{\CJKfamily{zhsong}}
-\newcommand*{\heiti}{\CJKfamily{zhhei}}
-\newcommand*{\kaishu}{\CJKfamily{zhkai}}
-\newcommand*{\fangsong}{\CJKfamily{zhfs}}
-\end{lstlisting}
 
 
 
-\subsection{自定义命令}
-此模板并没有修改任何默认的 \LaTeX{} 命令或者环境\footnote{目的是保证代码的可复用性，请用户关注内容，不要太在意格式，这才是本工作论文模板的意义。}。另外，本模板可以使用的 4 个额外命令：
-\begin{enumerate}
-  \item \lstinline{\email}：创建邮箱地址的链接，比如 \email{xxx@outlook.com}；
-  \item \lstinline{\figref}：用法和 \lstinline{\ref} 类似，但是会在插图的标题前添加 <\textbf{图 n}> ；
-  \item \lstinline{\tabref}：用法和 \lstinline{\ref} 类似，但是会在表格的标题前添加 <\textbf{表 n}>；
-  \item \lstinline{\keywords}：为摘要环境添加关键词。
-\end{enumerate}
+\section{方法} \label{sec:method}
 
-\subsection{参考文献}
+\subsection{皮层几何特征模式求导} \label{sec:derivation}
 
-文献部分，本模板调用了 biblatex 宏包，并提供了 biber（默认） 和 bibtex 两个后端选项，可以使用 \lstinline{bibend} 进行修改：
+% Each eigenmode
+每个特征模式包括具有特定空间波长的空间图案。
+根据参考文献\cite{robinson2016eigenmodes}，我们使用理想化的球形情况来近似特征模式波长，因为它在拓扑上与人类皮层相当。
+通过在球体上求解方程\ref{eq:1}，存在退化解，使得某些特征模式具有相同的特征值和空间波长——这类似于量子物理学中的球谐函数。
+事实上，由于特征模式将在皮层折叠消失的极限下接近球谐函数，因此前者可以组合成具有空间波长的本征群，
 
-\begin{lstlisting}
-  \documentclass[bibtex]{elegantpaper}
-  \documentclass[bibend=bibtex]{elegantpaper}
-\end{lstlisting}
-
-关于文献条目（bib item），你可以在谷歌学术，Mendeley，Endnote 中取，然后把它们添加到 \lstinline{reference.bib} 中。在文中引用的时候，引用它们的键值（bib key）即可。
-
-为了方便文献样式修改，模板引入了 \lstinline{bibstyle} 和 \lstinline{citestyle} 选项，默认均为数字格式（numeric），参考文献示例：\cite{cn1,en2,en3} 使用了中国一个大型的 P2P 平台（人人贷）的数据来检验男性投资者和女性投资者在投资表现上是否有显著差异。
-
-如果需要设置为国标 GB7714-2015，需要使用：
-\begin{lstlisting}
-  \documentclass[citestyle=gb7714-2015, bibstyle=gb7714-2015]{elegantpaper} 
-\end{lstlisting}
-
-如果需要添加排序方式，可以在导言区加入
-\begin{lstlisting}
-  \ExecuteBibliographyOptions{sorting=ynt}
-\end{lstlisting}
-
-启用国标之后，可以加入 \lstinline{sorting=gb7714-2015}。
-
-
-\section{使用 newtx 系列字体}
-
-如果需要使用原先版本的 \lstinline{newtx} 系列字体，可以通过显示声明数学字体：
-
-\begin{lstlisting}
-\documentclass[math=newtx]{elegantpaper}
-\end{lstlisting}
-
-\subsection{连字符}
-
-如果使用 \lstinline{newtx} 系列字体宏包，需要注意下连字符的问题。
 \begin{equation}
-  \int_{R^q} f(x,y) dy.\emph{of\kern0pt f}
+	\text{wavelength} = \frac{2 \pi R_s}{\sqrt{l(l+1)}},
 \end{equation}
 
-\begin{lstlisting}
-\begin{equation}
-  \int_{R^q} f(x,y) dy.\emph{of \kern0pt f}
-\end{equation}
-\end{lstlisting}
-
-\subsection{宏包冲突}
-
-有用户反馈模板在使用 \lstinline{yhmath} 以及 \lstinline{esvect} 等宏包时会报错：
-\begin{lstlisting}
-LaTeX Error:
-   Too many symbol fonts declared.
-\end{lstlisting}
-
-原因是在使用 \lstinline{newtxmath} 宏包时，重新定义了数学字体用于大型操作符，达到了 {\heiti 最多 16 个数学字体} 的上限，在调用其他宏包的时候，无法新增数学字体。为了减少调用非常用宏包，在此给出如何调用 \lstinline{yhmath} 以及 \lstinline{esvect} 宏包的方法。
-
-请在 \lstinline{elegantpaper.cls} 内搜索 \lstinline{yhmath} 或者 \lstinline{esvect}，将你所需要的宏包加载语句\textit{取消注释}即可。
+其中$R_s$是球体的半径（对于本研究中使用的fsaverage总体平均模板，$R_s \approx 67.0 mm$），$l$是本征群数（原子物理学中的角动量量子数）。
+前15个本征群的波长和本征群中包括的本征模如补充表1所示。
 
 
-\section{常见问题 FAQ}
-
-\begin{enumerate}[label=\arabic*).]
-  \item \textit{如何删除版本信息？}\\
-    导言区不写 \lstinline|\version{x.xx}| 即可。
-  \item \textit{如何删除日期？}\\
-    需要注意的是，与版本 \lstinline{\version} 不同的是，导言区不写或注释 \lstinline{\date} 的话，仍然会打印出当日日期，原因是 \lstinline{\date} 有默认参数。如果不需要日期的话，日期可以留空即可，也即 \lstinline|\date{}|。
-  \item \textit{如何获得中文日期？}\\
-    为了获得中文日期，必须在中文模式下\footnote{英文模式下，由于未加载中文宏包，无法输入中文。}，使用 \lstinline|\date{\zhdate{2019/10/11}}|，如果需要当天的汉化日期，可以使用 \lstinline|\date{\zhtoday}|，这两个命令都来源于 \href{https://ctan.org/pkg/zhnumber}{\lstinline{zhnumber}} 宏包。
-  \item \textit{如何添加多个作者？}\\
-    在 \lstinline{\author} 里面使用 \lstinline{\and}，作者单位可以用 \lstinline{\\} 换行。
-    \begin{lstlisting}
-    \author{author 1\\ org. 1 \and author 2 \\ org. 2 }
-    \end{lstlisting}
-  \item \textit{如何添加中英文摘要？}\\
-    请参考 \href{https://github.com/ElegantLaTeX/ElegantPaper/issues/5}{GitHub::ElegantPaper/issues/5}
-\end{enumerate}
+\subsection{大脑活动的模式分解} \label{sec:modal_decomposition}
 
 
-\section{致谢}
+\section{扩展数据的图}
+\begin{figure}[!htb] 
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig/extended_fig_1.pdf}
+	\caption{特征模式基组} \label{fig:extended_fig_1}
+\end{figure}
 
-特别感谢 \href{https://github.com/sikouhjw}{sikouhjw} 和 \href{https://github.com/syvshc}{syvshc}  长期以来对于 Github 上 issue 的快速回应，以及各个社区论坛对于 ElegantLaTeX 相关问题的回复。特别感谢 ChinaTeX 以及 \href{http://www.latexstudio.net/}{LaTeX 工作室} 对于本系列模板的大力宣传与推广。
-
-如果你喜欢我们的模板，你可以在 Github 上收藏我们的模板。
 
 \nocite{*}
 \printbibliography[heading=bibintoc, title=\ebibname]

@@ -1,4 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% generate_paper_figures_extended_Nature.m
 %%%
 %%% MATLAB script to generate the final Extended Data figures of the paper
@@ -7,9 +6,10 @@
 %%%        affects how the figures created will look. Hence, they will not 
 %%%        100% visually match the figures in the paper, but the scientific 
 %%%        contents are replicated.
-%%%
-%%% Original: James Pang, Monash University, 2023
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% 环境变量
+run(fullfile(fileparts(mfilename("fullpath")), 'init.m'));
 
 %% Load relevant repository MATLAB functions
 
@@ -267,6 +267,10 @@ for basis_ind=1:4
     end
 end
 
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_1.pdf'));
+close(gcf);
+
+
 %% EXTENDED DATA FIGURE 2
 % bioRxiv Supplementary Figure 7
 
@@ -316,6 +320,9 @@ for parc_name_ind = 1:length(parc_name_list)
     end
     title(parc_name_interest, 'fontsize', fontsize_axis, 'fontweight', 'normal')
 end
+
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_2.pdf'));
+close(gcf);
 
 %% EXTENDED DATA FIGURE 3
 % bioRxiv Supplementary Figure 8
@@ -397,6 +404,10 @@ cbar = colorbar;
 set(cbar, 'ticklength', 0.02, 'Position', [ax1.Position(1)+ax1.Position(3)*1.1 ax1.Position(2) 0.01 ax1.Position(4)], ...
     'fontsize', fontsize_axis-2);
 ylabel(cbar, {'reconstruction accuracy difference'; ['(geometric ' char(8211) ' connectome)']}, 'fontsize', fontsize_label)
+
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_3.pdf'));
+close(gcf);
+
 
 %% EXTENDED DATA FIGURE 4
 % bioRxiv Supplementary Figure 13
@@ -524,6 +535,10 @@ annotation(fig, 'textbox', [0.01, 0.86, 0.01, 0.01], 'string', 'a', 'edgecolor',
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 annotation(fig, 'textbox', [0.43, 0.98, 0.01, 0.01], 'string', 'b', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
+
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_4.pdf'));
+close(gcf);
+
 
 %% EXTENDED DATA FIGURE 5
 % bioRxiv Supplementary Figure 14
@@ -711,6 +726,10 @@ annotation(fig, 'textbox', [0.015, 0.99, 0.01, 0.01], 'string', 'a', 'edgecolor'
 annotation(fig, 'textbox', [0.015, 0.56, 0.01, 0.01], 'string', 'b', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_5.pdf'));
+close(gcf);
+
+
 %% EXTENDED DATA FIGURE 6
 % bioRxiv Supplementary Figure 15
 
@@ -823,6 +842,10 @@ annotation(fig, 'textbox', [0.02, 0.98, 0.01, 0.01], 'string', 'a', 'edgecolor',
 annotation(fig, 'textbox', [0.75, 0.98, 0.01, 0.01], 'string', 'b', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_6.pdf'));
+close(gcf);
+
+
 %% EXTENDED DATA FIGURE 7
 % bioRxiv Supplementary Figure 16
 
@@ -872,6 +895,10 @@ for ii=1:length(representative_contrasts)
         ylabel('normalized power (log scale)', 'fontsize', fontsize_label)
     end
 end
+
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_7.pdf'));
+close(gcf);
+
 
 %% EXTENDED DATA FIGURE 8
 % bioRxiv Supplementary Figure 17
@@ -1041,6 +1068,10 @@ annotation(fig, 'textbox', [0.40, 0.98, 0.01, 0.01], 'string', 'b', 'edgecolor',
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 annotation(fig, 'textbox', [0.735, 0.98, 0.01, 0.01], 'string', 'c', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
+
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_8.pdf'));
+close(gcf);
+
 
 %% EXTENDED DATA FIGURE 9
 % bioRxiv Supplementary Figure 19
@@ -1470,6 +1501,10 @@ annotation(fig, 'textbox', [0.015, 0.53, 0.01, 0.01], 'string', 'c', 'edgecolor'
 annotation(fig, 'textbox', [0.015, 0.26, 0.01, 0.01], 'string', 'd', 'edgecolor', 'none', ...
         'fontsize', 20, 'fontweight', 'b', 'horizontalalignment', 'center')
 
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_9.pdf'));
+close(gcf);
+
+
 %% EXTENDED DATA FIGURE 10
 % bioRxiv Supplementary Figure 20
 
@@ -1489,3 +1524,8 @@ leg.ItemTokenSize = leg.ItemTokenSize/1;
 set(gca, 'fontsize', fontsize_axis, 'ticklength', [0.02 0.02], 'ylim', [0 1], 'xlim', [min(model_wave_optim.rs_vec), max(model_wave_optim.rs_vec)])
 xlabel('$r_s$', 'fontsize', fontsize_label, 'interpreter', 'latex')
 ylabel('optimization metric', 'fontsize', fontsize_label)
+
+
+exportgraphics(gcf, fullfile(figs_dir, 'extended_fig_10.pdf'));
+close(gcf);
+
