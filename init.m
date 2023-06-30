@@ -1,0 +1,1 @@
+figs_dir = fullfile(fileparts(mfilename("fullpath")), 'latex', 'fig');
