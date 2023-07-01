@@ -1004,6 +1004,10 @@ text(circle_locs_x(2), circle_locs_y(2)+0.14, '$\phi(\mathbf{r},t)$', 'horizonta
 text(mean(circle_locs_x), min(v)-0.07, '$W(\mathbf{r},t;\mathbf{r''},t'') := W(\mathbf{r}-\mathbf{r''},t-t'')$', 'horizontalalignment', 'center', 'fontsize', fontsize_label+2, 'interpreter', 'latex')
 axis off
 
+exportgraphics(gcf, fullfile(figs_dir, 'supp_10.pdf'));
+close(gcf);
+
+
 %% SUPPLEMENTARY FIGURE 11
 % bioRxiv Supplementary Figure 21
 
@@ -1037,7 +1041,7 @@ text(min(get(gca,'xlim'))+1*[max(get(gca,'xlim'))-min(get(gca,'xlim'))], min(get
     'fontsize', fontsize_label, 'fontweight', 'bold', 'verticalalignment', 'middle', 'horizontalalignment', 'right');
 box off
 
-exportgraphics(gcf, fullfile(figs_dir, 'supp_10.pdf'));
+exportgraphics(gcf, fullfile(figs_dir, 'supp_11.pdf'));
 close(gcf);
 
 
