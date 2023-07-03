@@ -197,7 +197,7 @@ Beltrami operator, LBO），该算子捕捉了局部顶点到顶点的空间关�
 我们使用一个等向性阻尼的神经场理论波动方程模型来模拟神经活动，该模型没有再生机制（图\ref{fig:4}a和方法中的神经场理论波动模型）。
 在这个模型下，活动通过白质连接在新皮层的各个点之间传播，其强度随距离呈近似指数衰减（补充图\ref{fig:extended_fig_10}和补充信息\ref{sec:NFT}和\ref{sec:NFT_wave}）。
 为了模拟静息状态下的神经活动，我们使用白噪声输入来模拟无结构的随机波动（方法\ref{sec:modelling_resting}中的静息态动力学建模）。
-我们比较了这个简单的波动模型和一个基于生物物理的神经群体模型（兴奋-抑制平衡()balanced excitation–inhibition, BEI模型）的性能，这个神经群体模型已被广泛用于理解静息状态fMRI信号（图\ref{fig:4}a和方法\ref{sec:neural_mass}中的神经质量模型）。
+我们比较了这个简单的波动模型和一个基于生物物理的神经群体模型（兴奋-抑制平衡, balanced excitation–inhibition, BEI模型）的性能，这个神经群体模型已被广泛用于理解静息状态fMRI信号（图\ref{fig:4}a和方法\ref{sec:neural_mass}中的神经质量模型）。
 神经质量模型紧密地与经典的、以连接组为中心的脑功能观念相一致，将动态过程视为由于在离散解剖区域的神经群体间的相互作用的结果，这些神经群体根据实证测量的连接组进行耦合。
 
 
@@ -584,10 +584,12 @@ LaPy 在表面网格上使用三次有限元方法，在插值光滑流形上实
 	r_i^{(I)} = H^{I} (I_i^{I}) = \frac{a_I I_i^{(I)} - b_I}{1 - exp[-d_E (a_E I_i^{(E)}) - b_I]'},
 \end{equation}
 
-\begin{equation}\label{eq_input_current_E}
+% Excitatory
+\begin{equation}\label{eq:input_current_E}
 	I_i^{(E)}(t) = I^{ext} + W_E I_0 + w_{EE} S_i^{(E)} (t) + G J \sum_j C_{ij} S_j^{(E)}(t) - w_{IE} S_i^{(I)} (t), 
 \end{equation}
 
+% Inhibition
 \begin{equation}\label{eq:input_current_I}
 	I_i^{I} (t) = W_I I_0 +
 				  W_{EI} S_i^{(E)} (t) - 
@@ -599,24 +601,248 @@ LaPy 在表面网格上使用三次有限元方法，在插值光滑流形上实
 $ \gamma $ 是动力学速率常数，
 $ v_i (t) $ 是具有标准偏差 $ \sigma $ 的时变随机高斯输入。
 函数 $ H^{E,I} $ 是 S 型神经元响应函数，将总输入电流 $ I_i^{E,I} $ 转换为放电速率 $ r_i^{E,I} $，其由增益因子 $ a_{E,I} $、阈值电流 $ b_{E,I} $ 和 曲率参数 $ d_{E,I} $。
-在方程（15）和（16）中，Ii ext 是外部输入，I0 是兴奋性和抑制性群体的局部输入电流，分别由 WE 和 WI 缩放，wEE 是兴奋性-兴奋性强度，wEI 是兴奋性- 抑制强度，wIE 是抑制-兴奋强度，G 是全局耦合参数，J 是有效 N-甲基-d-天冬氨酸 (NMDA) 电导，Cij 是从 dMRI 估计的区域 i 和 j 之间的结构连接强度。
+在方程\ref{eq:input_current_E}和\ref{eq:input_current_I}中，$ I_i^{ext} $ 是外部输入，$ I_0 $ 是兴奋性和抑制性群体的局部输入电流，分别由 $ W_E $ 和 $ W_I $ 缩放，
+$ w_{EE} $ 是兴奋性-兴奋性强度，
+$ w_{EI} $ 是兴奋-抑制强度，
+$ w_{IE} $ 是抑制-兴奋强度，
+$ G $ 是全局耦合参数，
+$ J $ 是有效 N-甲基-d-天冬氨酸 (NMDA) 电导，$ C_{ij} $ 是从 dMRI 估计的区域 $ i $ 和 $ j $ 之间的结构连接强度。
+
+
+总体而言，兴奋-抑制平衡模型有 15 个固定参数和 4 个自由参数，如补充表 3 所示。
+固定参数的值取自参考文献\cite{demirtacs2019hierarchical}。
+为了进行直接比较，我们还使用了参考文献\cite{demirtacs2019hierarchical}提供的离散连接组数据。
+定义区域间结构连接矩阵 $ C $。
+这些连接组数据源自 334 名无关人类连接组计划受试者的最低限度预处理的 dMRI 数据，并通过 FMRIB 软件库 (FSL)\cite{behrens2003characterization} 的概率纤维束成像工具构建。 
+我们建议读者参考参考文献\cite{demirtacs2019hierarchical}了解数据处理和连接体构建的更多细节。
+当使用连接组数据的分割版本时，我们的结果没有改变。
+我们注意到，神经场理论方程数值解（例如方程\ref{eq:temporal_activity}）也在空间上的离散皮层，但将其离散为一个非常精细的点阵列，然后将每个点上选择的任何时间动力学与连续极限中正确的连通性进行积分。
+因此，神经质量模型近似于更通用的神经场理论方法\cite{deco2008dynamic,spiegler2013systematic}。 
+我们还重申，局部动力学不会影响神经场理论波动模型的空间特征函数。
+
 
 
 \subsection{血液动力学模型} \label{sec:haemodynamic_model}
 
+为了模拟功能磁共振成像数据，我们使用完善的 Balloon-Windkessel 血液动力学模型将神经场理论波动力学模型和兴奋抑制平衡神经质量模型生成的神经活动转换为血氧水平依赖 (blood oxygen-level dependent, BOLD) 信号\cite{stephan2007comparing}。
+请注意，虽然该模型是对 BOLD 信号\cite{aquino2012hemodynamic,pang2017effects,pang2018biophysically}基础的生理血液动力学过程的更详细模型的简单近似，但我们在这里使用这种近似是为了与文献中的绝大多数建模研究进行直接比较\cite{deco2021dynamical,demirtacs2019hierarchical,aquino2022intersection,deco2009key,cabral2014exploring}。
+每个顶点或大脑区域 $ i $ 中的 BOLD-fMRI 信号由以下微分方程控制：
+
+\begin{equation}\label{eq:vasodilatory_signal}
+	\frac{dz_i}{dt} = N_i (t) - 
+					  \kappa z_i(t) - 
+					  \gamma [f_i(t) - 1], 
+\end{equation}
+
+
+\begin{equation}\label{eq:blood_inflow}
+	\frac{df_i}{dt} = z_i(t),
+\end{equation}
+
+
+\begin{equation}\label{eq:blood_volume}
+	\frac{dv_i}{d_t} = \frac{1}{\tau} [f_i(t) - v_i^{1/\alpha} (t)],
+\end{equation}
+
+
+\begin{equation}\label{eq:deoxyhaemoglobin}
+	\frac{dq_i}{dt} = \frac{1}{\tau}
+					\{
+					\frac{f_i(t)}{\rho}
+					[1 - (1-\rho)^{1/f_i(t)}]
+						- v_i^{1/\alpha - 1} (t)
+					\},
+\end{equation}
+
+
+\begin{equation}\label{eq:BOLD_signal}
+	\frac{dy_i}{dt} = V_0
+					\{
+						k_1 [1 - q_i(t)] +
+						k_2 [1 - \frac{q_i(t)}{v_i(t)}] + 
+						k_3 [1 - v_i(t)]
+					\},
+\end{equation}
+
+
+其中 $ z_i $、$ f_i $、$ v_i $、$ q_i $ 和 $ y_i $ 分别是血管舒张信号、血流量、血容量、脱氧血红蛋白含量和 BOLD 信号变量。
+变量 $ N_i $ 表示由波动力学模型和兴奋抑制平衡神经质量模型生成的神经活动。
+对于波浪模型，$ N(t) $ 为 $ \phi (t) $，对于兴奋抑制平衡神经质量模型，$ N_i (t) $ 为 $ S_i^{(E)} (t) $。
+模型参数及其值取自之前的工作\cite{stephan2007comparing,heinzle2016hemodynamic}如下：
+$ \kappa = 0.65^{-1} $ 是信号衰减率，
+$ \gamma = 0.41^{-1} $ 是流量相关的消除率，
+$ \tau = 0.98 s $ 是血流动力学传输时间，
+$ \alpha = 0.32 $ 为格鲁布指数，
+$ \rho = 0.34 $ 为静息氧提取分数，
+$ V_0 = 0.02 $ 为静息血容量分数，
+$ k_1 = 3.72 $、
+$ k_2 = 0.53 $ 
+和 $ k_3 = 0.53 $ 为 3T fMRI 参数。
+
+
 \subsection{静息态动力学建模} \label{sec:modelling_resting}
+
+% textit 不变斜体
+我们使用\textit{神经场理论}波动力学模型和\textit{兴奋抑制平衡}模型以及血液动力学模型来估计各种自发功能耦合特性。
+对于波动力学模型，我们根据之前的研究\cite{robinson2005multiscale,sanz2018nftsim}，使用白噪声输入来模拟没有任何结构化刺激的情况下求解方程\ref{eq:NFT_wave_model}。
+我们将所得解与方程 (\ref{eq:vasodilatory_signal}-\ref{eq:BOLD_signal}) 中的血液动力学模型相结合，以模拟 BOLD-fMRI 信号。
+模拟的 BOLD 信号被下采样到 1,200 个时间帧的 0.72 秒采样间隔，以匹配补充信息 2.2 中描述的静息态人类连接体项目数据。
+最后，我们使用 HCP-MMP1 分割对模拟的 BOLD 信号进行分割，并计算代表模型功能耦合的相关矩阵。
+
+
+对于兴奋抑制平衡模型，我们可以使用上述方法从每个大脑区域的方程\ref{eq:synaptic_gating_E}的数值解开始计算模型功能耦合。
+然而，已经表明可以将兴奋抑制平衡动力学模型和血液动力学模型的方程线性化以获得模型功能耦合\cite{demirtacs2019hierarchical}的解析近似。
+由于\textit{兴奋抑制平衡}模型中有大量模型参数，我们在本研究中使用了这种解析近似，因为它允许更全面且计算效率更高的模型拟合。
+参见参考文献\cite{demirtacs2019hierarchical}了解更多详情。
+
+
+我们通过拟合每个模型的自由参数，将模型\textit{功能耦合}拟合到所有分析中使用的相同\textit{人类连接体计划}参与者的经验功能耦合（也使用 HCP-MMP1 分区进行分区）。
+我们将参与者样本分为训练集和测试集，每个集有 125 人，以便能够对模型性能进行样本外评估并避免过度拟合。
+具体来说，我们在训练集数据上拟合模型参数，并使用拟合的模型参数来预测测试集数据。
+模型拟合和性能评估基于三个广泛使用的功能耦合相关指标\cite{deco2021dynamical,aquino2022intersection}：边功能耦合、节点功能耦合和\textit{功能耦合的动力学属性}。
+
+
+边\textit{功能耦合}度量是通过采用 $ z $ 变换模型的上三角元素（即 边功能耦合的强度）和经验功能耦合的皮尔逊相关性来计算的。
+我们只采用上三角元素，因为功能耦合值相对于对角线对称。
+较高的相关性代表模型和数据之间更好的拟合。
+
+
+节点功能耦合指标是通过模型中每个大脑区域的平均功能耦合强度与经验功能耦合的皮尔逊相关性来计算的。
+脑区$ i $的平均功能耦合强度定义为$ \frac{1}{n} \sum_{j=1}^{n} FC_{ij} $，其中$ n $是脑区的总数。
+再次强调，相关性越高表明模型拟合效果越好。
+
+
+\textit{功能耦合的动力学属性}指标捕获静息状态活动的时空统计数据，计算如下\cite{aquino2022intersection}。
+每个区域 $ i $ 的时间序列均使用二阶巴特沃斯滤波器在 0.04 至 0.07 Hz 之间进行滤波；
+该乐队基于参考文献\cite{deco2017dynamics}及其纳入的动机是其与大脑的功能相关性\cite{glerean2012functional,pang2019power}。
+然后对时间序列进行希尔伯特 ($ H $) 变换以计算数量 $ y_i(t) = x_i(t) + jH_i (t) $，其中 $ j $ 是虚数。
+然后计算瞬时复数参数 $ \theta_i(t) = tan^{-1} [H_i(t) / x_i(t)] $。
+在时间 $ \Delta(i,j,t) $ 时区域 $ i $ 和 $ j $ 之间的同步水平计算如下：
+
+\begin{equation}\label{eq:synchrony}
+	\Delta(i,j,t) = cos [\theta_i (t) - \theta_j (t)].
+\end{equation}
+
+请注意，我们并不像文献中有时那样将 $ \theta_i(t) $ 称为相位，因为我们的信号是宽带的，而这种解释仅适用于几乎单色的信号。
+我们计算这个量是为了与之前的工作进行比较\cite{deco2021dynamical,aquino2022intersection}，然后我们计算两个时间实例$ \tau_u $ 和 $ \tau_v $ 之间的全局同步相似度 $ \phi_{uv} $，其中 $ \phi_{uv} $ 定义为：
+
+\begin{equation}\label{eq:synchrony_similarity}
+	\phi_{uv} = \frac{1}{d_u d_v} 
+				\sum_{i>j} \Delta(i,j,\tau_u) \Delta(i,j,\tau_v),
+\end{equation}
+
+其中
+\begin{equation}\label{key}
+	d_x = \sqrt{\sum_{i>j}
+					[
+					\Delta(i,j,\tau_x)
+					]^2
+				}.
+\end{equation}
+
+这里，$ \phi_{uv} $ 是\textit{功能耦合的动力学属性}，它是一个对称的时间$ \times $时间矩阵，解释为时间$ \tau_u $ 和 $ \tau_v $ 之间全局同步的相似性。
+然后，我们比较了模型上三角元素的分布和经验\textit{功能耦合的动力学属性}估计，按照参考文献将所有个体或模型实现连接起来\cite{aquino2022intersection}。
+更好地捕捉数据的总体波动。
+使用KS统计量比较模型和数据的\textit{功能耦合的动力学属性}分布，KS统计量越低表明模型拟合越好。
+
+
+波模型有一个自由参数，即波传播的空间长度尺度 $ r_s $，该参数经过优化以适合经验功能磁共振成像数据。
+具体来说，我们构建了一个由 20 个 $ r_s $ 值组成的向量，这些值均匀分布在 10 到 100 mm 之间。
+对于每个 $ r_s $ 值，计算上述功能耦合指标。
+扩展数据图\ref{fig:extended_fig_10} 显示了优化情况。
+我们采用最小化 \textit{功能耦合的动力学属性} KS 统计量的 $ r_s $ 值，因为该指标已被发现是上述三个指标中模型数据比较的最严格基准\cite{aquino2022intersection}。
+该过程产生了 $ r_s = 28.9 mm $ 的优化值，该值小于之前在脑电图数据分析中获得的值\cite{robinson2005multiscale}，可能是由于血流动力学过程限制了神经活动传播到邻近区域，或者我们在此关注皮质-皮质动力学\cite{aquino2012hemodynamic,pang2017effects}。
+
+
+\textit{兴奋抑制平衡}神经质量模型有 15 个固定参数和 4 个自由参数，即 $ w_{EE} $、$ w_{EI} $、$ w_IE $ 和 $ G $，这些参数经过优化以拟合数据，如下参考文献\cite{demirtacs2019hierarchical}所示。
+该程序得出的优化参数为 $ w_{EE} = 9.80 $ 、$ w_{EI} = 1.48 $、$ w_{IE} = 7.13 $ 和 $ G = 6.87 $。
+优化过程的更多细节可以在补充信息\ref{sec:mass_optimization}中找到。
+
+
 
 \subsection{静息态动力学时滞特性的测量} \label{sec:dynamics_measurement}
 
+除了用于模型拟合和模型性能评估的基于功能耦合的指标之外，我们还研究了波动力学模型和神经质量模型是否也可以捕获传播活动的时间特性。
+特别是，我们分析了静息态 BOLD-fMRI 时间过程的滞后结构（或滞后线程），如参考文献\cite{mitra2015lag,mitra2014lag}所提出的。
+我们在补充信息\ref{sec:lag_threads}中简要讨论了经验和模拟 fMRI 数据的滞后结构的计算算法，并请读者参阅之前的文章\cite{mitra2015lag,mitra2014lag} 以了解更多详细信息。
+请注意，还有几种其他方法可以表征静息状态活动的时空特性\cite{bolt2022parsimonious,cabral2017functional,kashyap2019dynamic}，但当前选择的方法足以满足我们的目的。
+
+
 \subsection{建模刺激诱发动力学} \label{sec:modelling_stimulus}
+
+我们还评估了波模型捕捉诱发神经反应的经典特性的程度。
+具体来说，我们使用优化的波模型（$ r_s = 28.9 mm $）来研究响应施加到左侧初级视觉皮层的刺激的神经动力学。
+特别是，刺激 $ Q(\boldsymbol{r},t) $ 是一个 1 ms 脉冲（$ t = 1–2 ms $），幅度为 $ 20 s^{-1} $（结果对幅度变化很稳健），仅限于皮质表面的顶点 由 HCP-MMP1 分区定义的 初级视觉皮层区域。
+我们以 0.1 毫秒的分辨率在 100 毫秒的时间段内进行了仿真。 
+最后，我们使用 HCP-MMP1 分区将活动 $ \phi(\boldsymbol{r},t) $ 分区为 180 个区域。
+
+
+我们比较了每个大脑区域的活动概况（幅度与时间），重点关注活动达到峰值幅度的时间（即达到峰值的时间）。
+具体来说，我们研究了活动的时间优先顺序是否遵循从视觉到额叶皮层的人类视觉皮层层次结构，其中包括以下 17 个大脑区域：V1、V4、7m、7Am、TE1p、7AL、24dd、2、24dv、8BM、10r 、10v、8BL、10pp、10d、9-46v 和 9-46d。
+这些区域与先前使用束追踪数据和非线性网络建模在猕猴新皮质视觉层次中识别的区域非常相似\cite{chaudhuri2015large}。
+
+
+我们还将峰值响应时间的区域估计值与 T1w:T2w 值进行了比较，这是一种对皮质内髓磷脂含量敏感的非侵入性测量\cite{glasser2011mapping}，也是皮质层次等级\cite{burt2018hierarchy}的良好代表。
+fsLR-32k 空间中的髓磷脂图是从\textit{人类连接体计划} 数据集27,28 中获得的，然后使用 HCP-MMP1 分区进行分区。
+我们通过斯皮尔曼等级相关性量化了达到峰值时间的区域值与髓磷脂含量之间的关系。
+通过与使用空间约束旋转测试方法获得的 10,000 个相关值的零分布进行比较来评估相关性的统计显着性\cite{vavsa2018adolescent,alexander2018testing}。
+该方法计算一张地图与另一张地图的随机空间旋转版本之间的相关性，从而保留地图中地块的空间关系。
+所得 $ P $ 值 Pspin 是大于经验相关值的零相关值的分数。
+最后，我们重复了上述统计测试，包括所有大脑区域（即，不限于视觉层次大脑区域），以确保我们的发现不是由我们对感兴趣区域（ROI）的特定选择驱动的。
+这是一个更为保守的测试，因为并非所有大脑区域都对视觉刺激表现出强烈的诱发反应。
+
 
 \subsection{非新皮层结构几何特征模式的估计} \label{sec:geometric_estimation}
 
+我们将特征模式分析扩展到新皮质以外的区域，特别关注皮质下层（丘脑和纹状体）和古皮质（海马体）。
+与可以建模为 2D 片的皮质带不同，这些结构是实体 3D 对象。 
+因此，我们使用四面体网格而不是基于表面的三角形网格来计算几何特征模式，以解释非新皮质结构的完整 3D 几何结构\cite{wachinger2015brainprint}，如下所述。
+
+
+我们首先使用概率\href{https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases}{哈佛-牛津皮质下图集}在每个半球生成丘脑、纹状体和海马体的体积二元掩模。
+掩模中包含有 25\% 或更高概率属于这些结构的体素。
+我们使用 FreeSurfer 的 mri\_mc 函数（该函数实现了 marching-cubes 算法）通过对体积掩模进行细分来构造 2D 表面，然后使用\href{https://gmsh.info/}{Gmsh 软件}将 2D 表面转换为 3D 四面体网格 。
+然后，我们使用 LaPy python 库在每个非新皮质结构的四面体网格上求解方程\ref{eq:1}，以获得特征模及其相应的特征值。
+最后，我们通过插值将四面体空间中的本征模投影回自然体积空间。
+因此，所产生的本征模式在空间上通过构成每个非新皮层结构体积的 3D 体素而变化。
+在这部分研究中，我们放弃了第一个恒定模式，并在分析中使用了接下来的 20 个模式。
+
+
 \subsection{非新皮层结构的功能组织映射} \label{sec:functional_mapping}
+
+非新皮质结构中功能磁共振成像的信噪比通常比新皮质结构中的信噪比弱\cite{uugurbil2013pushing}。
+此外，由于功能磁共振成像的分辨率有限以及常见功能磁共振成像处理方法引起的空间平滑，细粒度任务激活通常很难在这些较小的结构中解决。
+因此，为了有效地绘制丘脑、纹状体和海马体的功能组织，我们使用了每个结构中静息状态fMRI信号的连接映射\cite{haak2018connectopic} 以获得它们的主要功能模式（通常称为梯度，尽管这些模式捕捉了FC图谱逐点相似性的空间变化）。
+这项技术和相关程序已在过去的工作中广泛用于研究这些结构的功能组织\cite{vos2018anatomical,yang2020thalamic,oldehinkel2022mapping}。
+
+
+我们按照参考文献中描述的程序将连接映射应用于\textit{人类连接体计划}个体的体积体素静息态 fMRI 数据\cite{haak2018connectopic}。
+具体来说，对于每个个体和非新皮质 ROI（即丘脑、纹状体和海马体），我们构建了一个 ROI 时间序列数据矩阵 $ A $，大小为 $ T \times N $，其中 $ T $ 是时间帧数，$ N $ 是 ROI 中的体素数量。
+类似地，对于每个个体，我们构建了大小为 $ T \times M $ 的灰质时间序列数据矩阵 $ B $，其中 $ M $ 是 ROI 之外的灰质体素的数量。
+由于 $ M $ 通常很大（103 或以上），因此我们使用奇异值分解来降低 $ B $ 的维数，以构造大小为 $ T \times (T – 1) $ 的矩阵 $ B $。
+然后使用 $ A $ 和 $ B $ 的皮尔逊相关性计算 ROI 内每个体素的连通性指纹，以获得大小为 $ N \times (T – 1) $ 的矩阵 $ C $。
+使用 $ \eta^2 $ 系数 \cite{alexander2018testing} 计算每对 ROI 体素之间连接指纹的相似性，从而得到大小为 $ N \times N $ 的矩阵 $ S $。
+$ \eta^2 $ 系数表示一个连接剖面中的方差由另一个连接剖面中的方差所占的比例。
+然后我们计算所有个体的平均 $ S $。 
+使用拉普拉斯特征图算法\cite{belkin2003laplacian}的非线性流形学习过程应用于每个 ROI 的 $ S $ 矩阵，以计算其特征向量和特征值。
+特征向量表示 ROI 的功能模式（称为功能梯度），根据它们解释的 功能耦合相似性的方差进行排序。
+我们仅分析了前 20 个非常量梯度，以便能够与几何本征模进行直接比较。
+基于功能耦合的梯度分析的典型应用很少考虑超过前五个梯度\cite{haak2018connectopic,margulies2016situating}。
+
+
+假设模式和梯度的符号是任意的，我们通过获取它们的绝对空间相关性来分析每个非新皮质结构中的几何本征模式和函数梯度之间的对应关系。
+此外，同一本征群内几何本征模的顺序可以改变（补充表1；例如，第一个本征群可以在模2-4之间进行顺序翻转），因此几何本征模和 不保证函数梯度。
+因此，我们检查了模式和梯度之间所有可能的成对相关性，并评估了与每个梯度最大相关的模式的对应关系。
+对于丘脑、纹状体和海马体，几何模式和功能梯度之间观察到的最大阶数差异分别为 20 中的 1、8 和 5。
+
 
 \subsection{数据获取} \label{sec:data_availability}
 
 \subsection{代码获取} \label{sec:code_availability}
+
+原始和预处理的 HCP 数据可以通过 \href{https://db. human connectome.org/}{HCP} 访问。
+NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
+用于复制研究结果的源数据可在\href{https://github.com/NSBLab/BrainEigenmodes}{BrainEigenmodes}  和 \href{https://osf.io/xczmp/}{osf} 上公开获取。
 
 
 
@@ -815,7 +1041,7 @@ $ v_i (t) $ 是具有标准偏差 $ \sigma $ 的时变随机高斯输入。
 \subsection{神经场理论的波动力学模型} \label{sec:NFT_wave}
 
 
-\subsection{BEI神经质量模型的优化} \label{sec:mass_optimization}
+\subsection{兴奋抑制平衡神经质量模型的优化} \label{sec:mass_optimization}
 
 
 \subsection{滞后线程算法} \label{sec:lag_threads}
