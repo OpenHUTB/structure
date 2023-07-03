@@ -375,9 +375,15 @@ LaPy 在表面网格上使用三次有限元方法，在插值光滑流形上实
 
 我们使用几何特征模式来分解每个个体在空间位置 $ r $ 和时间 $ t $ 测量的时空 fMRI 数据，作为模式的加权和：
 
-\begin{equation}\label{weighted_sum}
+\begin{equation}\label{eq:weighted_sum}
 	y(r, t) = \sum_{j=1}^{N} a_j(t) \psi_j(r),
 \end{equation}
+
+其中 $ a_j  $ 是解释数据时模态 $ j $ 的振幅，$ \psi_j $ 是第 $ j $ 个模态，N 是使用的模态数量；
+我们使用 $ N = 200 $ 进行分析。
+对于时空数据，即来自无任务 fMRI 的自发动力学记录，数据的每个时间帧都被代入方程 \ref{eq:weighted_sum}，从而得出每个模式 $ \psi_j $ 的时间相关幅度 $ a_j(t) $。
+对于纯空间数据（即任务诱发的激活图），幅度与时间无关，因此 $ a_j(j) \rightarrow a_j $。
+在这两种情况下，幅度都可以通过在皮层表面积分来获得，
 
 
 
