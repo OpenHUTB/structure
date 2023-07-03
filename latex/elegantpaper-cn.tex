@@ -551,6 +551,57 @@ LaPy 在表面网格上使用三次有限元方法，在插值光滑流形上实
 
 \subsection{神经质量模型} \label{sec:neural_mass}
 
+我们将简单神经场理论波动模型的性能与生物物理大规模神经质量模型进行了比较，其中介观动力学是通过经验解剖连接耦合的神经群体（即神经质量）的相互作用产生的。
+在典型的神经质量模型中，每个大脑区域 $ i $ 都有自己的平均场群体动力学，其时间活动 $ S_i $ 由以下一般方程定义：
+
+\begin{equation}\label{eq:temporal_activity}
+	\frac{dS_i}{dt} = f(\boldsymbol{S}, \theta_i, C, G), 
+\end{equation}
+
+其中 $ f $ 是描述该区域活动演变的函数。
+该函数取决于其他区域 $ \boldsymbol{S} $ 的活动、局部总体参数 $ \theta_i $、区域 $ C $ 之间的解剖连接性（顶点分辨率连接组 $ W_{connectome} $ 的分割版本，用于导出连接组本征模式）以及缩放连接性的全局耦合参数 $ G $ 区域之间。
+
+
+我们可以使用文献中的几种全脑神经质量模型\cite{sanz2013virtual}，从简单的相位振荡器模型（例如，Kuramoto 模型\cite{breakspear2010generative}）到更复杂的生物物理群体模型（例如，Wilson-Cowan 模型\cite{wilson1972excitatory}）。
+所有这些模型都遵循方程\ref{eq:temporal_activity}的形式，特别是它们对解剖区域间连接矩阵 $ C $ 的依赖。
+这里我们关注一种广泛使用的神经质量模型，兴奋抑制平衡模型\cite{deco2014local,deco2021dynamical,demirtacs2019hierarchical,aquino2022intersection}。
+兴奋抑制平衡模型使用平均场方法来近似每个大脑区域的局部群体动态，这些区域通过源自 dMRI 的解剖连接矩阵进行耦合。
+每个大脑区域 $ i $ 包含相互作用的兴奋性和抑制性神经元群，受以下非线性随机微分方程控制：
+
+\begin{equation}\label{eq:synaptic_gating_E}
+	\frac{dS_i^{(E)}}{dt} = - \frac{S_i^{(E)}}{\tau_E} + (1-S_i^{(E)} \gamma r_i^(E) + \sigma \mu_i(t)),
+\end{equation}
+
+\begin{equation}\label{eq:synaptic_gating_I}
+	\frac{dS_i^{(I)}}{dt} = - \frac{S_i^{(I)}}{\tau_I} + r_i^{I} + \sigma \mu_i(t),
+\end{equation}
+
+\begin{equation}\label{eq:firing_rate_E}
+	r_i^{E} = H^{(E)} (I_i^{(E)}) = \frac{a_E I_i^{(E)} - b_E}{1 - exp[-d_e (a_E I_i^{(E)} - b_E)]},
+\end{equation}
+
+\begin{equation}\label{eq:firing_rate_I}
+	r_i^{(I)} = H^{I} (I_i^{I}) = \frac{a_I I_i^{(I)} - b_I}{1 - exp[-d_E (a_E I_i^{(E)}) - b_I]'},
+\end{equation}
+
+\begin{equation}\label{eq_input_current_E}
+	I_i^{(E)}(t) = I^{ext} + W_E I_0 + w_{EE} S_i^{(E)} (t) + G J \sum_j C_{ij} S_j^{(E)}(t) - w_{IE} S_i^{(I)} (t), 
+\end{equation}
+
+\begin{equation}\label{eq:input_current_I}
+	I_i^{I} (t) = W_I I_0 +
+				  W_{EI} S_i^{(E)} (t) - 
+				  S_i^{(I)} (t),
+\end{equation}
+
+其中 $ S_i^{E,I} $、$ r_i^{E, I} $ 和 $ I_i^{E, I} $ 分别代表 $ E $ 和 $ I $ 群体的突触门控变量、放电率和总输入电流。
+参数 $ \tau_{E,I} $ 是时间常数，
+$ \gamma $ 是动力学速率常数，
+$ v_i (t) $ 是具有标准偏差 $ \sigma $ 的时变随机高斯输入。
+函数 $ H^{E,I} $ 是 S 型神经元响应函数，将总输入电流 $ I_i^{E,I} $ 转换为放电速率 $ r_i^{E,I} $，其由增益因子 $ a_{E,I} $、阈值电流 $ b_{E,I} $ 和 曲率参数 $ d_{E,I} $。
+在方程（15）和（16）中，Ii ext 是外部输入，I0 是兴奋性和抑制性群体的局部输入电流，分别由 WE 和 WI 缩放，wEE 是兴奋性-兴奋性强度，wEI 是兴奋性- 抑制强度，wIE 是抑制-兴奋强度，G 是全局耦合参数，J 是有效 N-甲基-d-天冬氨酸 (NMDA) 电导，Cij 是从 dMRI 估计的区域 i 和 j 之间的结构连接强度。
+
+
 \subsection{血液动力学模型} \label{sec:haemodynamic_model}
 
 \subsection{静息态动力学建模} \label{sec:modelling_resting}
