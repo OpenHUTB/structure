@@ -1295,11 +1295,71 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 
 尽管模型很简单，但方程\ref{eq:NFT_wave}的完整时空解在 32,492 个顶点上的计算成本很高。
 因此，我们使用以下方法来有效地求解在皮层上的方程\ref{eq:NFT_wave}。
-首先，我们假设 $ \psi $ 是时空可分的，因为系统的结构在时间上是恒定的，这样
+首先，我们假设 $ \psi $ 是时空可分离的，因为系统的结构在时间上是恒定的，这样
 
 \begin{equation}\label{eq:time_space}
 	\phi(\boldsymbol{r}, t) = 
 		\psi(t) \phi(\boldsymbol{r}).
+\end{equation}
+
+通过将方程\ref{eq:time_space}代入方程\ref{eq:NFT_wave}，项$ \nabla^2 \phi(\boldsymbol{r}, t) $ 变为 $ \phi(t) \nabla^2 \phi
+(\boldsymbol{r}) $。
+请注意，$ \nabla^2 \phi(\boldsymbol{r}) $与方程 \ref{eq:1} 中亥姆霍兹方程的左侧相同。
+因此，皮层表面上行波解的空间分量 $ \psi(\boldsymbol{r}) $ 可以写成几何特征模式 $ \psi_j(\boldsymbol{r}) $ 的组合。
+因此，方程\ref{eq:time_space}可以写成：
+
+\begin{equation}\label{eq:eigenmodes_combination}
+	\phi(\boldsymbol{r}, t) = 
+		\sum_{j=1}^{N}
+			\phi_j(t) \psi_j(\boldsymbol{r}),
+\end{equation}
+
+其中 $ \psi_j(\boldsymbol{r}) $ 是模式 $ j $，$ \phi_j(t) $ 是模式 $ j $ 的时变分量，$ N $ 是模式数量。
+其次，我们对输入 $ Q(\boldsymbol{r},t) $ 采用模式分解，使得：
+
+\begin{equation}\label{eq:Q_decomposition}
+	Q(\boldsymbol{r}, t) = 
+		\sum_{j=1}^{N}
+			q_j(t) \psi_j(\boldsymbol{r}),
+\end{equation}
+
+
+其中 $ q_j (t) $ 是通过模式分解获得的时变幅度（参见方法\ref{sec:modal_decomposition}中的“大脑活动的模式分解”）。
+上述时间和空间因素分离的重要结果是，空间模式对局部时间动态不敏感，也不对 $ r_s $ 的值敏感，只要它比表面的曲率半径小。
+
+
+将方程\ref{eq:eigenmodes_combination}、\ref{eq:Q_decomposition}和\ref{eq:1}代入方程\ref{eq:NFT_wave}，我们得到：
+
+\begin{equation}\label{eq:NFT_expand}
+	\sum_{j=1}^{N}
+		[
+		\frac{1}{\gamma _s^2 \frac{\partial^2}{\partial t^2}} +
+		\frac{2}{\gamma _s} \frac{\partial}{\partial t} +
+		1 + r_s^2 \lambda_j
+		]
+		\phi_j(t)
+		\psi_j(\boldsymbol{r})
+	=
+		\sum_{j=1}^{N}
+			q_j(t)
+			\psi_j(\boldsymbol{r}),
+\end{equation}
+
+其中 $ λ_j $ 是对应于模式 $ j $ 的特征值。
+因此，求解模态 $ j $ 的时变分量 $ \phi_j (t) $ 的常微分方程为：
+
+\begin{equation}\label{eq:ordinary_differential}
+	[
+		\frac{1}{\gamma _s^2}
+		\frac{d^2}{dt^2}
+		+
+		\frac{2}{\gamma _s}
+		\frac{d}{dt}
+		+ 1 + r_s^2 \lambda_j
+	]
+	\phi_j(t) 
+	=
+	q_j(t).
 \end{equation}
 
 
