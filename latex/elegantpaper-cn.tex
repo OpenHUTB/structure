@@ -1113,6 +1113,38 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 为了进一步确认几何特征模式的性能并不是由任何基组展开的数学方式简单地驱动的，我们将几何本征模与基于正弦和/或余弦组合的六个简单空间傅里叶基组进行了比较。
 傅里叶基组是使用以下实值函数构建的：
 
+\begin{equation}\label{eq:real_functions_1}
+	F_1 := cos(
+				\frac{2 \pi (j_x - 1) x}{L_x} + 
+				\frac{2 \pi (j_y - 1) y}{L_y} + 
+				\frac{2 \pi (j_z - 1) z}{L_z}
+			  ),
+\end{equation}
+
+\begin{equation}\label{eq:real_functions_2}
+	F_2 := C_1 cos(
+				   \frac{2 \pi (j_x - 1)x}{L_x}
+				  ) + 
+		   C_2 cos(
+		   			\frac{2 \pi (j_y - 1)y}{L_y}
+		   		  ) + 
+		   C_3 cos(
+		   			\frac{2 \pi (j_z - 1)z}{L_z}
+		   		  ),
+\end{equation}
+
+\begin{equation}\label{eq:real_functions_3}
+	F_3 := C_1 cos(
+				\frac{2 \pi (j_x - 1) x}{L_x} + 
+				\frac{2 \pi (j_y - 1) y}{L_y} + 
+				\frac{2 \pi (j_z - 1) z}{L_z}
+				) + 
+		   C_2 sin(
+		   		\frac{2 \pi (j_x - 1)x}{L_x} + 
+		   		\frac{2 \pi (j_y - 1)y}{L_y} + 
+		   		\frac{2 \pi (j_z - 1)z}{L_z}
+		   		),
+\end{equation}
 
 其中 $ j_x $，$ j_y $，$ j_z $ 是整数常量，$ x $，$ y $，$ z $ 是皮层球面网格表示上每个点的空间位置，$ L_x $，$ L_y $，$ L_z $ 是每个方向上的周期，$ C_1 $，$ C_2 $，$ C_3 $ 是拟合常数。
 对于每个函数，我们构建了一个规则版本和一个不规则版本，从而产生了六个基组。
@@ -1125,10 +1157,150 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 考虑到几何本征模的空间波长是不规则间隔的（参见补充表 1），这两个版本使我们能够探索空间波长如何影响傅里叶基组的分解。
 
 
+接下来，我们将 $ i=x, y, z $ 的周期定义为 $ L_i := [ max(i) - min(i) ] $，以实现尊重大脑形状的启发。 
+此外，$ (j_i-1) $中的$ -1 $确保第一模式是恒定的，以使其与第一几何模式具有可比性。
+方程式\ref{eq:real_functions_2}和\ref{eq:real_functions_3}中的形式具有更多自由度，拟合常数 $ C_1 $、$ C_2 $、$ C_3 $ 分别估计，允许我们对余弦和/或正弦函数进行不同的加权。
+因此，模式 $ j $ 现在在模式分解期间需要估计多个幅度，而不是只有一个。
+相对于几何特征模式，这些增加的自由度导致模型复杂性增加；
+更具体地说，由方程\ref{eq:real_functions_2}和\ref{eq:real_functions_3}形成的傅立叶基组分别涉及估计每个模式 2 个和 3 个系数，而几何本征模式只需要拟合每个模式一个系数。
+
+
+尽管可以采用其他形式和复杂的选择来构建傅里叶基组，但上述选择因其简单性而受到很好的启发，产生了独特的实值空间模式，并涵盖了人们可以做出的关键实现选择。
+扩展数据图 \ref{fig:extended_fig_5}a 显示了具有单位系数的结果模式的空间分布，我们用它来重建任务激活图和静息状态数据（类似于图 \ref{fig:1}d）。
+扩展数据图 \ref{fig:extended_fig_5}b 显示，几何特征模式在重建任务诱发和静息状态数据方面显着优于傅里叶基组，进一步强调了几何本征模提供的准确表示并不是任何基组扩展的微不足道的结果。
+此外，无论 $ x $、$ y $ 和 $ z $ 方向上的模式的空间波长如何定义，该结论仍然成立。
+重申一下，尽管傅里叶基组是基于方程的，
+与几何本征模相比，\ref{eq:real_functions_2}和\ref{eq:real_functions_3}有更多的自由度来拟合数据，几何特征模式仍然表现出优越的性能，强调了它们在考虑大脑动力学方面的简约性。
+
+
+我们提出了傅立叶基组的完整性分析，并证明此类函数无法适应不规则形状物体的边界条件，例如皮层表面（例如，内侧壁的狄利克雷或诺依曼条件）\cite{hasson2008hierarchy}。
+这是因为傅立叶基组只能针对具有规则形状（例如矩形）的对象正确构建，并且更适合分析在此类形状（例如二维图像）上定义的函数。
+因此，对于黎曼流形上定义的皮质表面，使用傅立叶基组通常没有很好的动机，而使用拉普拉斯-贝尔特拉米算子的特征模式更为合适\cite{murray2014hierarchy,glasser2011mapping}。
+事实上，黎曼流形上的拉普拉斯-贝尔特拉米算子特征模式分析在形式上被认为是傅里叶分析\cite{gao2020neuronal}的推广。
+这同样适用于离散网络，例如连接组；
+出于这个原因，图拉普拉斯的特征分解（如工作中所做的）通常在谱图理论领域用作经典傅立叶变换的替代方案\cite{tian2020topographic}。
+因此，虽然可以分解大脑活动的空间图 使用傅立叶基组，它们的效率非常低并且不太适合当前的问题。
+因此我们不提倡使用它们。
+我们还注意到，傅里叶基组无法深入了解大脑活动背后的生成过程。
+我们的主要重点是比较生理原理和解剖学约束的基础集（即几何和连接组本征模式），以揭示大脑动力学的关键限制，而不是确定统计上最佳的基础集。
+
+
+
+
 
 \subsection{代理映射的模态功率谱} \label{sec:modal_power_spectra}
 
+
+典型的图像处理管道会引起一定程度的空间平滑，从而滤除高频（短波长）活动的空间模式。
+为了确保我们在分析中确定的主要长波长功率不仅仅是功能磁共振成像预处理引起的空间平滑的产物，我们分析了具有不同平滑级别的替代随机数据的功率谱。
+我们首先在体积空间中生成 10,000 个取自零均值高斯分布的随机图。
+然后，我们以半高全宽范围为 0 到 50 mm 的核尺寸对替代图进行平滑处理。
+最后，我们将代理图投影到 fsLR-32k CIFTI 空间（通过 Nilearn）并分析它们的模态功率谱。
+请注意，我们在体积而不是表面空间中进行平滑，以模仿流行的神经成像处理实践，其中数据处理通常应用于体积数据，然后将结果重新采样到皮质表面\cite{haak2018connectopic}。
+因此，该过程也包含由重采样程序引起的任何平滑。
+
+
+我们通过计算均方对数误差来比较经验激活图和替代图的模式功率谱：
+
+\begin{equation}\label{eq:MSLE}
+	\text{MSLE} = \sqrt{
+				\frac{1}{N}
+					\sum_{j=1}^{N=200}
+					[ log_10 (P_j^{empirical}) - 
+					log_10 (P_j^{surrogate}) ] ^2
+				},
+\end{equation}
+
+其中 $ P_j^{empirical} $ 和 $ P_j^{surrogate} $ 分别是经验映射和代理映射中模式 $ j $ 的幂。
+作为距离测量，MSLE 比典型的均方误差更有效，因为长波长到短波长模式的功率具有多个数量级的变化。
+
+
+扩展数据图 \ref{fig:extended_fig_8}a 中的彩色线显示了替代数据的模态功率谱，扩展数据图 \ref{fig:extended_fig_8}b 显示了跨对比平均的经验谱和替代谱之间的平均距离（即 MSLE），扩展数据图 \ref{fig:extended_fig_8}c 显示了 MSLE 为每个任务对比单独获得（而不是对对比进行平均）。
+我们发现小于 10 mm 的平滑核不能充分捕获经验图的长空间波长中的光谱功率集中度（图 \ref{fig:3}a 和扩展数据图 \ref{fig:extended_fig_8}a）。
+事实上，替代数据需要 20 毫米的平均内核尺寸（从扩展数据图 \ref{fig:extended_fig_8}b 中的最小值获得的最佳拟合）才能获得与经验数据相当的频谱，该数据比实验中使用的内核尺寸大得多。
+神经影像处理（体积空间 49 中约 8 毫米，表面空间 50 约 15 毫米）。
+当单独分析任务对比而不是平均值时，得到了类似的结果，最小 MSLE 显示出围绕平均值的微小变化（扩展数据图 \ref{fig:extended_fig_8}c 中的实线）。
+因此，这些发现证实，经验激活图的长波长内容不能仅通过预处理来解释。
+此外，虽然也可以使用简单的平滑函数并避免统计阈值来恢复任务激活的空间扩展模式，但几何特征模式方法可以更深入地理解激活背后的机制，因为这些模式可以直接与严格的大脑生物物理模型联系起来 由\textit{神经场理论}建立的动态（参见示例\cite{robinson1997propagation,robinson2016eigenmodes,jones1999golgi,wang2016brain}）。
+它们还提供数据的自然多尺度表征。
+
+
+
 \subsection{神经场理论的波动力学模型} \label{sec:NFT_wave}
+
+由无再生的各向同性阻尼波动方程描述的简单神经场理论波动力学模型为：
+
+\begin{equation}\label{eq:NFT_wave}
+	[\frac{1}{\gamma_s^2} \frac{\partial ^2}{\partial t^2} +
+	\frac{2}{\gamma_s} \frac{\partial}{\partial t} + 
+	1 - r_s^2 \nabla^2
+	]
+	\phi(\boldsymbol{r}, t)
+	= Q(\boldsymbol{r}, t),
+\end{equation}
+
+
+其中 $ \phi(\boldsymbol{r},t) $ 是位置 $ r $ 和时间 $ t $ 处的神经活动，$ Q $ 是外部输入，$ \gamma_s $ 是阻尼率，$ r_s $ 是波传播的空间长度尺度。
+该模型假设点之间的活动传播受其白质连接性的控制，其强度随距离呈指数衰减。
+当方程\ref{eq:NFT_wave}转换为其等价积分形式如下时，这种距离依赖性更加明显。
+考虑新皮质上通过白质束连接的位置 $ \boldsymbol{r}' $ 和 $ \boldsymbol{r} $ 处的两个点（参见补充图 \ref{fig:extended_fig_10} 中的视觉示意图）。
+位置 $ \boldsymbol{r} $ 和时间 $ t $ 处的活动 $ \phi(\boldsymbol{r},t) $ 可以被视为位置 $ \boldsymbol{r}' $ 和时间 $ t' $ 处的源 $ Q(\boldsymbol{r}',t') $ 与基于白质的连接核 $ W(\boldsymbol{r}, t, \boldsymbol{r}', t') $ 的时空卷积 ;比如：
+
+\begin{equation}\label{eq:location_activity}
+	\phi(\boldsymbol{r}, t) = 
+		\sum
+			W(\boldsymbol{r}, t; \boldsymbol{r}', t')
+			Q(\boldsymbol{r}', t')
+			d^2
+			\boldsymbol{r}'
+			dt'.
+\end{equation}
+
+
+在各向同性情况下，$ W $ 仅取决于点之间的空间间隔和时间差，使得 $ W(\boldsymbol{r}, t; \boldsymbol{r}', t') := W(\boldsymbol{r} - \boldsymbol{r}', t-t') $。
+核 $ W $ 也称为格林函数，是点源引起的活动 $ \phi $。
+使用格林函数方法\cite{pang2021stochastic}，先前的工作已经表明 $ W $ 的适当表达式，使其成为方程\ref{eq:NFT_wave}中阻尼波动方程的解，具有强点源 
+$ Q(\boldsymbol{r}, t; \boldsymbol{r}', t') = \delta(\boldsymbol{r} - \boldsymbol{r}') $ 且 
+$ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright1995simulation,jirsa1996field,robinson1997propagation,nozari2020brain}
+
+\begin{equation}\label{eq:connectivity_kernel}
+	W(\boldsymbol{r} - \boldsymbol{r}') = 
+		\frac{\gamma_s}{r_s}
+		\frac{exp(\frac{-|\boldsymbol{r}-\boldsymbol{r}'|}{r_s})}{\sqrt{\gamma_s^2 r_s^2 (t-t')^2 - |\boldsymbol{r} - \boldsymbol{r}'|^2}}
+		\Theta
+		[\gamma_s r_s (t-t') - |\boldsymbol{r} - \boldsymbol{r}'|],
+\end{equation}
+
+其中 $ |\boldsymbol{r} - \boldsymbol{r}'| $ 是点之间的白质束距离，$ \Theta $ 是 Heaviside 阶跃函数，$ \gama_s $ 和 $ r_s $ 分别是阻尼率和空间长度尺度。
+方程\ref{eq:NFT_wave}的详细推导。 
+因此，方程\ref{eq:connectivity_kernel}展示了方程\ref{eq:NFT_wave}定义的波浪动力学如何可以与潜在的各向同性解剖连接直接相关，该连接随距离呈指数衰减。
+特别是，求解方程中微分形式的阻尼波动方程\ref{eq:NFT_wave}相当于求解积分方程，
+
+\begin{equation}\label{eq:integral_equation}
+	\phi(\boldsymbol{r}, t) = 
+		\frac{\gama_s}{r_s} \sum
+			\frac{exp(\frac{-|\boldsymbol{r}-\boldsymbol{r}'|}{r_s})}{\sqrt{\gamma_s^2 r_s^2 (t-t')^2 - |\boldsymbol{r} - \boldsymbol{r}'|^2}}
+			\Theta
+			[\gamma_s r_s (t-t') - |\boldsymbol{r} - \boldsymbol{r}'|]
+			Q(\boldsymbol{r}', t')
+			d^2 \boldsymbol{r}'
+			dt',
+\end{equation}
+
+后者明确显示了 $ r_s $ 特征范围（~84 mm\cite{robinson1997propagation}）的白质连接性引起的时空效应。
+方程\ref{eq:NFT_wave}中的波动方程还有其他更复杂的变化。
+但是这个简单版本的模型评估了可以解释经验数据的基本物理过程。
+将空间异质性或结构化输入纳入方程中的波动方程\ref{eq:NFT_wave}是未来研究的主题。
+
+
+尽管模型很简单，但方程\ref{eq:NFT_wave}的完整时空解在 32,492 个顶点上的计算成本很高。
+因此，我们使用以下方法来有效地求解在皮层上的方程\ref{eq:NFT_wave}。
+首先，我们假设 $ \psi $ 是时空可分的，因为系统的结构在时间上是恒定的，这样
+
+\begin{equation}\label{eq:time_space}
+	\phi(\boldsymbol{r}, t) = 
+		\psi(t) \phi(\boldsymbol{r}).
+\end{equation}
 
 
 \subsection{兴奋抑制平衡神经质量模型的优化} \label{sec:mass_optimization}
