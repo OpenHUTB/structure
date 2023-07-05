@@ -13,6 +13,9 @@
 
 % 本文档命令
 \usepackage{array}
+
+\usepackage{makecell}
+
 \newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
 \addbibresource[location=local]{reference.bib} % 参考文献，不要删除
 
@@ -1639,13 +1642,90 @@ PC2 滞后的模型和经验模式之间的相关性（扩展数据图 \ref{fig:
 
 
 
+\subsection{补充表}
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{特征模式得空间波长}
+	\begin{tabular}{ccc}
+		\toprule
+		特征群         &        波长（纳米）  & 特征群中包含的特征模式     \\
+		\midrule
+		0      &   -      &      1  \\
+		1      &   297.7      &      2-4  \\
+		2      &   171.9      &      5-9  \\
+		3      &   121.5      &      10-16  \\
+		4      &   94.1      &      17-25  \\
+		5      &   76.9      &      26-36  \\
+		6      &   65.0      &      37-49  \\
+		7      &   56.3      &      50-64  \\
+		8      &   49.6      &      65-81  \\
+		9      &   44.4      &      82-100  \\
+		10      &   40.1      &      101-121  \\
+		11      &   35.5      &      122-144  \\
+		12      &   33.7      &      145-169  \\
+		13      &   31.2      &      170-196  \\
+		14      &   29.1-      &      197-225  \\
+
+		\bottomrule
+	\end{tabular}%
+	\label{tab:spatial_wavelength}%
+\end{table}%
 
 
 
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{HCP任务对比}
+	\begin{tabular}{cccc}
+		\toprule
+		任务类型         &       对比数  & 对比  & 关键对比     \\
+		\midrule
+		社交      &   3      &  random; tom; tom\_random  & tom\_random  \\
+		运动      &   13      & \makecell{ cue; lf; lh; rf; rh; t; avg; lf\_avg; lh\_avg; \\rf\_avg; rh\_avg; t\_avg; cue\_avg  & cue\_avg}  \\
+		赌博       &   3      &  punish; reward; punish\_reward  & punish\_reward  \\
+		工作记忆      &   19      & \makecell{ 2bk\_body; 2bk\_face; 2bk\_place; \\ 2bk\_tool; 0bk\_body; 0bk\_face; \\ 0bk\_place; 0bk\_tool; 2bk; 0bk; body; \\ face; place; tool; body\_avg; face\_avg; \\ place\_avg; tool\_avg; 2bk\_0bk  & 2bk\_0bk }  \\
+		语言      &   3      &  math; story; math\_story  & math\_story  \\
+		情感      &   3      &  faces; shapes; faces\_shapes  & faces\_shapes  \\
+		关系      &   3      &  match; rel; match\_rel  & match\_rel  \\
+		
+		\bottomrule
+	\end{tabular}%
+	\label{tab:task_contrasts}%
+\end{table}%
 
 
 
-
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{兴奋抑制平衡神经质量模型的固定和自由参数}
+	\begin{tabular}{ccc}
+		\toprule
+		符号         &        值  & 符号     \\
+		\midrule
+		$\tau_E$      &   0.1 s      &      $ W_{EE} $  \\
+		$\tau_I$      &   0.01 s      &      $ W_{IE} $  \\
+		$\gamma$      &   0.641 s      &      $ W_{EI} $  \\
+		$\sigma$      &   0.01 nA      &      $ G $  \\
+		$a_E$      &   310 $ nC^{-1} $      &       \\
+		$b_E$      &   125 $ s^{-1} $      &       \\
+		$d_E$      &   0.16 s      &       \\
+		$a_I$      &   615 $ nC^{-1} $      &       \\
+		$b_I$      &   177 $ s^{-1} $      &       \\
+		$d_I$      &   0.087 s      &       \\
+		$I^{ext}$      &   0 nA       &       \\
+		$I_0$      &   0.382 nA      &       \\
+		$W_E$      &   1.0       &       \\
+		$W_I$      &   0.7       &       \\
+		$J$      &   0.15 nA      &       \\
+		
+		\bottomrule
+	\end{tabular}%
+	\label{tab:BEI_parameters}%
+\end{table}%
 
 
 
