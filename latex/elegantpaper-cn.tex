@@ -1363,6 +1363,54 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 \end{equation}
 
 
+可以通过数值方法解方程\ref{eq:ordinary_differential}，但它可以通过傅里叶变换与时间的关系来更简单、更准确地求解，从而产生代数方程：
+
+\begin{equation}\label{eq:algebraic_equation}
+	[
+		- \frac{\omega ^2}{\gamma_s^2}
+		- \frac{2 i \omega}{\gamma_s}
+		+ 1
+		+ r_s^2 \lambda_j
+	]
+	\phi_j(\omega)
+	=
+	q_j(\omega),
+\end{equation}
+
+其中 $ ω $ 是时间角频率， $ \phi_j (\omega) $ 是 $ \phi_j (t) $ 的傅里叶变换，$ q_j (\omega) $ 是 $ q_j (t) $ 的傅里叶变换。 因此，解 $ \phi_j (t) $ 具有以下形式：
+
+\begin{equation}\label{eq:solution_form}
+	\phi_j(t)
+	=
+	F^{-1} \{\phi_j(\omega)\}
+	=
+	F^{-1}
+	\{
+		\frac{
+				\gamma_s^2 q_j(\omega)
+			 }
+		 	 {
+		 	 	- \omega^2
+		 	 	- 2 i \omega \gamma_s
+		 	 	+ \gamma_s^2
+		 	 		(1 + r_s^2 \lambda_j)
+		 	 }
+	\},
+\end{equation}
+
+其中 $ F^{-1)} $ 是傅里叶逆变换运算符。
+最后，方程\ref{eq:solution_form}可代入式\ref{eq:1}。
+\ref{eq:eigenmodes_combination}获取每个顶点的神经活动 $ \phi(\boldsymbol{r},t) $。
+
+
+
+如上所述，方程\ref{eq:NFT_wave}的空间部分满足方程 \ref{eq:1}中的亥姆霍兹方程。
+这个微分方程相当于积分形式（方程\ref{eq:integral_equation}），其中给定点的活动会引起其他地方的活动，其权重代表\textit{神经场理论}中隐含的连接性。
+在皮层情况下，这对应于随距离呈指数下降——即类似指数距离规则的空间依赖性——与实验证据 6 一致。
+因此，几何特征模式的使用隐含地结合了类似指数距离规则的连接，其中还包括长 -范围连接，但不直接考虑不符合简单指数规则的拓扑复杂连接。
+
+
+
 \subsection{兴奋抑制平衡神经质量模型的优化} \label{sec:mass_optimization}
 
 
