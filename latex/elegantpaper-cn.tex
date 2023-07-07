@@ -595,18 +595,20 @@ LaPy 在表面网格上使用三次有限元方法，在插值光滑流形上实
 \subsection{神经场理论的波动力学模型} \label{sec:NFT_model}
 
 如上所述，正如\textit{神经场理论}所预测的那样，\textit{几何特征模式}的优越性能意味着神经元活动由波动力学主导。
-为了研究波动力学是否可以解释神经元活动的复杂时空模式，我们实现了一个简单的\textit{神经场理论}波动模型，其中动力学由各向同性阻尼波方程描述，无需再生\cite{jirsa1996field,robinson1997propagation}，
+为了研究波动力学是否可以解释神经元活动的复杂时空模式，我们实现了一个简单的\textit{神经场理论}波动力学模型，其中动力学由各向同性阻尼波动力学方程描述，无需再生\cite{jirsa1996field,robinson1997propagation}，
 
 \begin{equation}\label{eq:NFT_wave_model}
-	[\frac{1}{\gamma_s^2 \partial t^2} + \frac{2}{\gamma_s} \frac{\partial}{\partial t} + 1 - r_s^2 \nabla^2] \phi(\boldsymbol{r}, t) = Q(\boldsymbol{r}, t),
+	[\frac{1}{\gamma_s^2} \frac{\partial ^2}{\partial t^2} + 
+	\frac{2}{\gamma_s} \frac{\partial}{\partial t} + 1 - r_s^2 \nabla^2] \phi(\boldsymbol{r}, t) = Q(\boldsymbol{r}, t),
 \end{equation}
 
 其中 $ \phi(\boldsymbol{r}, t) $ 是位置 $ r $ 和时间 $ t $ 处的神经活动，$ Q $ 是外部输入，$ \gamma_s $ 是阻尼率，$ r_s $ 是波传播的空间长度尺度（概念上与长度为$ \alpha $ 尺度相关） \textit{指数距离规则}特征模式推导中的随机\textit{指数距离规则}连接过程）。
 这种形式告诉我们，脉冲输入将产生以 $ \gamma_s $ 速率消散并以 $ \gamma_s r_s $ 速度传播的活动。
-在这里，我们将 $ \gamma_s $ 视为固定参数，其值为从电生理学估计中获取的 $ 116^{-1} $\cite{robinson2005multiscale}，将 $ r_s $ 视为自由参数。
+在这里，我们将 $ \gamma_s $ 视为固定参数，其值为从电生理学估计中获取的 $ 116 s^{-1} $\cite{robinson2005multiscale}，将 $ r_s $ 视为自由参数。
 我们将该模型应用于每个半球 32,492 个顶点的皮质中层表面网格，以求解每个顶点的活动。
 请注意，点之间活动的传播受其白质连接性的控制，其强度随距离呈指数衰减（补充图\ref{fig:supp_10}）。
 当方程\ref{eq:NFT_wave_model}转换为其等效积分形式时，这种距离依赖性更加明显（详细信息请参见补充信息\ref{sec:NFT_wave}）。
+
 
 
 \subsection{神经群模型} \label{sec:neural_mass}
