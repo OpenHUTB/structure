@@ -1,5 +1,5 @@
 function this = gifti(varargin)
-% GIfTI Geometry file format class
+% GIfTI几何文件格式类
 % Geometry format under the Neuroimaging Informatics Technology Initiative
 % (NIfTI):
 %                 http://www.nitrc.org/projects/gifti/
