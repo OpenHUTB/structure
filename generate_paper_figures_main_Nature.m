@@ -1,4 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% generate_paper_figures_main_Nature.m
 %%%
 %%% 生成最后论文的主要图片的 MATLAB 脚本
@@ -6,69 +5,77 @@
 %%% 注意 : 电脑的配置(比如屏幕分辨率)会影响所创建图的外观。
 %%%        因此，它们在视觉上不会与论文中的数字100%匹配，但科学内容是可复现的。
 %%%
-%%% Original: James Pang, Monash University, 2023
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% 环境变量
+%% 初始化环境
 run(fullfile(fileparts(mfilename("fullpath")), 'init.m'));
 
 
-%% 加载相关的存储库的MATLAB函数
+% 加载相关的存储库的MATLAB函数
 addpath(genpath('functions_matlab'));
 
 
-%% 额外变量
+% 额外变量
 % 注意：所提供的数据仅适用于以下参数，因此请勿更改它们
-hemisphere = 'lh'; 
+hemisphere = 'lh';  % 左半球
 num_modes = 200;
 parc_name = 'Glasser360';
 
-data_empirical_folder = 'data/empirical';
-data_results_folder = 'data/results';
-data_figures_folder = 'data/figures_Nature';
-data_template_surfaces_folder = 'data/template_surfaces_volumes';
-data_template_eigenmodes_folder = 'data/template_eigenmodes';
+data_empirical_folder = 'data/empirical';     % 实证数据
+data_results_folder = 'data/results';         % 结果数据文件夹
+data_figures_folder = 'data/figures_Nature';  % 论文图片的数据
+data_template_surfaces_folder = 'data/template_surfaces_volumes';  % 体积表面模板
+data_template_eigenmodes_folder = 'data/template_eigenmodes';  % 特征模式模板
 
 
-%% LOAD SURFACES
-mesh_interest = 'inflated';
-[vertices, faces] = read_vtk(sprintf('data/template_surfaces_volumes/fsLR_32k_%s-%s.vtk', mesh_interest, hemisphere));
+%% 加载表面数据
+mesh_interest = 'inflated';  % 膨胀的网格
+% 读取3D模型文件
+[vertices, faces] = read_vtk( ...
+    sprintf('data/template_surfaces_volumes/fsLR_32k_%s-%s.vtk', ...
+    mesh_interest, hemisphere));
 surface_inflated.vertices = vertices';
 surface_inflated.faces = faces';
 
-mesh_interest = 'midthickness';
-[vertices, faces] = read_vtk(sprintf('data/template_surfaces_volumes/fsLR_32k_%s-%s.vtk', mesh_interest, hemisphere));
+mesh_interest = 'midthickness';  % 中等密度的网格
+[vertices, faces] = read_vtk( ...
+    sprintf('data/template_surfaces_volumes/fsLR_32k_%s-%s.vtk', ...
+    mesh_interest, hemisphere));
 surface_midthickness.vertices = vertices';
 surface_midthickness.faces = faces';
 
-%% LOAD EMPIRICAL AND RESULTS DATA
 
-% HCP subject list
+%% 加载实证数据和结果数据
+% 人脸连接组项目受试者列表
 subjectfile = sprintf('%s/subject_list_HCP.txt', data_empirical_folder);
 subject_list = dlmread(subjectfile);
 num_subjects = length(subject_list);
 
-% cortex and medial wall mask
-cortex = dlmread(sprintf('%s/fsLR_32k_cortex-%s_mask.txt', data_template_surfaces_folder, hemisphere));
+% 大脑皮层掩膜和内侧壁掩膜
+cortex = dlmread(sprintf('%s/fsLR_32k_cortex-%s_mask.txt', ...
+    data_template_surfaces_folder, hemisphere));  % 1*32492的01掩膜
 cortex_ind = find(cortex);
 num_vertices = length(cortex);
 
-% subjects in training and test sets
-subject_list_training = 1:200;
-subject_list_test = 201:255;
+% 训练集和测试集中的受试者
+subject_list_training = 1:200;  % 前200个受试者作为训练集
+subject_list_test = 201:255;    % 后55 个受试者作为测试集
 subject_list_all = 1:255;
 num_subjects_training = length(subject_list_training);
 num_subjects_test = length(subject_list_test);
 num_subjects_all = length(subject_list_all);
 
-% parcellation
-filename_common_parcellation = @(parc_name, hemisphere) sprintf('data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere);
+% 脑分割
+filename_common_parcellation = @(parc_name, hemisphere) sprintf( ...
+    'data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere);
 
 % EMPIRICAL: raw task-activation maps
-data_task = load(sprintf('%s/S255_tfMRI_ALLTASKS_raw_%s.mat', data_empirical_folder, hemisphere));
+data_task = load( ...
+    sprintf('%s/S255_tfMRI_ALLTASKS_raw_%s.mat', data_empirical_folder, hemisphere));
 
 % EMPIRICAL: sample resting-state fMRI
-data_dtseries = ft_read_cifti(sprintf('%s/subject_rfMRI_REST.dtseries.nii', data_empirical_folder));
+data_dtseries = ft_read_cifti( ...
+    sprintf('%s/subject_rfMRI_REST.dtseries.nii', data_empirical_folder));
 if strcmpi(hemisphere, 'lh')
     data_resting = data_dtseries.dtseries(data_dtseries.brainstructure==1,:);
 elseif strcmpi(hemisphere, 'rh')
@@ -143,8 +150,8 @@ model_wave_optim = load(sprintf('%s/model_wave_rest_optimization_%s.mat', data_r
 % RESULTS: spin rotations
 load(sprintf('%s/spin_perm_id_%s_10000_%s.mat', data_results_folder, parc_name, hemisphere), 'perm_id')
    
-%% DEFINE HCP TASK CONTRAST NAMES
 
+%% 定义人脸连接体项目任务对比的名字
 tasks = {'SOCIAL', 'MOTOR', 'GAMBLING', 'WM', 'LANGUAGE', 'EMOTION', 'RELATIONAL'};
 
 task_contrasts = get_HCP_task_contrasts;
