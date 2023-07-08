@@ -5,7 +5,6 @@
 %%% 注意 : 电脑的配置(比如屏幕分辨率)会影响所创建图的外观。
 %%%        因此，它们在视觉上不会与论文中的数字100%匹配，但科学内容是可复现的。
 %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% 初始化环境
 run(fullfile(fileparts(mfilename("fullpath")), 'init.m'));
@@ -69,11 +68,11 @@ num_subjects_all = length(subject_list_all);
 filename_common_parcellation = @(parc_name, hemisphere) sprintf( ...
     'data/parcellations/fsLR_32k_%s-%s.txt', parc_name, hemisphere);
 
-% EMPIRICAL: raw task-activation maps
+% 实证：原始任务激活图
 data_task = load( ...
     sprintf('%s/S255_tfMRI_ALLTASKS_raw_%s.mat', data_empirical_folder, hemisphere));
 
-% EMPIRICAL: sample resting-state fMRI
+% 实证：sample静息态fMRI
 data_dtseries = ft_read_cifti( ...
     sprintf('%s/subject_rfMRI_REST.dtseries.nii', data_empirical_folder));
 if strcmpi(hemisphere, 'lh')
@@ -84,76 +83,114 @@ end
 T = size(data_resting,2);
 clear data_dtseries
 
-% EMPIRICAL: sample neurovault maps
-temp = matfile(sprintf('%s/fsLR_32k_neurovault_maps_N=10000_%s.mat', data_empirical_folder, hemisphere));
+% 实证：sample neurovault图
+temp = matfile(sprintf('%s/fsLR_32k_neurovault_maps_N=10000_%s.mat', ...
+    data_empirical_folder, hemisphere));
 data_neurovault = temp.neurovault_maps(:,1:10);
 
-% EMPIRICAL: myelin map in HCPMMP1 (Glasser360 in our naming convention) atlas 
-data_myelin = load(sprintf('%s/myelin_%s.mat', data_empirical_folder, parc_name));
+% 实证: myelin map in HCPMMP1 (Glasser360 in our naming convention) atlas 
+data_myelin = load( ...
+    sprintf('%s/myelin_%s.mat', data_empirical_folder, parc_name));
 
-% RESULTS: basis sets     
-basis_geometric = dlmread(sprintf('%s/basis_geometric_midthickness-%s_evec_%i.txt', data_results_folder, hemisphere, num_modes));
-basis_connectome = load(sprintf('%s/basis_connectome_midthickness-%s_evec_%i.mat', data_results_folder, hemisphere, num_modes));
+% 结果: 基集
+basis_geometric = dlmread( ...
+    sprintf('%s/basis_geometric_midthickness-%s_evec_%i.txt', ...
+    data_results_folder, hemisphere, num_modes));
+basis_connectome = load( ...
+    sprintf('%s/basis_connectome_midthickness-%s_evec_%i.mat', ...
+    data_results_folder, hemisphere, num_modes));
 basis_connectome = basis_connectome.eig_vec;
-basis_connectome_density_matched = load(sprintf('%s/basis_connectome_density_matched_midthickness-%s_evec_%i.mat', data_results_folder, hemisphere, num_modes));
+basis_connectome_density_matched = load(sprintf( ...
+    '%s/basis_connectome_density_matched_midthickness-%s_evec_%i.mat', ...
+    data_results_folder, hemisphere, num_modes));
 basis_connectome_density_matched = basis_connectome_density_matched.eig_vec;
-basis_EDR = load(sprintf('%s/basis_connectome_EDR_midthickness-%s_evec_%i.mat', data_results_folder, hemisphere, num_modes));
+basis_EDR = load(sprintf('%s/basis_connectome_EDR_midthickness-%s_evec_%i.mat', ...
+    data_results_folder, hemisphere, num_modes));
 basis_EDR = basis_EDR.eig_vec;
-basis_PCA_task = load(sprintf('%s/basis_PCA_task_S255_training-%s_evec_%i.mat', data_results_folder, hemisphere, num_modes));
+basis_PCA_task = load( ...
+    sprintf('%s/basis_PCA_task_S255_training-%s_evec_%i.mat', ...
+    data_results_folder, hemisphere, num_modes));
 basis_PCA_task = basis_PCA_task.eig_vec;
-basis_PCA_resting = load(sprintf('%s/basis_PCA_resting_S255_training-%s_evec_%i.mat', data_results_folder, hemisphere, num_modes));
+basis_PCA_resting = load( ...
+    sprintf('%s/basis_PCA_resting_S255_training-%s_evec_%i.mat', ...
+    data_results_folder, hemisphere, num_modes));
 basis_PCA_resting = basis_PCA_resting.eig_vec;
-basis_Fourier = load(sprintf('%s/basis_Fourier_sphere-%s_evec_%i.mat', data_results_folder, hemisphere, num_modes));
+basis_Fourier = load( ...
+    sprintf('%s/basis_Fourier_sphere-%s_evec_%i.mat', ...
+    data_results_folder, hemisphere, num_modes));
 basis_Fourier = basis_Fourier.eig_vec;
 
-% RESULTS: task recon accuracy
-% eigenmodes
-load(sprintf('%s/task_reconstruction_corr_modes=%i_%s_%s.mat', data_results_folder, num_modes, parc_name, hemisphere), ...
+% 结果：任务重建精度
+% 特征模式
+load(sprintf('%s/task_reconstruction_corr_modes=%i_%s_%s.mat', ...
+            data_results_folder, num_modes, parc_name, hemisphere), ...
              'task_recon_corr_geometric', 'task_recon_corr_connectome', ...
-             'task_recon_corr_connectome_density_matched', 'task_recon_corr_EDR')
-% removing low frequency
-load(sprintf('%s/task_reconstruction_corr_remove_lowf_modes=%i_%s_%s.mat', data_results_folder, num_modes, parc_name, hemisphere), ...
-             'task_recon_corr_remove_lowf_geometric', 'task_recon_corr_remove_lowf_connectome', ...
-             'task_recon_corr_remove_lowf_connectome_density_matched', 'task_recon_corr_remove_lowf_EDR')    
-% removing high frequency
-load(sprintf('%s/task_reconstruction_corr_remove_highf_modes=%i_%s_%s.mat', data_results_folder, num_modes, parc_name, hemisphere), ...
-             'task_recon_corr_remove_highf_geometric', 'task_recon_corr_remove_highf_connectome', ...
-             'task_recon_corr_remove_highf_connectome_density_matched', 'task_recon_corr_remove_highf_EDR')  
+             'task_recon_corr_connectome_density_matched', ...
+             'task_recon_corr_EDR')
+% 移除低频
+load(sprintf('%s/task_reconstruction_corr_remove_lowf_modes=%i_%s_%s.mat', ...
+    data_results_folder, num_modes, parc_name, hemisphere), ...
+             'task_recon_corr_remove_lowf_geometric', ...
+             'task_recon_corr_remove_lowf_connectome', ...
+             'task_recon_corr_remove_lowf_connectome_density_matched', ...
+             'task_recon_corr_remove_lowf_EDR')    
+% 移除高频
+load(sprintf('%s/task_reconstruction_corr_remove_highf_modes=%i_%s_%s.mat', ...
+    data_results_folder, num_modes, parc_name, hemisphere), ...
+             'task_recon_corr_remove_highf_geometric', ...
+             'task_recon_corr_remove_highf_connectome', ...
+             'task_recon_corr_remove_highf_connectome_density_matched', ...
+             'task_recon_corr_remove_highf_EDR')
 
-% RESULTS: resting recon accuracy
-% eigenmodes
-load(sprintf('%s/resting_reconstruction_corr_modes=%i_%s_%s.mat', data_results_folder, num_modes, parc_name, hemisphere), ...
-             'resting_recon_corr_geometric', 'resting_recon_corr_connectome', ...
-             'resting_recon_corr_connectome_density_matched', 'resting_recon_corr_EDR')
+% 结果：静息态重建精度
+% 特征模式
+load(sprintf('%s/resting_reconstruction_corr_modes=%i_%s_%s.mat', ...
+    data_results_folder, num_modes, parc_name, hemisphere), ...
+             'resting_recon_corr_geometric', ...
+             'resting_recon_corr_connectome', ...
+             'resting_recon_corr_connectome_density_matched', ...
+             'resting_recon_corr_EDR')
 
-% RESULTS: power spectrum (HCP, NeuroVault, noise)
-load(sprintf('%s/spectrum_modes=%i_%s.mat', data_results_folder, num_modes, hemisphere), ...
+% 结果: 功率谱 (人类人借组项目, NeuroVault, noise)
+load(sprintf('%s/spectrum_modes=%i_%s.mat', ...
+    data_results_folder, num_modes, hemisphere), ...
              'spectrum_HCP', 'spectrum_neurovault', 'spectrum_noise')
 
-% RESULTS: parcellated empirical resting-state time series 
-load(sprintf('%s/S255_resting_empirical_%s.mat', data_results_folder, parc_name), 'resting_emp')
+% 结果：分割的实证静息态时间序列
+load(sprintf('%s/S255_resting_empirical_%s.mat', ...
+    data_results_folder, parc_name), ...
+    'resting_emp')
 
-% RESULTS: model
-model_fit = load(sprintf('%s/model_results_Glasser360_%s.mat', data_results_folder, hemisphere), ...
-                         'FC_emp', 'FCD_emp', 'FC_model_wave', 'FCD_model_wave', ...
+% 结果：模式
+model_fit = load(sprintf('%s/model_results_Glasser360_%s.mat', ...
+    data_results_folder, hemisphere), ...
+                         'FC_emp', 'FCD_emp', 'FC_model_wave', ...
+                         'FCD_model_wave', ...
                          'FC_model_mass', 'FCD_model_mass', 'KS');
          
-% RESULTS: wave model visual simulation
-model_wave_visual = load(sprintf('%s/model_wave_neural_visual_%s.mat', data_results_folder, hemisphere), ...
-                                 'tspan', 'simulated_neural_visual_vertex', 'simulated_neural_visual_parcel', ...
+% 结果：波动模型可视化仿真
+model_wave_visual = load(sprintf('%s/model_wave_neural_visual_%s.mat', ...
+    data_results_folder, hemisphere), ...
+                                 'tspan', 'simulated_neural_visual_vertex', ...
+                                 'simulated_neural_visual_parcel', ...
                                  'ROIS', 'ROI_names');
 
-% RESULTS: wave model optimization
-model_wave_optim = load(sprintf('%s/model_wave_rest_optimization_%s.mat', data_results_folder, hemisphere), ...
-                                'rs_vec', 'optim_edge_FC', 'optim_node_FC', 'optim_FCD');
+% 结果：波动模型的优化
+model_wave_optim = load(sprintf('%s/model_wave_rest_optimization_%s.mat', ...
+    data_results_folder, hemisphere), ...
+                                'rs_vec', ...
+                                'optim_edge_FC', 'optim_node_FC', 'optim_FCD');
 
-% RESULTS: spin rotations
-load(sprintf('%s/spin_perm_id_%s_10000_%s.mat', data_results_folder, parc_name, hemisphere), 'perm_id')
+% 结果: spin rotations（自旋-统计法定理、量子？）
+load(sprintf('%s/spin_perm_id_%s_10000_%s.mat', ...
+    data_results_folder, parc_name, hemisphere), 'perm_id')
    
 
-%% 定义人脸连接体项目任务对比的名字
-tasks = {'SOCIAL', 'MOTOR', 'GAMBLING', 'WM', 'LANGUAGE', 'EMOTION', 'RELATIONAL'};
+%% 定义人类连接体项目任务对比的名字
+tasks = {'SOCIAL', 'MOTOR', 'GAMBLING', 'WM', 'LANGUAGE', 'EMOTION', 
+    'RELATIONAL'};
 
+% 获得人脸连接体项目任务对比的名字
 task_contrasts = get_HCP_task_contrasts;
 
 contrasts = {};
@@ -177,7 +214,7 @@ for ii = 1:length(tasks)
     counter = counter + length(task_contrasts.(task));
 end
 
-% representative contrasts per task
+% 每个任务的代表性对比
 representative_contrasts = {'social_tom_random'; ...
                             'motor_cue_avg'; ...
                             'gambling_punish_reward'; ...
@@ -186,8 +223,8 @@ representative_contrasts = {'social_tom_random'; ...
                             'emotion_faces_shapes'; ...
                             'relational_match_rel'};
 
-%% DEFINE FIGURE-RELATED PROPERTIES
 
+%% 定义图形相关属性
 fontsize_axis = 10;
 fontsize_label = 12;
 
@@ -204,21 +241,21 @@ N_interest = [10, 100, 200];
 
 cmap1 = lines(7);
 cmap2 = cbrewer('qual', 'Set1', 8, 'pchip');
-colors = [cmap1(4,:); cmap2(3,:); cmap1(6,:); cmap2(1,:); cmap1(3,:); cmap2(7,:); cmap2(8,:); 0 0 0];
+colors = [cmap1(4,:); cmap2(3,:); cmap1(6,:); cmap2(1,:); cmap1(3,:); 
+    cmap2(7,:); cmap2(8,:); 0 0 0];
 colors2 = [0 0 0; cmap1([4,5,1:3,6:7],:)];
 
-% load parcellation
+% 加载大脑分割
 parc_name = 'Glasser360';
 parc = dlmread(filename_common_parcellation(parc_name, hemisphere));
 num_parcels = length(unique(parc(parc>0)));
 
 fig = figure('Position', [200 200 1000 800]);
 
-% =========================================================================
-% a left: downsampled surface
-% =========================================================================
-mode_list = [1,2,3,4,20];
-num_modes_to_plot = length(mode_list);
+
+% a 图左侧: 下采样表面
+mode_list = [1,2,3,4,20];  % 模式列表
+num_modes_to_plot = length(mode_list);  % 绘制5个模式
 
 factor_x = 1.02;
 factor_y = 1.08;
@@ -228,7 +265,9 @@ length_x = (0.77 - 1.*init_x)/(factor_x*(num_modes_to_plot-1) + 1);
 length_y = (0.98 - init_y)/(factor_y*(2-1) + 1);
 
 num_downsampled_vertices = 500;
-surface_downsampled = gifti(sprintf('%s/fsLR_%i_midthickness-%s.surf.gii', data_template_surfaces_folder, num_downsampled_vertices, hemisphere));
+% GIfTI几何文件格式类
+surface_downsampled = gifti(sprintf('%s/fsLR_%i_midthickness-%s.surf.gii', ...
+    data_template_surfaces_folder, num_downsampled_vertices, hemisphere));
 data_to_plot = ones(size(surface_downsampled.vertices,1),1);
 
 ax1 = axes('Position', [init_x init_y+factor_y*length_y*(2-1) length_x length_y]);    
