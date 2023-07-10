@@ -187,7 +187,7 @@ load(sprintf('%s/spin_perm_id_%s_10000_%s.mat', ...
    
 
 %% 定义人类连接体项目任务对比的名字
-tasks = {'SOCIAL', 'MOTOR', 'GAMBLING', 'WM', 'LANGUAGE', 'EMOTION', 
+tasks = {'SOCIAL', 'MOTOR', 'GAMBLING', 'WM', 'LANGUAGE', 'EMOTION', ...
     'RELATIONAL'};
 
 % 获得人脸连接体项目任务对比的名字
