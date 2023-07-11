@@ -1,10 +1,10 @@
-%%% generate_paper_figures_main_Nature.m
-%%%
-%%% 生成最后论文的主要图片的 MATLAB 脚本
-%%%
-%%% 注意 : 电脑的配置(比如屏幕分辨率)会影响所创建图的外观。
-%%%        因此，它们在视觉上不会与论文中的数字100%匹配，但科学内容是可复现的。
-%%%
+% generate_paper_figures_main_Nature.m
+%
+% 生成最后论文的主要图片的 MATLAB 脚本
+%
+% 注意 : 电脑的配置(比如屏幕分辨率)会影响所创建图的外观。
+%        因此，它们在视觉上不会与论文中的数字100%匹配，但科学内容是可复现的。
+%
 
 %% 初始化环境
 run(fullfile(fileparts(mfilename("fullpath")), 'init.m'));
@@ -70,7 +70,8 @@ filename_common_parcellation = @(parc_name, hemisphere) sprintf( ...
 
 % 实证：原始任务激活图
 data_task = load( ...
-    sprintf('%s/S255_tfMRI_ALLTASKS_raw_%s.mat', data_empirical_folder, hemisphere));
+    sprintf('%s/S255_tfMRI_ALLTASKS_raw_%s.mat', ...
+    data_empirical_folder, hemisphere));
 
 % 实证：sample静息态fMRI
 data_dtseries = ft_read_cifti( ...
