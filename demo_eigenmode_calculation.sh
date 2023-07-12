@@ -29,13 +29,9 @@
 #
 # 需要的输入：（1）vtk格式的皮层表面；
 #            （2）txt或gii格式的皮层掩膜（皮层值为1，内侧壁值为0）
-#
-### NOTE 1: If your input surface is not a vtk file (e.g., a FreeSurfer surf file or a gifti file), you can convert it to vtk 
-###         using the FreeSurfer command mris_convert.
-### NOTE 2: Surface structures for pial, white, sphere, inflated, very_inflated surfaces in fsLR_32k space are also provided in 
-###         data/template_surface_volumes for you to use. Just change the structure variable below.
-###
-### Original: James Pang, Monash University, 2022
+# 注意1：如果输入曲面不是vtk文件（例如，FreeSurfer surf文件或gifti文件），则可以使用FreeSurfer命令mris_convert将其转换为vtk。
+# 注意2：fsLR_32k空间中的pial、white、sphere、expanded、very_inflated曲面的曲面结构也在data/template_Surface_volumes中提供，
+# 供您使用。只需更改下面的结构变量。
 ################################################################################################################################
 
 surface_interest='fsLR_32k'
@@ -74,14 +70,13 @@ done
 
 
 # ################################################################################################################################
-# ### EXAMPLE 2
-# ### Calcute 31 volume eigenmodes of the thalamus (tha), the mask of which came from the Harvard-Oxford 2mm resolution atlas with 
-# ### 25% probability threshold registered on HCP data
+# ### 例子 2
+# 计算丘脑（tha）的31个体积特征模式，其掩模来自 Harvard-Oxford 2mm分辨率图谱，HCP数据上记录了25%的概率阈值
 # ###
-# ### Input needed: (1) volume mask of the thalamus in nifti format
+# ### 输入需要: (1) 丘脑nifti格式的体积掩蔽
 # ###
-# ### NOTE 1: Subcortical volume masks for striatum (striatum) and hippocampus (hippo) are also provided in 
-# ###         data/template_surface_volumes for you to use. Just change the structure variable below.
+# ### 注意1：data/template_surface_volumes中还提供了纹状体（striatum）和海马体（hippo）的皮层下体积掩模供您使用。
+# ### 只需更改下面的结构变量。
 # ################################################################################################################################
 
 # structure='tha'
