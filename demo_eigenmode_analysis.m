@@ -41,22 +41,26 @@ hemisphere = 'lh';
 num_modes = 50;
 
 
-%% 加载特征模式数据和empirical数据
+%% 加载特征模式数据和实证数据
 % 加载 Load 50 fsLR_32k 模板中等密度表面特征模式
-eigenmodes = dlmread(sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
+eigenmodes = dlmread( ...
+    sprintf('data/examples/fsLR_32k_midthickness-%s_emode_%i.txt', ...
+    hemisphere, num_modes));
 
 % 如果使用data/template_enginemodes中提供的200个模式，
 % 则将上面的行替换为下面的行，并使num_modes=200
-% eigenmodes = dlmread(sprintf('data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', hemisphere, num_modes));
+% eigenmodes = dlmread(sprintf( ...
+%     'data/template_eigenmodes/fsLR_32k_midthickness-%s_emode_%i.txt', ...
+%     hemisphere, num_modes));
 
 % 加载样本 单受试者 tfMRI z-stat 数据
 data = load(sprintf('data/examples/subject_tfMRI_zstat-%s.mat', hemisphere));
 data_to_reconstruct = data.zstat;
 
 
-%% 使用1到num_modes个特征模式计算重建β系数
+%% 使用 1 到 num_modes 个特征模式计算重建 β 系数
 recon_beta = zeros(num_modes, num_modes);
-for mode = 1:num_modes
+for mode = 1 : num_modes
     basis = eigenmodes(cortex_ind, 1:mode);
     
     recon_beta(1:mode,mode) = calc_eigendecomposition( ...
@@ -64,13 +68,13 @@ for mode = 1:num_modes
 end
 
 
-%% 使用1到num_mode个特征模式计算重建精度
+%% 使用 1 到 num_mode 个特征模式计算重建精度
 % 重建精度 = 经验数据和重建数据的相关性
 
 % 在顶点层次
-recon_corr_vertex = zeros(1, num_modes);               
+recon_corr_vertex = zeros(1, num_modes);
 for mode = 1:num_modes
-    recon_temp = eigenmodes(cortex_ind, 1:mode)*recon_beta(1:mode,mode);
+    recon_temp = eigenmodes(cortex_ind, 1:mode) * recon_beta(1:mode,mode);
 
     recon_corr_vertex(mode) = corr(data_to_reconstruct(cortex_ind), recon_temp);
 end
@@ -121,7 +125,7 @@ hemisphere = 'lh';
 num_modes = 50;
 
 
-%% 加载特征模式和经验数据
+%% 加载特征模式和实证数据
 
 % 加载50个 fsLR_32k 模板的中等密度表面特征模式
 eigenmodes = dlmread( ...
@@ -141,7 +145,7 @@ data_to_reconstruct = data.timeseries;
 T = size(data_to_reconstruct, 2);
 
 
-%% 使用1到 num_modes 个特征模式计算重建β系数
+%% 使用 1 到 num_modes 个特征模式计算重建 β 系数
 recon_beta = zeros(num_modes, T, num_modes);
 for mode = 1:num_modes
     basis = eigenmodes(cortex_ind, 1:mode);
@@ -151,7 +155,7 @@ for mode = 1:num_modes
 end
 
 
-%% 使用1到num_mode个特征模式本征模计算重建精度
+%% 使用 1 到 num_mode 个特征模式本征模计算重建精度
 % 重建精度 = 经验数据和重建数据的相关性
 
 % 在分割层次

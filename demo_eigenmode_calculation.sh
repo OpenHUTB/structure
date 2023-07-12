@@ -3,18 +3,18 @@
 ################################################################################################################################
 ### demo_eigenmode_calculation.sh
 ###
-### Bash script to demonstrate how to calculate the eigenmodes of a cortical surface and a subcortical volume.
+### Bash脚本演示如何计算皮层表面和皮层下体积的特征模式
 ### 
-### NOTE 1: This script has several dependencies on open-source external packages (within and outside the Python environment).
-###       Please see the Dependencies portion of the README file of the repository before running this script.
-### NOTE 2: If you want to run EIGENMODES OF A SURFACE, EXAMPLE 1 is for you
-### NOTE 3: If you want to run EIGENMODES OF A VOLUME, EXAMPLE 2 is for you
+### 注意 1: 该脚本对开源外部包（Python环境内部和外部）有几个依赖项。
+###       在运行此脚本之前，请参阅存储库的自述文件的“依赖项”部分。
+### 注意 2: 例子1计算表面的特征模式
+### 注意 3: 例子2计算体积的特征模式
 ###
 ### Original: James Pang, Monash University, 2022
 ################################################################################################################################
 
 
-### REMINDER:
+### 提示:
 # If using an HPC system, load the gmsh, python, freesurfer, and connectome workbench modules first
 # An example syntax is shown below (syntax depends on your HPC system)
 # module load gmsh
@@ -24,13 +24,12 @@
 
 
 ################################################################################################################################
-### EXAMPLE 1
-### Calcute 200 surface eigenmodes of the left and right fsLR_32k template midthickness surface with and without a mask, 
-### which distinguishes the cortex from the medial wall. It is advisable to apply the cortex mask.
-###
-### Inputs needed: (1) cortical surface in vtk format
-###                (2) cortex mask in txt or gii format (has values = 1 for cortex and 0 for medial wall)
-###
+### 例子 1
+# 计算左右fsLR_32k模板中等厚表面的200个表面特征模式，包括和不包括掩模，这将皮层与内侧壁区分开来。建议使用皮层掩膜。
+#
+# 需要的输入：（1）vtk格式的皮层表面；
+#            （2）txt或gii格式的皮层掩膜（皮层值为1，内侧壁值为0）
+#
 ### NOTE 1: If your input surface is not a vtk file (e.g., a FreeSurfer surf file or a gifti file), you can convert it to vtk 
 ###         using the FreeSurfer command mris_convert.
 ### NOTE 2: Surface structures for pial, white, sphere, inflated, very_inflated surfaces in fsLR_32k space are also provided in 

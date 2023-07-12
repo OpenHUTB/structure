@@ -1,18 +1,16 @@
 function coeffs = calc_eigendecomposition(data, eigenvectors, method)
 % calc_eigendecomposition.m
 %
-% Decompose data using eigenvectors and calculate the coefficient of 
-% contribution of each vector
+% 使用特征向量分解数据，并计算每个向量的贡献系数
 %
-% Inputs: data         : data [MxP]
-%                        M = number of points, P = number of independent data
-%         eigenvectors : eigenvectors [MxN]
-%                        M = number of points, N = number of eigenvectors
-%         method       : type of calculation
+% 输入:   数据          : 数据 [MxP]
+%                        M = 点的数目, P = 独立数据的数目
+%         特征向量      : 特征向量 [MxN]
+%                        M = 点的数目, N = 特征向量的数目
+%         方法         : 计算类型
 %                        'matrix', 'matrix_separate', 'regression'
-% Output: coeffs       : coefficient values [NxP]
+% 输出: coeffs         : 系数值 [NxP]
 %
-% Original: James Pang, Monash University, 2022
 
 %%
 

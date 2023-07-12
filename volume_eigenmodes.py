@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Calculate the eigenmodes of a volume
+计算体积的特征模式
 
 @author: James Pang and Kevin Aquino, Monash University, 2022
 """

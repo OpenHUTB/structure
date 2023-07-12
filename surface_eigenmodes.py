@@ -1,12 +1,14 @@
-#!/usr/bin/env python3
+#! D:\work\matlab\software\python\python.exe
 # -*- coding: utf-8 -*-
 """
-Calculate the eigenmodes of a cortical surface
+计算皮层表面的特征模式
 
 @author: James Pang and Kevin Aquino, Monash University, 2022
 """
 
 # Import all the libraries
+# D:\work\matlab\software\python\python.exe -m pip install lapy==0.6.0
+# Version 1.0 TriaIO and TetIO have been deprecated
 from lapy import Solver, TriaIO
 import numpy as np
 import nibabel as nib
@@ -210,8 +212,9 @@ def main(raw_args=None):
     
    
 if __name__ == '__main__':
-    
-    # running via commandline
+
+    # C:/workspace/structure/data/template_surfaces_volumes/fsLR_32k_midthickness-lh.vtk  C:/workspace/structure/data/output_template_eigenmodes/fsLR_32k_midthickness-lh_eval_200.txt  C:/workspace/structure/data/output_template_eigenmodes/fsLR_32k_midthickness-lh_emode_200.txt    							 -save_cut 0 -N 200 -is_mask 1  -mask  C:/workspace/structure/data/template_surfaces_volumes/fsLR_32k_cortex-lh_mask.txt
+    # 通过命令行运行
     main()
     
 
