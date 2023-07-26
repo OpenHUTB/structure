@@ -594,8 +594,8 @@ LaPy 在表面网格上使用三次有限元方法，在插值光滑流形上实
 
 然后，我们将实证图的功率谱与具有不同平滑级别替代随机图的功率谱进行比较，以进一步研究长波长模式的相关性。
 特别是，我们在体积空间中生成了 10,000 个随机映射，我们以半高全宽范围从 0 到 50 mm 的核大小对其进行平滑，并投影到 fsLR-32k CIFTI 空间上。
-然后，我们计算了实证图和替代图之间功率谱的均方对数误差 (Mean Square Logarithmic Error, MSLE)。
-补充信息~\ref{sec:modal_power_spectra}~中提供了该分析和均方对数误差测量的更多详细信息。
+然后，我们计算了实证图和替代图之间功率谱的\textit{均方对数误差} (Mean Square Logarithmic Error, MSLE)。
+补充信息~\ref{sec:modal_power_spectra}~中提供了该分析和\textit{均方对数误差}测量的更多详细信息。
 
 
 \subsection{长波模式和短波模式的贡献} \label{sec:wavelength_contributions}
@@ -846,11 +846,11 @@ $ k_2 = 0.53 $
 
 \subsection{建模刺激诱发动力学} \label{sec:modelling_stimulus}
 
-我们还评估了波模型捕捉诱发神经反应的经典特性的程度。
-具体来说，我们使用优化的波模型（$ r_s = 28.9 mm $）来研究响应施加到左侧初级视觉皮层的刺激的神经动力学。
-特别是，刺激 $ Q(\boldsymbol{r},t) $ 是一个 1 ms 脉冲（$ t = 1–2 ms $），幅值为 $ 20 s^{-1} $（结果对幅值变化很稳健），仅限于皮层表面的顶点 由 HCP-MMP1 分区定义的 初级视觉皮层区域。
+我们还评估了波动模型捕捉诱发神经响应经典特性的程度。
+具体来说，我们使用优化的波动力学模型（$ r_s = 28.9$ 毫秒）来研究响应施加到左侧初级视觉皮层刺激的神经动力学。
+特别是，刺激 $ Q(\textbf{r},t) $ 是一个 1 毫秒脉冲（$ t = 1–2 ms $），幅值为 $ 20 s^{-1} $（结果对幅值变化很稳健），仅限于皮层表面的顶点 由 HCP-MMP1 分区定义的 初级视觉皮层区域。
 我们以 0.1 毫秒的分辨率在 100 毫秒的时间段内进行了仿真。 
-最后，我们使用 HCP-MMP1 分区将活动 $ \phi(\boldsymbol{r},t) $ 分区为 180 个区域。
+最后，我们使用 HCP-MMP1 分区将活动 $ \phi(\textbf{r},t) $ 分区为 180 个区域。
 
 
 我们比较了每个大脑区域的活动概况（幅值与时间），重点关注活动达到峰值幅值的时间（即达到峰值的时间）。
@@ -858,50 +858,50 @@ $ k_2 = 0.53 $
 这些区域与先前使用束追踪数据和非线性网络建模在猕猴新皮层视觉层次中识别的区域非常相似\cite{chaudhuri2015large}。
 
 
-我们还将峰值响应时间的区域估计值与 T1w:T2w 值进行了比较，这是一种对皮层内髓磷脂含量敏感的非侵入性测量\cite{glasser2011mapping}，也是皮层层次等级\cite{burt2018hierarchy}的良好代表。
+我们还将峰值响应时间区域的估计值与 T1w:T2w 值进行了比较，这是一种对皮层内髓磷脂含量敏感的非侵入性测量\cite{glasser2011mapping}，也是皮层层次等级\cite{burt2018hierarchy}的良好代表。
 fsLR-32k 空间中的髓磷脂图是从\textit{人类连接组项目} 数据集27,28 中获得的，然后使用 HCP-MMP1 分区进行分区。
 我们通过斯皮尔曼等级相关性量化了达到峰值时间的区域值与髓磷脂含量之间的关系。
 通过与使用空间约束旋转测试方法获得的 10,000 个相关值的零分布进行比较来评估相关性的统计显着性\cite{vavsa2018adolescent,alexander2018testing}。
 该方法计算一张地图与另一张地图的随机空间旋转版本之间的相关性，从而保留地图中地块的空间关系。
-所得 $ P $ 值 Pspin 是大于实证相关值的零相关值的分数。
-最后，我们重复了上述统计测试，包括所有大脑区域（即，不限于视觉层次大脑区域），以确保我们的发现不是由我们对感兴趣区域（ROI）的特定选择驱动的。
+所得 $ P $ 值 $ P_{spin} $ 是大于实证相关值的零相关值分数。
+最后，我们重复了上述统计测试，包括所有大脑区域（即，不限于视觉层次大脑区域），以确保我们的发现不是由我们对感兴趣区域的特定选择驱动的。
 这是一个更为保守的测试，因为并非所有大脑区域都对视觉刺激表现出强烈的诱发反应。
 
 
 \subsection{非新皮层结构几何特征模式的估计} \label{sec:geometric_estimation}
 
 我们将特征模式分析扩展到新皮层以外的区域，特别关注皮层下层（丘脑和纹状体）和古皮层（海马体）。
-与可以建模为 2D 片的皮层带不同，这些结构是实体 3D 对象。 
-因此，我们使用四面体网格而不是基于表面的三角形网格来计算\textit{几何特征模式}，以解释非新皮层结构的完整 3D 几何结构\cite{wachinger2015brainprint}，如下所述。
+与可以建模为二维薄片的皮层带不同，这些结构是实体三维对象。 
+因此，如下所述，我们使用四面体网格而不是基于表面的三角形网格来计算\textit{几何特征模式}，以解释非新皮层结构的完整三维几何结构\cite{wachinger2015brainprint}。
 
 
-我们首先使用概率\href{https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases}{哈佛-牛津皮层下图集}在每个半球生成丘脑、纹状体和海马体的体积二元掩模。
-掩模中包含有 25\% 或更高概率属于这些结构的体素。
-我们使用 FreeSurfer 的 mri\_mc 函数（该函数实现了 marching-cubes 算法）通过对体积掩模进行细分来构造 2D 表面，然后使用\href{https://gmsh.info/}{Gmsh 软件}将 2D 表面转换为 3D 四面体网格 。
-然后，我们使用 LaPy python 库在每个非新皮层结构的四面体网格上求解方程\ref{eq:1}，以获得特征模及其相应的特征值。
+我们首先使用概率\href{https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases}{哈佛-牛津皮层下图集}在每个半球生成丘脑、纹状体和海马体的体积二进制掩模。
+掩模中包含有属于这些结构 25\% 或更高概率的体素。
+我们使用 FreeSurfer 的 mri\_mc 函数（该函数实现了 marching-cubes 算法）通过对体积掩模进行细分来构造二维表面，然后使用\href{https://gmsh.info/}{Gmsh 软件}将二维表面转换为三维四面体网格。
+然后，我们使用 LaPy python 库在每个非新皮层结构的四面体网格上求解方程~\ref{eq:1}，以获得特征模式及其相应的特征值。
 最后，我们通过插值将四面体空间中的特征模式投影回自然体积空间。
-因此，所产生的特征模式在空间上通过构成每个非新皮层结构体积的 3D 体素而变化。
+因此，所产生的特征模式在空间上通过构成每个非新皮层结构体积的三维体素而变化。
 在这部分研究中，我们放弃了第一个恒定模式，并在分析中使用了接下来的 20 个模式。
 
 
 \subsection{非新皮层结构的功能组织映射} \label{sec:functional_mapping}
 
-非新皮层结构中功能磁共振成像的信噪比通常比新皮层结构中的信噪比弱\cite{uugurbil2013pushing}。
-此外，由于功能磁共振成像的分辨率有限以及常见功能磁共振成像处理方法引起的空间平滑，细粒度任务激活通常很难在这些较小的结构中解决。
-因此，为了有效地绘制丘脑、纹状体和海马体的功能组织，我们使用了每个结构中静息状态fMRI信号的连接映射\cite{haak2018connectopic} 以获得它们的主要功能模式（通常称为梯度，尽管这些模式捕捉了FC图谱逐点相似性的空间变化）。
+非新皮层结构中功能性核磁共振成像的信噪比通常比新皮层结构中的信噪比弱\cite{uugurbil2013pushing}。
+此外，由于功能性核磁共振成像的分辨率有限以及常见功能性核磁共振成像处理方法引起的空间平滑，细粒度任务激活通常很难在这些较小的结构中解决。
+因此，为了有效地绘制丘脑、纹状体和海马体的功能组织，我们使用了每个结构中静息状态fMRI信号的连接映射\cite{haak2018connectopic} 以获得它们的主要功能模式（通常称为梯度，尽管这些模式捕捉了功能耦合图谱逐点相似性的空间变化）。
 这项技术和相关程序已在过去的工作中广泛用于研究这些结构的功能组织\cite{vos2018anatomical,yang2020thalamic,oldehinkel2022mapping}。
 
 
 我们按照参考文献中描述的程序将连接映射应用于\textit{人类连接组项目}个体的体积体素静息态 fMRI 数据\cite{haak2018connectopic}。
-具体来说，对于每个个体和非新皮层 ROI（即丘脑、纹状体和海马体），我们构建了一个 ROI 时间序列数据矩阵 $ A $，大小为 $ T \times N $，其中 $ T $ 是时间帧数，$ N $ 是 ROI 中的体素数量。
-类似地，对于每个个体，我们构建了大小为 $ T \times M $ 的灰质时间序列数据矩阵 $ B $，其中 $ M $ 是 ROI 之外的灰质体素的数量。
-由于 $ M $ 通常很大（103 或以上），因此我们使用奇异值分解来降低 $ B $ 的维数，以构造大小为 $ T \times (T – 1) $ 的矩阵 $ B $。
-然后使用 $ A $ 和 $ B $ 的皮尔逊相关性计算 ROI 内每个体素的连通性指纹，以获得大小为 $ N \times (T – 1) $ 的矩阵 $ C $。
-使用 $ \eta^2 $ 系数 \cite{alexander2018testing} 计算每对 ROI 体素之间连接指纹的相似性，从而得到大小为 $ N \times N $ 的矩阵 $ S $。
+具体来说，对于每个个体和非新皮层\textit{感兴趣区域}（即丘脑、纹状体和海马体），我们构建了一个\textit{感兴趣区域}时间序列数据矩阵 $ A $，大小为 $ T \times N $，其中 $ T $ 是时间帧数，$ N $ 是感兴趣区域中的体素数量。
+类似地，对于每个个体，我们构建了大小为 $ T \times M $ 的灰质时间序列数据矩阵 $ B $，其中 $ M $ 是\textit{感兴趣区域}之外的灰质体素的数量。
+由于 $ M $ 通常很大（$ 10^3 $ 或以上），因此我们使用奇异值分解来降低 $ B $ 的维数，以构造大小为 $ T \times (T - 1) $ 的矩阵 $ B $。
+然后使用 $ A $ 和 $ B $ 的皮尔逊相关性计算\textit{感兴趣区域}内每个体素的连通性指纹，以获得大小为 $ N \times (T - 1) $ 的矩阵 $ C $。
+使用 $ \eta^2 $ 系数 \cite{alexander2018testing} 计算每对\textit{感兴趣区域}体素之间连接指纹的相似性，从而得到大小为 $ N \times N $ 的矩阵 $ S $。
 $ \eta^2 $ 系数表示一个连接剖面中的方差由另一个连接剖面中的方差所占的比例。
 然后我们计算所有个体的平均 $ S $。 
-使用拉普拉斯特征图算法\cite{belkin2003laplacian}的非线性流形学习过程应用于每个 ROI 的 $ S $ 矩阵，以计算其特征向量和特征值。
-特征向量表示 ROI 的功能模式（称为功能梯度），根据它们解释的 功能耦合相似性的方差进行排序。
+使用拉普拉斯特征图算法\cite{belkin2003laplacian}的非线性流形学习过程应用于每个\textit{感兴趣区域}的 $ S $ 矩阵，以计算其特征向量和特征值。
+特征向量表示\textit{感兴趣区域}的功能模式（称为功能梯度），根据它们解释的 功能耦合相似性的方差进行排序。
 我们仅分析了前 20 个非常量梯度，以便能够与几何特征模式进行直接比较。
 基于功能耦合的梯度分析的典型应用很少考虑超过前五个梯度\cite{haak2018connectopic,margulies2016situating}。
 
@@ -914,9 +914,9 @@ $ \eta^2 $ 系数表示一个连接剖面中的方差由另一个连接剖面中
 
 \subsection{数据获取} \label{sec:data_availability}
 
-原始和预处理的 HCP 数据可以通过 \href{https://db. human connectome.org/}{HCP} 访问。
+原始和预处理的人类连接组项目数据可以通过 \href{https://db.human connectome.org/}{HCP} 访问。
 NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
-用于复制研究结果的源数据可在\href{https://github.com/NSBLab/BrainEigenmodes}{github}  和 \href{https://osf.io/xczmp/}{osf} 上公开获取。
+用于复现研究结果的源数据可在\href{https://github.com/NSBLab/BrainEigenmodes}{github}  和 \href{https://osf.io/xczmp/}{osf} 上公开获取。
 
 \subsection{代码获取} \label{sec:code_availability}
 
@@ -1014,10 +1014,10 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 	\textbf{a}，47 个\textit{人类连接组项目}任务对比图（上）和来自 NeuroVault 数据库的 10,000 个对比图（下）的归一化平均功率谱。
 	彩色线对应于应用具有不同半高全宽 (full-width at
 	half-maximum, FWHM) 的空间平滑滤波器后的替代数据的功率谱。
-	\textbf{b}，平均均方对数误差 (MSLE) 作为\textit{人类连接组项目}和 NeuroVault 对比图的归一化平均功率谱与平滑替代数据之间的 FWHM 的函数。
-	\textbf{c}，分别在 47 个\textit{人类连接组项目}和 10,000 个 NeuroVault 对比图和平滑替代数据之间的功率谱之间获得 MSLE。
+	\textbf{b}，平均\textit{均方对数误差}作为\textit{人类连接组项目}和 NeuroVault 对比图的归一化平均功率谱与平滑替代数据之间的 FWHM 的函数。
+	\textbf{c}，分别在 47 个\textit{人类连接组项目}和 10,000 个 NeuroVault 对比图和平滑替代数据之间的功率谱之间获得\textit{均方对数误差}。
 	每行代表不同的任务对比图。
-	这些线对应于每张图的 MSLE 最小的 FWHM。}
+	这些线对应于每张图的\textit{均方对数误差}最小的 FWHM。}
 	\label{fig:extended_fig_8}
 \end{figure}
 
@@ -1057,20 +1057,20 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 \subsection{神经场理论} \label{sec:NFT}
 
 \textit{神经场理论}是一类生物物理模型，它将中尺度到宏观尺度的大脑动力学（从约 0.5 毫米到整个大脑）解释为空间扩展、随时间变化的神经活动场的结果\cite{beurle1956properties,da1976models,wright1995simulation,deco2008dynamic,jirsa1996field,robinson1997propagation,robinson2005multiscale}。
-一般 \textit{神经场理论} 关注神经群体的局部平均动态，例如平均放电率和体细胞电压。
+一般\textit{神经场理论}关注神经群体的局部平均动态，例如平均放电率和体细胞电压。
 重要的生物物理过程，例如树突和突触过程、轴突传导延迟以及细胞体中树突电流的总和，通过一系列原则性的数学简化被纳入局部群体平均值。
 
 
 \textit{神经场理论} 将尺度大于 0.5 毫米的神经组织视为具有局部特性和点对点白质连接性的空间连续体，该连接性随着距离的增加而平滑减小。
-虽然可以通过 \textit{神经场理论} 处理更一般的情况，包括与皮层下结构的相互作用\cite{robinson2005multiscale,sanz2018nftsim}，但最简单的版本仅包括皮层，并假设其连接性是均匀且各向同性的，连接强度仅取决于点之间的距离，并且通常会递减，它们的间隔大约呈指数关系\cite{deco2008dynamic,braitenberg2013cortex,henderson2014relations,robinson2019physical}。
-这种关系在功能 MRI (fMRI) 的背景下尤其重要，其中动态相对较慢，并且活动连接的强度具有大约指数\cite{braitenberg2013cortex,robinson2019physical,robinson2012interrelating}的空间依赖性。
-由此产生的活动场的时空演化已被 Robinson 及其同事开发的 \textit{神经场理论} 的生理约束变体有效地描述了\cite{beurle1956properties,da1976models,jirsa1996field,robinson1997propagation,nunez1974brain}，该变体包含受外部输入和本地刺激后穿过皮层片传播的阻尼波。
+虽然可以通过\textit{神经场理论}处理更一般的情况，包括与皮层下结构的相互作用\cite{robinson2005multiscale,sanz2018nftsim}，但最简单的版本仅包括皮层，并假设其连接性是均匀且各向同性的，连接强度仅取决于点之间的距离，并且通常会递减，它们的间隔大约呈指数关系\cite{deco2008dynamic,braitenberg2013cortex,henderson2014relations,robinson2019physical}。
+这种关系在功能性核磁共振成像的背景下尤其重要，其中动态变化相对较慢，并且活动连接的强度具有大约指数\cite{braitenberg2013cortex,robinson2019physical,robinson2012interrelating}的空间依赖性。
+由此产生的活动场的时空演化已被 Robinson 及其同事开发的\textit{神经场理论} 的生理约束变体有效地描述了\cite{beurle1956properties,da1976models,jirsa1996field,robinson1997propagation,nunez1974brain}，该变体包含受外部输入和本地刺激后穿过皮层片传播的阻尼波。
 皮层或皮层丘脑动力学。
-在过去的二十年中，这种 \textit{神经场理论} 公式成功地以统一的方式解释和统一了各种实验现象，包括但不限于脑电图 (EEG) 频谱\cite{robinson2001prediction,pang2018neural}、诱发电位\cite{rennie2002unified,mukta2020evoked}、唤醒状态\cite{abeysuriya2015physiologically,assadzadeh2018necessity} 、全脑有效连接\cite{robinson2012interrelating}、皮层活动波\cite{gabay2018dynamics} 和睡眠状态重组\cite{robinson2005multiscale}。
-由于中尺度到宏观尺度的大脑动力学在正常条件下（不包括癫痫样动力学）\cite{robinson2019physical}大约在线性状态下运行，Robinson 等人。
+在过去的二十年中，这种\textit{神经场理论} 公式成功地以统一的方式解释和统一了各种实验现象，包括但不限于脑电图 (EEG) 频谱\cite{robinson2001prediction,pang2018neural}、诱发电位\cite{rennie2002unified,mukta2020evoked}、唤醒状态\cite{abeysuriya2015physiologically,assadzadeh2018necessity} 、全脑有效连接\cite{robinson2012interrelating}、皮层活动波\cite{gabay2018dynamics} 和睡眠状态重组\cite{robinson2005multiscale}。
+由于中尺度到宏观尺度的大脑动力学在正常条件下（不包括癫痫样动力学）\cite{robinson2019physical}大约在线性状态下运行。
 \textit{神经场理论}表明，活动的空间特征模式（模式）自然地出现在大脑中\cite{wang2016brain,roberts2017consistency}，其属性由大脑的内在几何形状和拓扑结构决定\cite{preti2019decoupling,gabay2018dynamics}。
 这些模式是本研究感兴趣的主题。
-我们建议读者查阅大量 \textit{神经场理论}文献以进行更详细的讨论（参见示例\cite{wright1995simulation,jirsa1996field,robinson1997propagation,robinson2016eigenmodes,gabay2017cortical,wang2016brain,honey2007network,van2013wu,glasser2016multi,naze2021robustness}以及其中引用的参考文献）。
+我们建议读者查阅大量\textit{神经场理论}文献以进行更详细的讨论（参见示例\cite{wright1995simulation,jirsa1996field,robinson1997propagation,robinson2016eigenmodes,gabay2017cortical,wang2016brain,honey2007network,van2013wu,glasser2016multi,naze2021robustness}以及其中引用的参考文献）。
 
 
 
@@ -1084,48 +1084,53 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 我们总共分析了 47 个对比，其中包括 7 个关键对比。
 关键对比代表了文献中常用的那些来映射任务引发的主要激活模式。
 有关每项任务和对比的详细信息，请参阅\cite{barch2013function}。
-该分析是在通过\href{https://fsl.fmrib.ox.ac.uk/}{FSL} 交叉运行（2 级）FEAT 分析\cite{woolrich2004multilevel}计算的各个任务激活图上进行的。
-我们使用\textit{人类连接组项目}提供的任务图，通过多模式表面匹配\cite{robinson2018multimodal}，将最小平滑 (2 mm) 映射到 fsLR-32k CIFTI 空间，每个半球有 32,492 个顶点。
+该分析是在通过\href{https://fsl.fmrib.ox.ac.uk/}{FSL}交叉运行（2 级）FEAT 分析\cite{woolrich2004multilevel}计算的各个任务激活图上进行的。
+我们使用\textit{人类连接组项目}提供的任务图，通过多模式表面匹配\cite{robinson2018multimodal}，将最小平滑 (2毫米) 映射到 fsLR-32k CIFTI 空间，每个半球有 32,492 个顶点。
+
 
 
 \subsubsection{无任务静息态数据} \label{sec:sup_2_2}
-我们使用从左到右 (LR) 编码方向分析了在一次扫描过程中获得的无任务静息态 fMRI。
+
+我们使用从左到右编码方向分析了在一次扫描过程中获得的无任务静息态 fMRI。
 扫描持续 14.4 分钟，总共 1200 个时间帧。
-简而言之，静息态 fMRI 采集参数为：各向同性体素大小为 2 mm，重复时间 (Tepetition Time, TR) 为 720 ms，回波时间 (Echo Time, TE) 为 33.1 ms。
+简而言之，静息态 fMRI 采集参数为：各向同性体素大小为 2 毫米，重复时间 (Tepetition Time, TR) 为 720 毫秒，回波时间 (Echo Time, TE) 为 33.1 毫秒。
 所有其他采集参数都可以在\cite{van2013wu}中找到。
 每个人的数据均由\textit{人类连接组项目}通过其最小预处理管道进行预处理\cite{glasser2013minimal}，并且还经过 ICA-FIX 来纠正结构噪声和残余混杂\cite{salimi2014automatic}。
 没有执行额外的平滑。
 与任务诱发数据类似，静息态数据被映射到 fsLR-32k CIFTI 空间。
-因此，每个人的数据被表示为每个半球上大小为 32,492 个顶点 × 1200 个时间帧的矩阵。
+因此，每个人的数据被表示为每个半球上大小为 32,492 个顶点 $ \times $ 1200 个时间帧的矩阵。
 
 
 \subsubsection{连接组数据} \label{sec:sup_2_3}
 
 为了导出连接组特征模式，如\cite{tian2021high}中提供的，我们使用了通过概率纤维束成像从\textit{磁共振弥散成像}数据导出的单个连接组。
-简而言之，\textit{磁共振弥散成像}采集参数为：各向同性体素大小为 1.25 mm，重复时间为 5520 ms，回波时间为 89.5 ms，b 权重为 1000、2000、3000 s/mm2 和 6 次 b0 扫描。
+简而言之，\textit{磁共振弥散成像}采集参数为：各向同性体素大小为 1.25 毫米，重复时间为 5520 毫秒，回波时间为 89.5 毫秒，\textit{b 权重}为 1000、2000、3000 s/mm2 和 6 次 \textit{b0扫描}。
 所有其他采集参数均可在\cite{van2013wu}中找到。
 每个人的数据均由\textit{人类连接组项目}通过其扩散预处理流程 (v3.19.0) \cite{glasser2013minimal}进行预处理。
-为了生成连接组，使用 MRtrix 和概率纤维束描记术生成纤维束图，500 万条流线连接解剖学上不同的流线 脑区域、多壳多组织 (MSMT) 约束球形反卷积 (CSD) 解剖约束纤维束成像 (ACT) 和纤维方向分布算法的二阶积分 (iFOD2)。
+为了生成连接组，使用 MRtrix 和概率纤维束描记术生成纤维束图，500 万条流线连接解剖学上不同的流线 脑区域、多壳多组织 (Multi-Shell Multi-Tissue, MSMT) 约束球形反卷积 (Constrained Spherical Deconvolution, CSD) 解剖约束纤维束成像 (Anatomically Constrained Tractography, ACT) 和纤维方向分布算法的二阶积分 (2nd-order integration over Fiber Orientation Distributions, iFOD2)。
 详细信息请参见\cite{tian2021high}。
 标准 MNI 空间中的 fsLR-32k 皮层表面网格用于定义灰质-白质界面。
-对于每个个体，每个半球生成的流线被映射到表面网格上最近的顶点，以构建高分辨率加权连接组（32,492 × 32,492 矩阵大小和代表流线总数的权重）。
+对于每个个体，每个半球生成的流线被映射到表面网格上最近的顶点，以构建高分辨率加权连接组（32,492 $ \times $ 32,492 矩阵大小和代表流线总数的权重）。
 详细信息请参见\cite{tian2021high}。
+
 
 
 \subsection{个体特异性皮层特征模式} \label{sec:individual_specific}
-\textit{亥姆霍兹方程}~\ref{eq:1}可用于求解任何皮层表面网格模型的特征模式，但网格几何形状的变化可能会改变生成的特征值 $ \lambda $ 和特征模式特征模式 $ \psi $。
+
+\textit{亥姆霍兹方程}~\ref{eq:1}~可用于求解任何皮层表面网格模型的特征模式，但网格几何形状的变化可能会改变生成的特征值 $ \lambda $ 和特征模式 $ \psi $。
 因此，从各个对象表面导出的特征值和特征模式，特别是在非常短的波长下，将有所不同，并且不能直接比较\cite{henderson2022empirical,chen2022individuality}。
-为了简单起见，这里我们使用从公共模板表面生成的特征模式（参见方法\ref{sec:derivation}中的“皮层几何特征模式的推导”）。
+为了简单起见，这里我们使用从公共模板表面生成的特征模式（参见方法~\ref{sec:derivation}~中的“皮层几何特征模式的推导”）。
 虽然这允许比较不同个体的数据重建，但它掩盖了与皮层几何个体差异相关的任何潜在影响。
 然而，补充图 \ref{fig:supp_3} 显示，使用从各个皮层表面导出的\textit{几何特征模式}不会改变研究的总体结果，这表明，就目前的目的而言，从总体平均模板表面导出的特征模式代表了基本几何特征模式的良好近似。
 尽管如此，为了强调个体几何结构的某些细微差别，我们在补充图\ref{fig:supp_4} 中表明，在某些个体中，200 个个体特定的特征模式的表现略好于模板导出的特征模式，特别是在重建任务激活图方面，但在重建静息状态活动方面则不然。 。 
-然而，补充图\ref{fig:supp_5} 显示，个体特定和模板衍生的特征模式的结果最终在非常短的波长（~第500个模式）处收敛。
-因此，前 200 种模式捕获了皮层几何结构的个体差异对大脑功能的影响，这与最近的工作\cite{chen2022individuality}一致，并且对应于最大可能的特征模式数量的一小部分（~0.6\%）。
+然而，补充图~\ref{fig:supp_5}~显示，个体特定和模板衍生的特征模式结果最终在非常短的波长（第500个模式）处收敛。
+因此，前 200 种模式捕获了皮层几何结构的个体差异对大脑功能的影响，这与最近的工作\cite{chen2022individuality}一致，并且对应于最大可能的特征模式数量的一小部分（0.6\%）。
+
 
 
 \subsection{连接组阈值对连接组特征模式的影响} \label{sec:thresholding_effect}
 
-许多网络属性取决于网络连接密度，而我们生成组平均连接组 $ A_C $ 的特定阈值程序有些任意。
+许多网络属性取决于网络连接密度，而我们生成组平均连接组 $ A_C $ 的特定阈值程序有些随意。
 因此，我们还推导了 $ A_C $ 变体的连接组特征模式，这些阈值范围从 1\% 到 13\%（即未阈值连接组的密度），增量为 2\%。
 补充图 \ref{fig:supp_6} 中的结果表明，连接密度确实影响连接组特征模式的重建精度，因此稀疏矩阵与改进的重建相关。
 鉴于远程连接往往具有较低的权重，因此更有可能首先被阈值化，更保守的阈值的应用强调局部的、类似\textit{指数距离规则}的连接，直到最终收敛于表面网格。
@@ -1140,8 +1145,7 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 然而，许多其他关于连接组的研究首先对数据应用离散分区，并研究通常映射在约 102 至约 103 分区大脑区域水平的连接组的属性\cite{chaudhuri2015large,goodale1992separate}。
 为了完整起见，我们还使用以不同分辨率分割的连接组导出特征模式，这些连接组是使用 Schaefer400、Schaefer600、Scaefer800 和 Schaefer1000 分割生成的。
 选择这些分区是因为它们每个半球至少有 200 个分区，使我们能够计算至少 200 个连接组特征模式，以便与研究中使用的 200 个几何特征模式直接进行比较。
-但请注意，这种方法忽略了大脑的空间嵌入，导致与几何特征模式相比重建精度较差（补充图\ref{fig:supp_8}
-）。
+但请注意，这种方法忽略了大脑的空间嵌入，导致与几何特征模式相比重建精度较差（补充图~\ref{fig:supp_8}）。
 这一结果再次证实了在为大脑功能推导适当的解剖基础集时捕获局部连接性和区域几何形状的重要性。
 
 
@@ -1150,20 +1154,20 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 \subsection{几何特征模式与函数导出基集的比较} \label{sec:comparison_eigenmodes_derived}
 
 为了进一步评估几何特征模在表示大脑活动方面的功效，我们将它们的性能与通过功能数据本身的主成分分析导出的基础集进行了比较。
-由于主成分分析定义了功能数据的线性最优分解，我们试图通过将主成分分析应用于 200 个人的训练集并在保留的测试集上验证其重建准确性来评估该方法的样本外泛化性。 55 人。 
+由于主成分分析定义了功能数据的线性最优分解，我们试图通过将主成分分析应用于 200 个人的训练集，并在55个个体的测试集上验证其重建准确性，来评估该方法的样本外泛化性。
 选择训练集的个体数量来产生 200 个主成分，与研究中分析的几何特征模式的数量相匹配。
-请注意，主成分是按照它们解释的数据方差的顺序排列的。
+请注意，主成分是按照它们解释数据方差的顺序排列。
 
 
 对于任务诱发数据，我们构建了 7 个训练数据集，每个训练数据集对应补充表~\ref{tab:task_contrasts}~中的 7 个关键任务对比。
 每个训练数据集都是通过使用每个任务的激活数据形成一个大小为 32,492 个顶点 $ \times $ 200 个个体的矩阵来构建的。
-然后，我们应用空间主成分分析获得 200 个空间主成分，描述个体间空间激活模式的常见方差模式（补充图\ref{fig:supp_9}）。
+然后，我们应用空间主成分分析获得 200 个空间主成分，描述个体间空间激活模式的常见方差模式（补充图~\ref{fig:supp_9}）。
 
 
-对于无任务静息态数据，可以实现类似的方法，其中通过暂时连接训练集中个体的数据来构建训练数据集，产生大小为 32,492 $ \times $ 240,000 的矩阵（即 240,000 = 1200 次） 帧 × 200 个人）。
+对于无任务静息态数据，可以实现类似的方法，其中通过暂时连接训练集中个体的数据来构建训练数据集，产生大小为 32,492 $ \times $ 240,000 的矩阵（即 240,000 = 1200 次） 帧 $ \times $ 200 个人）。
 然而，在这个非常大的数据矩阵上执行标准主成分分析会带来很高的计算负担。
 因此，我们使用了 MELODIC Incremental Group-PCA (MIGP) 方法，该方法已被证明可以使用计算效率更高的方法\cite{markov2014anatomy}在完全连接的数据集中生成与标准主成分分析非常接近的输出。
-总而言之，MIGP 暂时连接 少量个体（这里我们使用两个个体）的数据构建矩阵$ W $。然后使用$ W $构建时间帧×时间帧协方差矩阵，并应用特征值分解来提取前$ m $个时间特征向量（这里我们 使用$ m = 1200 $），并将特征向量与$ W $相乘，得到$ m $个加权空间特征向量，产生新的$ W $。
+总而言之，MIGP 暂时连接 少量个体（这里我们使用两个个体）的数据构建矩阵$ W $。然后使用$ W $构建时间帧 $ \times $ 时间帧协方差矩阵，并应用特征值分解来提取前$ m $个时间特征向量（这里我们 使用$ m = 1200 $），并将特征向量与$ W $相乘，得到$ m $个加权空间特征向量，产生新的$ W $。
 然后，通过将$ W $与下一个个体的数据连接来增量更新$ W $，重复上述整个过程以获得新的$ W $ 表示 $ m $ 个空间特征向量。
 执行这种迭代方法，直到考虑了训练集中的所有个体。
 我们保留了 $ W $ 的前 200 名空间主成分。
@@ -1175,12 +1179,13 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 
 我们强调，从主成分分析派生的组件仅捕获数据的统计特性（即最大方差），并且不提供任何机制见解；
 即，它们是数据的统计或现象学描述，并且根据所解释的方差排序，而不考虑空间波长。
-因此，它们与几何特征模式有根本的不同，几何特征模式与系统的结构特性直接相关，由大脑结构如何产生功能\cite{wang2016brain}的生成模型告知，并根据其空间频率或波长进行排列。 
-如扩展数据图\ref{fig:extended_fig_4}所示，这种区别导致主成分分析相对于几何特征模式具有早期性能优势，其中前几个 主成分 可以比前几个几何特征模式更准确地捕获数据。
+因此，它们与几何特征模式有根本的不同，几何特征模式与系统的结构特性直接相关，由大脑结构如何产生功能\cite{wang2016brain}的生成模型提供信息，并根据其空间频率或波长进行排列。 
+如扩展数据图\ref{fig:extended_fig_4}所示，这种区别导致主成分分析相对于几何特征模式具有早期性能优势，其中前几个主成分可以比前几个几何特征模式更准确地捕获数据。
 这是因为 主成分 不具有与几何特征模式相同的排序约束；
 也就是说，早期的 主成分 可以自由地跨越任何空间波长，这由数据的最佳分解决定，而几何特征模式则通过构造从长波长到短波长排序。
 然而，扩展数据图 \ref{fig:extended_fig_4} 还表明，主成分 重建样本外数据的准确性存在限制，这可能是因为高阶 主成分 捕获了训练数据的特殊属性。
-相比之下，添加更多几何特征模式可以提高模型解析训练数据和测试数据的可重复短波长特征的能力，使得样本外重建在大多数比较中超过 主成分 的准确性约 40-50 个模式 。
+相比之下，添加更多几何特征模式可以提高模型解析训练数据和测试数据的可重复短波长特征的能力，使得样本外重建在大多数比较中超过主成分的准确性约 40-50 个模式 。
+
 
 
 \subsection{几何特征模式与傅立叶基集的比较} \label{sec:comparison_fourier}
@@ -1221,7 +1226,7 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 		   		\frac{2 \pi (j_z - 1)z}{L_z}
 		   		),
 \end{equation}
-
+%
 其中 $ j_x $，$ j_y $，$ j_z $ 是整数常量，$ x $，$ y $，$ z $ 是皮层球面网格表示上每个点的空间位置，$ L_x $，$ L_y $，$ L_z $ 是每个方向上的周期，$ C_1 $，$ C_2 $，$ C_3 $ 是拟合常数。
 对于每个函数，我们构建了一个规则版本和一个不规则版本，从而产生了六个基组。
 常规版本对应于当 $ j_x=j_y=j_z=j $ 时，模式 $ j $ 在 $ x $、$ y $ 和 $ z $ 方向上的空间波长规则间隔并增加 $ \frac{2 \pi}{L_x} $ 、$\frac{2 \pi}{L_y}$ 、 $\frac{2 \pi}{L_z}$ 随着模式数的增加，这是傅立叶分析中的标准实现。
@@ -1235,10 +1240,10 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 
 接下来，我们将 $ i=x, y, z $ 的周期定义为 $ L_i := [ max(i) - min(i) ] $，以实现尊重大脑形状的启发。 
 此外，$ (j_i-1) $中的$ -1 $确保第一模式是恒定的，以使其与第一几何模式具有可比性。
-方程式\ref{eq:real_functions_2}和\ref{eq:real_functions_3}中的形式具有更多自由度，拟合常数 $ C_1 $、$ C_2 $、$ C_3 $ 分别估计，允许我们对余弦和/或正弦函数进行不同的加权。
+方程式~\ref{eq:real_functions_2}~和~\ref{eq:real_functions_3}~中的形式具有更多自由度，拟合常数 $ C_1 $、$ C_2 $、$ C_3 $ 分别估计，允许我们对余弦和/或正弦函数进行不同的加权。
 因此，模式 $ j $ 现在在模式分解期间需要估计多个幅值，而不是只有一个。
 相对于\textit{几何特征模式}，这些增加的自由度导致模型复杂性增加；
-更具体地说，由方程\ref{eq:real_functions_2}和\ref{eq:real_functions_3}形成的傅立叶基组分别涉及估计每个模式 2 个和 3 个系数，而几何特征模式只需要拟合每个模式一个系数。
+更具体地说，由方程~\ref{eq:real_functions_2}~和~\ref{eq:real_functions_3}~形成的傅立叶基组分别涉及估计每个模式 2 个和 3 个系数，而几何特征模式只需要拟合每个模式一个系数。
 
 
 尽管可以采用其他形式和复杂的选择来构建傅里叶基组，但上述选择因其简单性而受到很好的启发，产生了独特的实值空间模式，并涵盖了人们可以做出的关键实现选择。
@@ -1246,7 +1251,7 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 扩展数据图 \ref{fig:extended_fig_5}b 显示，\textit{几何特征模式}在重建任务诱发和静息状态数据方面显着优于傅里叶基组，进一步强调了几何特征模式提供的准确表示并不是任何基组扩展的微不足道的结果。
 此外，无论 $ x $、$ y $ 和 $ z $ 方向上的模式的空间波长如何定义，该结论仍然成立。
 重申一下，尽管傅里叶基组是基于方程的，
-与几何特征模式相比，\ref{eq:real_functions_2}和\ref{eq:real_functions_3}有更多的自由度来拟合数据，\textit{几何特征模式}仍然表现出优越的性能，强调了它们在考虑大脑动力学方面的简约性。
+与几何特征模式相比，方程~\ref{eq:real_functions_2}~和~\ref{eq:real_functions_3}~有更多的自由度来拟合数据，\textit{几何特征模式}仍然表现出优越的性能，强调了它们在考虑大脑动力学方面的简约性。
 
 
 我们提出了傅立叶基组的完整性分析，并证明此类函数无法适应不规则形状物体的边界条件，例如皮层表面（例如，内侧壁的狄利克雷或诺依曼条件）\cite{hasson2008hierarchy}。
@@ -1264,19 +1269,19 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 
 
 
-\subsection{代理映射的模式功率谱} \label{sec:modal_power_spectra}
+\subsection{代理图的模式功率谱} \label{sec:modal_power_spectra}
 
 
-典型的图像处理管道会引起一定程度的空间平滑，从而滤除高频（短波长）活动的空间模式。
+典型的图像处理流程会引起一定程度的空间平滑，从而滤除高频（短波长）活动的空间模式。
 为了确保我们在分析中确定的主要长波长功率不仅仅是功能磁共振成像预处理引起的空间平滑的产物，我们分析了具有不同平滑级别的替代随机数据的功率谱。
 我们首先在体积空间中生成 10,000 个取自零均值高斯分布的随机图。
-然后，我们以半高全宽范围为 0 到 50 mm 的核尺寸对替代图进行平滑处理。
+然后，我们以半高全宽范围为 0 到 50 毫米的核尺寸对替代图进行平滑处理。
 最后，我们将代理图投影到 fsLR-32k CIFTI 空间（通过 Nilearn）并分析它们的模式功率谱。
 请注意，我们在体积而不是表面空间中进行平滑，以模仿流行的神经成像处理实践，其中数据处理通常应用于体积数据，然后将结果重新采样到皮层表面\cite{haak2018connectopic}。
 因此，该过程也包含由重采样程序引起的任何平滑。
 
 
-我们通过计算均方对数误差来比较实证激活图和替代图的模式功率谱：
+我们通过计算\textit{均方对数误差}来比较实证激活图和替代图的模式功率谱：
 
 \begin{equation}\label{eq:MSLE}
 	\text{MSLE} = \sqrt{
@@ -1286,18 +1291,18 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 					log_10 (P_j^{surrogate}) ] ^2
 				},
 \end{equation}
+%
+其中 $ P_j^{empirical} $ 和 $ P_j^{surrogate} $ 分别是实证图和代理图中模式 $ j $ 的幂。
+作为距离测量，\textit{均方对数误差}比典型的均方误差更有效，因为长波长到短波长模式的功率具有多个数量级的变化。
 
-其中 $ P_j^{empirical} $ 和 $ P_j^{surrogate} $ 分别是实证映射和代理映射中模式 $ j $ 的幂。
-作为距离测量，MSLE 比典型的均方误差更有效，因为长波长到短波长模式的功率具有多个数量级的变化。
 
-
-扩展数据图 \ref{fig:extended_fig_8}a 中的彩色线显示了替代数据的模式功率谱，扩展数据图 \ref{fig:extended_fig_8}b 显示了跨对比平均的实证谱和替代谱之间的平均距离（即 MSLE），扩展数据图 \ref{fig:extended_fig_8}c 显示了 MSLE 为每个任务对比单独获得（而不是对对比进行平均）。
-我们发现小于 10 mm 的平滑核不能充分捕获实证图的长空间波长中的光谱功率集中度（图 \ref{fig:3}a 和扩展数据图 \ref{fig:extended_fig_8}a）。
-事实上，替代数据需要 20 毫米的平均内核尺寸（从扩展数据图 \ref{fig:extended_fig_8}b 中的最小值获得的最佳拟合）才能获得与实证数据相当的频谱，该数据比实验中使用的内核尺寸大得多。
-神经影像处理（体积空间 49 中约 8 毫米，表面空间 50 约 15 毫米）。
-当单独分析任务对比而不是平均值时，得到了类似的结果，最小 MSLE 显示出围绕平均值的微小变化（扩展数据图 \ref{fig:extended_fig_8}c 中的实线）。
-因此，这些发现证实，实证激活图的长波长内容不能仅通过预处理来解释。
-此外，虽然也可以使用简单的平滑函数并避免统计阈值来恢复任务激活的空间扩展模式，但\textit{几何特征模式}方法可以更深入地理解激活背后的机制，因为这些模式可以直接与严格的大脑生物物理模型联系起来 由\textit{神经场理论}建立的动态（参见示例\cite{robinson1997propagation,robinson2016eigenmodes,jones1999golgi,wang2016brain}）。
+扩展数据图~\ref{fig:extended_fig_8}a~中的彩色线显示了替代数据的模式功率谱，扩展数据图~\ref{fig:extended_fig_8}b~显示了跨对比平均的实证谱和替代谱之间的平均距离（即\textit{均方对数误差}），扩展数据图~\ref{fig:extended_fig_8}c~显示了\textit{均方对数误差}为每个任务对比单独获得（而不是对对比进行平均）。
+我们发现小于 10 毫米的平滑核不能充分捕获实证图的长空间波长中的光谱功率集中度（图~\ref{fig:3}a~和扩展数据图~\ref{fig:extended_fig_8}a）。
+事实上，替代数据需要 20 毫米的平均内核尺寸（从扩展数据图~\ref{fig:extended_fig_8}b~中的最小值获得的最佳拟合）才能获得与实证数据相当的频谱，该数据比实验中使用的内核尺寸大得多。
+神经影像处理（体积空间\cite{carp2012secret}中约 8 毫米，表面空间\cite{coalson2018impact}约 15 毫米）。
+当单独分析任务对比而不是平均值时，得到了类似的结果，最小\textit{均方对数误差}显示出围绕平均值的微小变化（扩展数据图~\ref{fig:extended_fig_8}c 中的实线）。
+因此，这些发现证实，实证激活图的长波内容不能仅通过预处理来解释。
+此外，虽然也可以使用简单的平滑函数并避免统计阈值来恢复任务激活的空间扩展模式，但\textit{几何特征模式}方法可以更深入地理解激活背后的机制，因为这些模式可以直接与\textit{神经场理论}建立的大脑动力学严格生物物理模型联系起来（参见示例\cite{robinson1997propagation,robinson2016eigenmodes,jones1999golgi,wang2016brain}）。
 它们还提供数据的自然多尺度表征。
 
 
@@ -1314,14 +1319,12 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 	\phi(\boldsymbol{r}, t)
 	= Q(\boldsymbol{r}, t),
 \end{equation}
-
-
-其中 $ \phi(\boldsymbol{r},t) $ 是位置 $ r $ 和时间 $ t $ 处的神经活动，$ Q $ 是外部输入，$ \gamma_s $ 是阻尼率，$ r_s $ 是波传播的空间长度尺度。
+%
+其中 $ \phi(\boldsymbol{r},t) $ 是位置 $ \boldsymbol{r} $ 和时间 $ t $ 处的神经活动，$ Q $ 是外部输入，$ \gamma_s $ 是阻尼率，$ r_s $ 是波传播的空间长度尺度。
 该模型假设点之间的活动传播受其白质连接性的控制，其强度随距离呈指数衰减。
-当方程\ref{eq:NFT_wave}转换为其等价积分形式如下时，这种距离依赖性更加明显。
+当方程~\ref{eq:NFT_wave}~转换为其等价积分形式如下时，这种距离依赖性更加明显。
 考虑新皮层上通过白质束连接的位置 $ \boldsymbol{r}' $ 和 $ \boldsymbol{r} $ 处的两个点（参见补充图 \ref{fig:extended_fig_10} 中的视觉示意图）。
-位置 $ \boldsymbol{r} $ 和时间 $ t $ 处的活动 $ \phi(\boldsymbol{r},t) $ 可以被视为位置 $ \boldsymbol{r}' $ 和时间 $ t' $ 处的源 $ Q(\boldsymbol{r}',t') $ 与基于白质的连接核 $ W(\boldsymbol{r}, t, \boldsymbol{r}', t') $ 的时空卷积 ;比如：
-
+位置 $ \boldsymbol{r} $ 和时间 $ t $ 处的活动 $ \phi(\boldsymbol{r},t) $ 可以被视为位置 $ \boldsymbol{r}' $ 和时间 $ t' $ 处的源 $ Q(\boldsymbol{r}',t') $ 与基于白质的连接核 $ W(\boldsymbol{r}, t, \boldsymbol{r}', t') $ 的时空卷积，比如：
 \begin{equation}\label{eq:location_activity}
 	\phi(\boldsymbol{r}, t) = 
 		\sum
@@ -1335,10 +1338,10 @@ NeuroVault 数据可通过\href{https://neurovault.org/}{链接} 访问。
 
 在各向同性情况下，$ W $ 仅取决于点之间的空间间隔和时间差，使得 $ W(\boldsymbol{r}, t; \boldsymbol{r}', t') := W(\boldsymbol{r} - \boldsymbol{r}', t-t') $。
 核 $ W $ 也称为格林函数，是点源引起的活动 $ \phi $。
-使用格林函数方法\cite{pang2021stochastic}，先前的工作已经表明 $ W $ 的适当表达式，使其成为方程\ref{eq:NFT_wave}中阻尼波动方程的解，具有强点源 
+使用格林函数方法\cite{pang2021stochastic}，先前的工作已经表明 $ W $ 的适当表达式，使其成为方程~\ref{eq:NFT_wave}~中阻尼波动方程的解，具有强点源 
 $ Q(\boldsymbol{r}, t; \boldsymbol{r}', t') = \delta(\boldsymbol{r} - \boldsymbol{r}') $ 且 
 $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright1995simulation,jirsa1996field,robinson1997propagation,nozari2020brain}
-
+%
 \begin{equation}\label{eq:connectivity_kernel}
 	W(\boldsymbol{r} - \boldsymbol{r}') = 
 		\frac{\gamma_s}{r_s}
@@ -1346,11 +1349,11 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 		\Theta
 		[\gamma_s r_s (t-t') - |\boldsymbol{r} - \boldsymbol{r}'|],
 \end{equation}
-
+%
 其中 $ |\boldsymbol{r} - \boldsymbol{r}'| $ 是点之间的白质束距离，$ \Theta $ 是 Heaviside 阶跃函数，$ \gamma_s $ 和 $ r_s $ 分别是阻尼率和空间长度尺度。
-方程\ref{eq:NFT_wave}的详细推导。 
-因此，方程\ref{eq:connectivity_kernel}展示了方程\ref{eq:NFT_wave}定义的波浪动力学如何可以与潜在的各向同性解剖连接直接相关，该连接随距离呈指数衰减。
-特别是，求解方程中微分形式的阻尼波动方程\ref{eq:NFT_wave}相当于求解积分方程，
+方程~\ref{eq:NFT_wave}~的详细推导。 
+因此，方程~\ref{eq:connectivity_kernel}~展示了方程~\ref{eq:NFT_wave}~定义的波浪动力学如何可以与潜在的各向同性解剖连接直接相关，该连接随距离呈指数衰减。
+特别是，求解方程中微分形式的阻尼波动方程~\ref{eq:NFT_wave}~相当于求解积分方程，
 
 \begin{equation}\label{eq:integral_equation}
 	\phi(\boldsymbol{r}, t) = 
@@ -1362,50 +1365,49 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 			d^2 \boldsymbol{r}'
 			dt',
 \end{equation}
-
-后者明确显示了 $ r_s $ 特征范围（~84 mm\cite{robinson1997propagation}）的白质连接性引起的时空效应。
-方程\ref{eq:NFT_wave}中的波动方程还有其他更复杂的变化。
+%
+后者明确显示了 $ r_s $ 特征范围（84 毫米\cite{robinson1997propagation}）的白质连接性引起的时空效应。
+方程~\ref{eq:NFT_wave}~中的波动方程还有其他更复杂的变化。
 但是这个简单版本的模型评估了可以解释实证数据的基本物理过程。
-将空间异质性或结构化输入纳入方程中的波动方程\ref{eq:NFT_wave}是未来研究的主题。
+将空间异质性或结构化输入纳入方程中的波动方程~\ref{eq:NFT_wave}~是未来研究的主题。
 
 
-尽管模型很简单，但方程\ref{eq:NFT_wave}的完整时空解在 32,492 个顶点上的计算成本很高。
-因此，我们使用以下方法来有效地求解在皮层上的方程\ref{eq:NFT_wave}。
+尽管模型很简单，但方程~\ref{eq:NFT_wave}~的完整时空解在 32,492 个顶点上的计算成本很高。
+因此，我们使用以下方法来有效地求解在皮层上的方程~\ref{eq:NFT_wave}。
 首先，我们假设 $ \psi $ 是时空可分离的，因为系统的结构在时间上是恒定的，这样
-
+%
 \begin{equation}\label{eq:time_space}
 	\phi(\boldsymbol{r}, t) = 
 		\psi(t) \phi(\boldsymbol{r}).
 \end{equation}
-
-通过将方程\ref{eq:time_space}代入方程\ref{eq:NFT_wave}，项$ \nabla^2 \phi(\boldsymbol{r}, t) $ 变为 $ \phi(t) \nabla^2 \phi
+%
+通过将方程~\ref{eq:time_space}~代入方程~\ref{eq:NFT_wave}，项$ \nabla^2 \phi(\boldsymbol{r}, t) $ 变为 $ \phi(t) \nabla^2 \phi
 (\boldsymbol{r}) $。
-请注意，$ \nabla^2 \phi(\boldsymbol{r}) $与方程 \ref{eq:1} 中\textit{亥姆霍兹方程}的左侧相同。
+请注意，$ \nabla^2 \phi(\boldsymbol{r}) $与方程~\ref{eq:1}~中\textit{亥姆霍兹方程}的左侧相同。
 因此，皮层表面上行波解的空间分量 $ \psi(\boldsymbol{r}) $ 可以写成\textit{几何特征模式} $ \psi_j(\boldsymbol{r}) $ 的组合。
-因此，方程\ref{eq:time_space}可以写成：
-
+因此，方程~\ref{eq:time_space}~可以写成：
+%
 \begin{equation}\label{eq:eigenmodes_combination}
 	\phi(\boldsymbol{r}, t) = 
 		\sum_{j=1}^{N}
 			\phi_j(t) \psi_j(\boldsymbol{r}),
 \end{equation}
-
+%
 其中 $ \psi_j(\boldsymbol{r}) $ 是模式 $ j $，$ \phi_j(t) $ 是模式 $ j $ 的时变分量，$ N $ 是模式数量。
 其次，我们对输入 $ Q(\boldsymbol{r},t) $ 采用模式分解，使得：
-
+%
 \begin{equation}\label{eq:Q_decomposition}
 	Q(\boldsymbol{r}, t) = 
 		\sum_{j=1}^{N}
 			q_j(t) \psi_j(\boldsymbol{r}),
 \end{equation}
-
-
-其中 $ q_j (t) $ 是通过模式分解获得的时变幅值（参见方法\ref{sec:modal_decomposition}中的“大脑活动的模式分解”）。
+%
+其中 $ q_j (t) $ 是通过模式分解获得的时变幅值（参见方法~\ref{sec:modal_decomposition}~中的“大脑活动的模式分解”）。
 上述时间和空间因素分离的重要结果是，空间模式对局部时间动态不敏感，也不对 $ r_s $ 的值敏感，只要它比表面的曲率半径小。
 
 
-将方程\ref{eq:eigenmodes_combination}、\ref{eq:Q_decomposition}和\ref{eq:1}代入方程\ref{eq:NFT_wave}，我们得到：
-
+将方程~\ref{eq:eigenmodes_combination}、\ref{eq:Q_decomposition}~和~\ref{eq:1}~代入方程~\ref{eq:NFT_wave}，我们得到：
+%
 \begin{equation}\label{eq:NFT_expand}
 	\sum_{j=1}^{N}
 		[
@@ -1420,10 +1422,10 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 			q_j(t)
 			\psi_j(\boldsymbol{r}),
 \end{equation}
-
+%
 其中 $ λ_j $ 是对应于模式 $ j $ 的特征值。
 因此，求解模式 $ j $ 的时变分量 $ \phi_j (t) $ 的常微分方程为：
-
+%
 \begin{equation}\label{eq:ordinary_differential}
 	[
 		\frac{1}{\gamma _s^2}
@@ -1439,8 +1441,8 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 \end{equation}
 
 
-可以通过数值方法解方程\ref{eq:ordinary_differential}，但它可以通过傅里叶变换与时间的关系来更简单、更准确地求解，从而产生代数方程：
-
+可以通过数值方法解方程~\ref{eq:ordinary_differential}，但它可以通过傅里叶变换与时间的关系来更简单、更准确地求解，从而产生代数方程：
+%
 \begin{equation}\label{eq:algebraic_equation}
 	[
 		- \frac{\omega ^2}{\gamma_s^2}
@@ -1452,9 +1454,10 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 	=
 	q_j(\omega),
 \end{equation}
-
-其中 $ ω $ 是时间角频率， $ \phi_j (\omega) $ 是 $ \phi_j (t) $ 的傅里叶变换，$ q_j (\omega) $ 是 $ q_j (t) $ 的傅里叶变换。 因此，解 $ \phi_j (t) $ 具有以下形式：
-
+%
+其中 $ ω $ 是时间角频率， $ \phi_j (\omega) $ 是 $ \phi_j (t) $ 的傅里叶变换，$ q_j (\omega) $ 是 $ q_j (t) $ 的傅里叶变换。
+因此，解 $ \phi_j (t) $ 具有以下形式：
+%
 \begin{equation}\label{eq:solution_form}
 	\phi_j(t)
 	=
@@ -1473,16 +1476,16 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 		 	 }
 	\},
 \end{equation}
-
+%
 其中 $ F^{-1)} $ 是傅里叶逆变换运算符。
-最后，方程\ref{eq:solution_form}可代入式\ref{eq:1}。
-\ref{eq:eigenmodes_combination}获取每个顶点的神经活动 $ \phi(\boldsymbol{r},t) $。
+最后，方程~\ref{eq:solution_form}~可代入方程~\ref{eq:1}。
+方程~\ref{eq:eigenmodes_combination}~获取每个顶点的神经活动 $ \phi(\boldsymbol{r},t) $。
 
 
 
-如上所述，方程\ref{eq:NFT_wave}的空间部分满足方程 \ref{eq:1}中的\textit{亥姆霍兹方程}。
-这个微分方程相当于积分形式（方程\ref{eq:integral_equation}），其中给定点的活动会引起其他地方的活动，其权重代表\textit{神经场理论}中隐含的连接性。
-在皮层情况下，这对应于随距离呈指数下降——即类似\textit{指数距离规则}的空间依赖性——与实验证据 6 一致。
+如上所述，方程~\ref{eq:NFT_wave}~的空间部分满足方程~\ref{eq:1}~中的\textit{亥姆霍兹方程}。
+这个微分方程相当于积分形式（方程~\ref{eq:integral_equation}），其中给定点的活动会引起其他地方的活动，其权重代表\textit{神经场理论}中隐含的连接性。
+在皮层情况下，这对应于随距离呈指数下降——即类似\textit{指数距离规则}的空间依赖性——与实验证据\cite{robinson1997propagation}一致。
 因此，\textit{几何特征模式}的使用隐含地结合了类似\textit{指数距离规则}的连接，其中还包括长范围连接，但不直接考虑不符合简单指数规则的拓扑复杂连接。
 
 
@@ -1492,7 +1495,7 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 \textit{兴奋抑制平衡}\textit{神经群模型}具有15个固定参数和4个自由参数，即$ w_{EE} $、$ w_{EI} $、$ w_{IE} $和 $ G $，它们被优化以拟合数据，如下\cite{rosen2022estimation}。
 简而言之，实施反馈抑制控制\cite{van2012high}以调整$ w_{IE} $以设置所有区域的发射率 $ r_i^{(E)} $ 约为 3 Hz。
 因此，在稳态条件 $ <S^{(E)} \approx 0.17 \text{nA} $ 和 $ <I^{(E)}> \approx 0.38 \text{nA} $ 时，$ w_{IE} $ 的解析表达式为：
-
+%
 \begin{equation}\label{eq:analytic_expression}
 	W_{IE} = 
 		\frac{
@@ -1502,9 +1505,9 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 				<S^{(I)}>
 			},
 \end{equation}
-
+%
 其中稳态值 $ <S^{(I)}> = H^{(I) (<I^{(I)}>) \tau_I } $ 使用以下表达式进行数值求解：
-
+%
 \begin{equation}\label{eq:solved_expression}
 	W_I I_0 
 	+ W_{EI}<S^{(E)}> 
@@ -1519,54 +1522,57 @@ $ |\boldsymbol{r} - \boldsymbol{r}' \leq \gamma_s r_s (t-t')| $：\cite{wright19
 有关模型优化过程的更多详细信息，请参阅\cite{rosen2022estimation}。
 
 
+
 \subsection{滞后线程算法} \label{sec:lag_threads}
 
 滞后线程算法首先计算大脑区域之间时间序列的滞后互协方差函数。
-假设 BOLD-fMRI 时间序列是非周期性的\cite{aquino2020identifying}，则获得互协方差函数呈现极值（通常在 0 到 2 s 之间）的区域之间的时间滞后（或延迟）\cite{gajwani2022can}。
-这导致了反对称时间- 延迟矩阵TD，元素$ \tau_{ij} $对应于区域$ i $和$ j $之间的时间延迟，第$ i $列表示系统相对于区域i的滞后图，且$ \tau_{ij}=- \tau_{ji} $。
+假设 BOLD-fMRI 时间序列是非周期性的\cite{aquino2020identifying}，则获得互协方差函数呈现极值（通常在 0 到 2 秒之间）的区域之间的时间滞后（或延迟）\cite{gajwani2022can}。
+这导致了反对称时间- 延迟矩阵 $ TD $，元素$ \tau_{ij} $对应于区域$ i $和$ j $之间的时间延迟，第$ i $列表示系统相对于区域$ i $的滞后图，且$ \tau_{ij}=- \tau_{ji} $。
 因此，$ \tau_{ij}>0 $ 意味着区域 $ j $ 落后于区域 $ i $。
 底层滞后结构通过两种方式量化：
-（i）取每个区域的平均时间滞后（TD 每列的平均值）； 
+（i）取每个区域的平均时间滞后（$ TD $ 每列的平均值）； 
 (ii) 对 $ TD_z $ 应用主成分分析，$ TD_z $ 是每列为零均值的 $ TD $。
 第一种方法获得大脑区域的平均时间顺序，假设单个滞后过程控制大脑，这已在过去的几项研究中使用过\cite{gajwani2022can,hamid2021wave,yousefi2021propagating}。
 然而，对于像大脑这样具有多个滞后过程的系统，平均时间滞后无法捕获所有基本滞后模式，这可以通过主成分分析\cite{coalson2018impact}恢复。
 在这里，我们使用前两个主要主成分，解释了实证方差的 74\% 数据。
 因此，我们计算了三个滞后预测：
 （i）平均滞后； 
-（ii）第一个主成分（PC1 滞后）； (iii) 第二个主成分（PC2 滞后）。
+（ii）第一个主成分（PC1 滞后）；
+（iii）第二个主成分（PC2 滞后）。
 
 
-$ TD $ 矩阵是根据使用 HCP-MMP1 分区进行分区的实证和模拟静息态 BOLD-fMRI 时间过程计算的（参见方法\ref{sec:cortical_parcellations}中的“皮层分区”）。
+$ TD $ 矩阵是根据使用 HCP-MMP1 分区进行分区的实证和模拟静息态 BOLD-fMRI 时间过程计算的（参见方法~\ref{sec:cortical_parcellations}~中的“皮层分区”）。
 对于实证数据，计算 255 名\textit{人类连接组项目}个体中每人的 $ TD $ 矩阵，然后计算个体之间的平均 $ TD $ 矩阵。
-对于模拟数据，我们使用各自的原始优化参数生成了波和\textit{神经群模型}的 255 次试验（以匹配实证数据的 255 个\textit{人类连接组项目}个体）的时间序列（参见“方法\ref{sec:modelling_resting}中的静息态动力学建模”）。
+对于模拟数据，我们使用各自的原始优化参数生成了波和\textit{神经群模型}的 255 次试验（以匹配实证数据的 255 个\textit{人类连接组项目}个体）的时间序列（参见“方法~\ref{sec:modelling_resting}~中的静息态动力学建模”）。
 为每个试验计算 $ TD $ 矩阵。
 然后，计算各个试验的平均 $ TD $ 矩阵。
-平均 $ TD $ 矩阵如扩展数据图 \ref{fig:extended_fig_9}a 所示。
-最后，从实证和模拟平均 $ TD $ 矩阵中获得了三个滞后预测（扩展数据图 \ref{fig:extended_fig_9}b-d）。
+平均 $ TD $ 矩阵如扩展数据图~\ref{fig:extended_fig_9}a~所示。
+最后，从实证和模拟平均 $ TD $ 矩阵中获得了三个滞后预测（扩展数据图~\ref{fig:extended_fig_9}b-d）。
 
 
-扩展数据图 \ref{fig:extended_fig_9}b 中的结果表明，波浪模型的平均滞后模式与实证模式显着相关，而\textit{神经群模型}的平均滞后模式则不然。
-对于 PC1 滞后，波浪模型的性能略有下降，但仍然优于\textit{神经群模型}（扩展数据图 \ref{fig:extended_fig_9}c）。
-PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:extended_fig_9}d）并不显着，但波浪模型的相关性仍然较高。
+扩展数据图~\ref{fig:extended_fig_9}b~中的结果表明，波浪模型的平均滞后模式与实证模式显着相关，而\textit{神经群模型}的平均滞后模式则不然。
+对于 PC1 滞后，波浪模型的性能略有下降，但仍然优于\textit{神经群模型}（扩展数据图~\ref{fig:extended_fig_9}c）。
+PC2 滞后的模型和实证模式之间的相关性（扩展数据图~\ref{fig:extended_fig_9}d）并不显着，但波浪模型的相关性仍然较高。
 这些结果表明，无论采用哪种计算滞后投影的方法，波模型都比\textit{神经群模型}更好地捕捉实证 fMRI 数据的时滞特性。
 这进一步强调了波浪动力学可以提供宏观尺度、静息态动力学的准确物理机制解释，与之前的研究一致\cite{robinson2021determination,majeed2011spatiotemporal,matsui2016transient}。
 我们还强调，这些模型在捕获滞后结构方面的性能可能是保守估计，因为这些模型依赖于简单且空间均匀的血流动力学正向模型，该模型没有考虑神经血管耦合的区域变化\cite{deco2021dynamical,henderson2022empirical,fischl2012freesurfer}。
 这种变化可能会强烈影响凭实证观察到的滞后。
 
 
+
 \subsection{补充讨论} \label{sec:supplementary_discussion}
 
 连接组特征模式的相对较差的性能表明，拓扑复杂的长程连接在准确解释功能磁共振成像测量的皮层活动方面提供的益处微乎其微。
 然而，大量证据表明，这种连接可能提供重要的功能和进化优势\cite{oldham2020efficacy,arslan2018human,tokariev2019large}。
-正文的图 \ref{fig:2}d 暗示了这些优点，其中低阶连接组特征模式在低频重建任务激活图方面表现稍好。
+正文的图~\ref{fig:2}d~暗示了这些优点，其中低阶连接组特征模式在低频重建任务激活图方面表现稍好。
 低阶连接组特征模式比低阶\textit{几何特征模式}包含更复杂的空间模式，这可以在捕获任务激活的空间复杂模式方面提供更大的灵活性。
 然而，连接组特征模式的这种优势仅在前 25-30 个模中持续存在，其中重建精度通常较低（即 $ r < 0.50 $），并且与\textit{指数距离规则}特征模式没有太大区别。
 
 
 长程连接可能发挥作用的另一个潜在方面是皮层功能梯度的形成。
 我们的工作表明，皮层下结构的几何特征模式与每个结构的功能耦合导出的函数梯度近乎完美匹配。
-然而，我们没有观察到单个几何特征模式和先前描述的 功能耦合衍生的新皮层功能梯度之间存在相同的一对一空间对应关系，其中最主要的功能捕获了功能\cite{chen2022individuality} 的分层感觉-离去轴。
-功能梯度 因此，新皮层可能反映了远程连接（例如，皮层下-皮层连接）或几何模式\cite{bolt2022parsimonious}的叠加的复杂贡献，就像音乐和弦从各个音符的组合中出现一样。
+然而，我们没有观察到单个几何特征模式和先前描述功能耦合衍生的新皮层功能梯度之间存在相同的一对一空间对应关系，其中最主要的功能捕获了功能\cite{chen2022individuality}的分层感觉离去功能轴。
+因此，新皮层可能反映了远程连接（例如，皮层下-皮层连接）或几何模式\cite{bolt2022parsimonious}的叠加的复杂贡献，就像音乐和弦从各个音符的组合中出现一样。
 
 
 
@@ -1576,7 +1582,7 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig/supp_1.pdf}
 	\caption{\textbf{使用几何特征模式获得的 47 个人类连接组项目任务对比图的重建精度}。
-		线条根据 7 种广泛的\textit{人类连接组项目}任务类型定义的组进行着色（第 S2.1 节和补充表~\ref{tab:task_contrasts}）。 wm = 工作记忆。} \label{fig:supp_1}
+	线条根据 7 种广泛的\textit{人类连接组项目}任务类型定义的组进行着色（第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}）。 wm = 工作记忆。} \label{fig:supp_1}
 \end{figure}
 
 
@@ -1585,10 +1591,10 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.85\textwidth]{fig/supp_2.pdf}
 	\caption{\textbf{不同分割分辨率下 7 个关键人类连接组项目任务对比图和静息态功能耦合的重建精度}。 
-		有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。
-		wm = 工作记忆。
-		从深色到浅色的线条代表递减的分割分辨率（箭头方向）；
-		即 Schaefer100、Schaefer200、Glasser360、Schaefer400、Schaefer600、Schaefer800 和 Schaefer1000 在两个半球分别有 100、200、360、400、600、800 和 1000 个地块。} \label{fig:supp_2}
+	有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
+	wm = 工作记忆。
+	从深色到浅色的线条代表递减的分割分辨率（箭头方向）；
+	即Schaefer100、Schaefer200、Glasser360、Schaefer400、Schaefer600、Schaefer800 和 Schaefer1000 在两个半球分别有 100、200、360、400、600、800 和 1000 个块。} \label{fig:supp_2}
 \end{figure}
 
 
@@ -1597,11 +1603,11 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.85\textwidth]{fig/supp_3.pdf}
 	\caption{\textbf{使用模板导出和个体特定的几何特征模式重建 7 个关键人类连接组项目任务对比图和静息态功能耦合的准确性}。
-		有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。 
-		wm = 工作记忆。
-		实线代表由模板表面导出的特征模式所获得的结果（图~\ref{fig:supp_1}d）。
-		虚线表示通过从各个表面导出的各个特定特征模式所实现的结果。
-		插图显示两个结果之间的差异（即模板减去个体特异性）。} \label{fig:supp_3}
+	有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}节和补充表~\ref{tab:task_contrasts}。 
+	wm = 工作记忆。
+	实线代表由模板表面导出的特征模式所获得的结果（图~\ref{fig:supp_1}d）。
+	虚线表示通过从各个表面导出的各个特定特征模式所实现的结果。
+	插图显示两个结果之间的差异（即模板减去个体特异性）。} \label{fig:supp_3}
 \end{figure}
 
 
@@ -1611,13 +1617,13 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.85\textwidth]{fig/supp_4.pdf}
 	\caption{\textbf{使用 200 个模板导出的和个体特定的几何特征模式，对 7 个关键人类连接组项目任务对比图和静息态耦合进行基于个体的重建精度}。
-		有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。
-		wm = 工作记忆。
-		模板特征模式自模板表面，而个体特定特征模式源自个体表面。
-		每个点对应一个个体。
-		虚线代表模板准确度 = 个体特定准确度线。
-		虚线上方的点表示模板准确度 > 个体特定准确度。
-		插图显示了模板导出的特征模式和个体特定的特征模式（即模板减去个体特定的）所实现的重建精度之间差异的直方图。} \label{fig:supp_4}
+	有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
+	wm = 工作记忆。
+	模板特征模式自模板表面，而个体特定特征模式源自个体表面。
+	每个点对应一个个体。
+	虚线代表模板准确度 = 个体特定准确度线。
+	虚线上方的点表示模板准确度 > 个体特定准确度。
+	插图显示了模板导出的特征模式和个体特定的特征模式（即模板减去个体特定的）所实现的重建精度之间差异的直方图。} \label{fig:supp_4}
 \end{figure}
 
 
@@ -1625,11 +1631,11 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.85\textwidth]{fig/supp_5.pdf}
 	\caption{\textbf{使用 200 至 500 个模板导出的和个体特定的几何特征模式重建 7 个关键人类连接组项目任务对比图和静息态功能耦合的准确性}。
-		有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。
-		wm = 工作记忆。
-		实线代表由模板表面导出的特征模式所获得的结果（图~\ref{fig:supp_1}d）。
-		虚线表示通过从各个表面导出的各个特定特征模式所实现的结果。
-		插图显示了模板导出的特征模式和个体特定的特征模式（即模板减去个体特定的）所实现的重建精度之间的差异。} \label{fig:supp_5}
+	有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
+	wm = 工作记忆。
+	实线代表由模板表面导出的特征模式所获得的结果（图~\ref{fig:supp_1}d）。
+	虚线表示通过从各个表面导出的各个特定特征模式所实现的结果。
+	插图显示了模板导出的特征模式和个体特定的特征模式（即模板减去个体特定的）所实现的重建精度之间的差异。} \label{fig:supp_5}
 \end{figure}
 
 
@@ -1639,7 +1645,7 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\includegraphics[width=0.85\textwidth]{fig/supp_6.pdf}
 	\caption{
 		\textbf{通过几何特征模式和不同连接组密度的连接组特征模式实现的 7 个关键人类连接组项目任务对比图和静息态功能耦合的重建精度}。
-		有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。
+		有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
 		wm = 工作记忆。
 		虚线表示\textit{几何特征模式}取得的结果（图~\ref{fig:supp_1}d）。
 		浅色到深色的线条代表使用密度不断增加的连接矩阵（从 1.0\% 到 13.0\%）的连接组特征模式所实现的结果。
@@ -1652,10 +1658,10 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\includegraphics[width=0.85\textwidth]{fig/supp_7.pdf}
 	\caption{
 		\textbf{使用不同连接组密度的 200 个连接组特征模式重建 7 个关键人类连接组项目任务对比图和静息态功能耦合的准确性}。
-		有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。
+		有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
 		wm = 工作记忆。
 		实线对应于200个\textit{几何特征模式}所达到的重建精度。
-		虚线分别对应于连接组密度 0.1\% 和 1.55\%，用于生成扩展数据图\ref{fig:supp_1}中的连接组和密度匹配的连接组特征模式。
+		虚线分别对应于连接组密度 0.1\% 和 1.55\%，用于生成扩展数据图~\ref{fig:supp_1}~中的连接组和密度匹配的连接组特征模式。
 	} \label{fig:supp_7}
 \end{figure}
 
@@ -1665,16 +1671,16 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\includegraphics[width=0.85\textwidth]{fig/supp_8.pdf}
 	\caption{
 	\textbf{通过不同分割分辨率的几何特征模式和离散连接组特征模式实现 7 个关键人类连接组项目任务对比图和静息态功能耦合的重建精度}。
-	有关对比图的详细信息，请参阅第 S2.1 节和补充表~\ref{tab:task_contrasts}。
+	有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
 	wm = 工作记忆。
 	对于所有情况，我们最多使用 200 种模式来直接将结果与研究的其余部分进行比较。
 	虚线代表\textit{几何特征模式}取得的结果（图~\ref{fig:supp_1}d）；
 	请参阅插图中的放大版本。
 	浅色到深色的线条表示通过使用以递增分辨率分割的连接矩阵的离散连接组特征模式所实现的结果。
-	绘制重建精度与相对于每个完整基组尺寸（即可用模式总数）使用的模式百分比的关系，该百分比对应于皮层表面的顶点数量（对于几何特征模式）或 每个半球的地块（对于离散连接组特征模式）。
+	绘制重建精度与相对于每个完整基组尺寸（即可用模式总数）使用的模式百分比的关系，该百分比对应于皮层表面的顶点数量（对于几何特征模式）或每个半球的块（对于离散连接组特征模式）。
 	因此，对于\textit{几何特征模式}，我们使用每个半球 32,492 个可用模式中的前 200 个模式，这就是虚线在可用模式的 0.6\% 处终止的原因。
-	对于使用 Schaefer400、Schaefer600、Schaefer800 和 Schaefer1000 分区的离散连接组特征模式，我们分别使用每个半球 200、300、400 和 500 个可用模式中的前 200 个模式。
-	因此，实线分别在可用模式的 100\%、66.7\%、0.50\% 和 0.40\% 处终止。
+	对于使用Schaefer400、Schaefer600、Schaefer800 和 Schaefer1000 分区的离散连接组特征模式，我们分别使用每个半球 200、300、400 和 500 个可用模式中的前 200 个模式。
+	因此，实线分别在可用模式的100\%、66.7\%、0.50\% 和 0.40\% 处终止。
 	结果强调，几何特征模提供了大脑活动最简约和紧凑的表示。
 	} \label{fig:supp_8}
 \end{figure}
@@ -1687,7 +1693,7 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\caption{
 		\textbf{通过 fMRI 数据的主成分分析 (principal component analysis, PCA) 获得主成分}。
 		PCA 接受了 7 个关键\textit{人类连接组项目}任务对比图和 200 个人的静息状态时间序列的训练。
-		有关对比图的详细信息，请参阅第 2.1 节和补充表~\ref{tab:task_contrasts}。
+		有关对比图的详细信息，请参阅第~\ref{sec:sup_2_1}~节和补充表~\ref{tab:task_contrasts}。
 		wm = 工作记忆。
 		主成分 1-5、10、25、50、100 和 200 从上到下显示。
 		负-零-正值被着色为蓝-白-红。
@@ -1699,7 +1705,8 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.85\textwidth]{fig/supp_10.pdf}
 	\caption{\textbf{神经场论中信号传播的示意图}。
-		皮层上位置 $ r' $ 和 $ r $ 处的两个点通过白质束（红色曲线）连接。 对于各向同性介质，活动 phi(r,t) 是源 $ Q(r',t') $ 和白质连接施加的连接核 $ W(r,t;r',t') $ 的卷积 ，仅取决于空间间隔 $ r-r' $ 和时间间隔$  t-t' $。
+	皮层上位置 $ \boldsymbol{r}' $ 和 $ \boldsymbol{r} $处的两个点通过白质束（红色曲线）连接。
+	对于各向同性介质，活动 $ \phi(\boldsymbol{r}, t) $ 是源 $ Q(\boldsymbol{r}',t') $ 和连接核 $ W(\boldsymbol{r},t; \boldsymbol{r}',t') $ 施加在白质连接上的卷积，仅取决于空间间隔 $ \boldsymbol{r}-\boldsymbol{r}' $ 和时间间隔 $ t-t' $。
 	} \label{fig:supp_10}
 \end{figure}
 
@@ -1708,9 +1715,9 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 	\centering
 	\includegraphics[width=0.85\textwidth]{fig/supp_11.pdf}
 	\caption{
-		\textbf{每个区域的峰值激活时间和 T1w:T2w 的比较}。
-		一个半球所有 180 个大脑区域的排名活动曲线时间达到峰值与排名 T1w:T2w 值的关系。
-		红线表示排名变量与 Spearman 相关系数 $ r $ 和单边旋转测试 $ p $ 值 pspin 的线性拟合，根据 10,000 个排列进行估计。
+		\textbf{每个区域的峰值激活时间和T1w:T2w 的比较}。
+		一个半球所有 180 个大脑区域的达到峰值活动简介时间排名与 T1w:T2w 值排名的关系。
+		红线表示排名变量与斯皮尔曼相关系数 $ r $ 和单边旋转测试 $ p $ 值 $ p_{spin} $ 的线性拟合，根据 10,000 个排列进行估计。
 	} \label{fig:supp_11}
 \end{figure}
 
@@ -1740,7 +1747,7 @@ PC2 滞后的模型和实证模式之间的相关性（扩展数据图 \ref{fig:
 		11      &   35.5      &      122-144  \\
 		12      &   33.7      &      145-169  \\
 		13      &   31.2      &      170-196  \\
-		14      &   29.1-      &      197-225  \\
+		14      &   29.1      &      197-225  \\
 
 		\bottomrule
 	\end{tabular}%
