@@ -80,14 +80,25 @@ generate_paper_figures_supp_Nature.m
 
 使用几何特征模式（神经网络结构）重建（人脸识别）大脑和（随机初始化的）深度神经网络的功能。
 
+根据 IT的几何结构 重建 IT的激活。
+
+测试任务：人脸识别、音乐识别。音乐、声音 在空间上以波的形式沿着结构传播，类似共振。
+
 ## 引用
 
 论文 "[Geometric constraints on human brain function](https://www.nature.com/articles/s41586-023-06098-1)" 的[代码和数据](https://github.com/NSBLab/BrainEigenmodes) 。
+
+[论文模板](https://www.springernature.com/gp/authors/campaigns/latex-author-support#c17590862) 。
 
 [PREPRINT] J.C. Pang, K.M. Aquino, M. Oldehinkel, P.A. Robinson, B.D. Fulcher, M. Breakspear, A. Fornito, Geometric constraints on human brain function, bioRxiv (2022) (DOI: [10.1101/2022.10.04.510897](https://www.biorxiv.org/content/10.1101/2022.10.04.510897v2))
 
 [ARTICLE] J.C. Pang, K.M. Aquino, M. Oldehinkel, P.A. Robinson, B.D. Fulcher, M. Breakspear, A. Fornito, Geometric constraints on human brain function, Nature (2023) (VOLUME NUMBER TO BE UPDATED) (DOI: [10.1038/s41586-023-06098-1](https://www.nature.com/articles/s41586-023-06098-1))
 
+
+## 错误
+* Package pdftex.def Error: File `fig-eps-converted-to.pdf' not found: using draft setting. ...udegraphics[width=0.9\textwidth]{fig.eps}
+
+解决：[PdfLatex中 %号前添加 -shell-escape](https://blog.csdn.net/weixin_43820048/article/details/137591225) 。
 
 ## 进一步的详细信息
 
